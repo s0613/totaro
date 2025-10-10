@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Dark mode (default) */
 :root {
   --bg: #0b0c0e;
   --surface: #101215;
@@ -13,6 +14,19 @@
   --warning: #ffc857;
 }
 
+/* Light mode */
+:root:not(.dark),
+.light {
+  --bg: #f8f9fa;
+  --surface: #ffffff;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --accent: #0d6efd;
+  --line: rgba(0, 0, 0, 0.08);
+  --success: #198754;
+  --warning: #ffc107;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -21,8 +35,16 @@
 
 html,
 body {
+  width: 100%;
+  height: 100%;
   max-width: 100vw;
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  position: relative;
 }
 
 @layer utilities {

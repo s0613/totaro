@@ -1,0 +1,185 @@
+{
+  "brand": {
+    "name": "totaro",
+    "tagline": "Export, all in one—no extra team."
+  },
+  "nav": {
+    "home": "Home",
+    "solution": "Solution",
+    "cases": "Cases",
+    "contact": "Contact"
+  },
+  "hero": {
+    "eyebrow": "AI Export Orchestration",
+    "headline": "Sell to global buyers,<br/>easier.",
+    "subcopy": "B2B Website · AEO/SEO/GEO · Targeted Marketing · Buyer CRM—all with totaro.",
+    "primaryCta": "Get Started"
+  },
+  "howItWorks": {
+    "title": "How totaro Works",
+    "steps": [
+      {
+        "step": 1,
+        "label": "Website",
+        "desc": "Auto-generated B2B landing pages and product catalogs"
+      },
+      {
+        "step": 2,
+        "label": "AEO/SEO/GEO",
+        "desc": "Simultaneous optimization for AI, search, and local engines"
+      },
+      {
+        "step": 3,
+        "label": "Ads/DM",
+        "desc": "Country/language/industry-specific funnels"
+      },
+      {
+        "step": 4,
+        "label": "CRM",
+        "desc": "Automated inquiry management and follow-ups"
+      }
+    ]
+  },
+  "useCases": {
+    "title": "Solve These Challenges",
+    "cases": [
+      {
+        "title": "B2B Website Renewal",
+        "before": "Domestic focus",
+        "after": "Buyer-centric story"
+      },
+      {
+        "title": "Global Campaigns",
+        "before": "Broad targeting",
+        "after": "Precise industry/region/role targeting"
+      },
+      {
+        "title": "Buyer Management",
+        "before": "Manual spreadsheets",
+        "after": "CRM automation"
+      }
+    ]
+  },
+  "outcomes": {
+    "title": "Real Results",
+    "metrics": [
+      {
+        "label": "Inquiry Rate",
+        "value": "↑ 3.2x"
+      },
+      {
+        "label": "Lead Response",
+        "value": "↑ 85%"
+      },
+      {
+        "label": "RFQ Requests",
+        "value": "↑ 2.8x"
+      }
+    ]
+  },
+  "cta": {
+    "title": "Get Started Today",
+    "subtitle": "The totaro team will reach out to you shortly.",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "company": "Company",
+      "country": "Country",
+      "interest": "Interest",
+      "message": "Message",
+      "submit": "Send Inquiry",
+      "submitting": "Sending..."
+    },
+    "interests": [
+      "Website",
+      "AEO/SEO/GEO",
+      "Ads/DM",
+      "CRM"
+    ],
+    "success": {
+      "title": "Inquiry Received",
+      "message": "We'll get back to you shortly."
+    }
+  },
+  "footer": {
+    "copyright": "© 2025 totaro. All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  },
+  "signatureFeature": {
+    "title": "totaro, Your Complete Export Solution",
+    "subtitle": "From buyer discovery to management, automate your entire export process with one platform"
+  },
+  "serviceDetails": {
+    "website": {
+      "icon": "🌐",
+      "title": "B2B Website",
+      "description": "Automatically generate professional export websites designed for buyers",
+      "features": [
+        "AI-powered product catalog generation",
+        "Multilingual landing pages (20+ languages)",
+        "Responsive design (mobile/tablet optimized)",
+        "SEO-friendly structure"
+      ],
+      "benefits": [
+        "90% faster production time",
+        "No professional designer needed",
+        "Automated maintenance"
+      ]
+    },
+    "aeo": {
+      "icon": "🔍",
+      "title": "AEO/SEO/GEO Optimization",
+      "description": "Simultaneously optimize for AI answer engines, search engines, and local targeting",
+      "features": [
+        "AEO (ChatGPT, Perplexity, Gemini optimization)",
+        "SEO (Google, Bing indexing strategy)",
+        "GEO (Regional/local search targeting)",
+        "Structured data & schema markup"
+      ],
+      "benefits": [
+        "Discovered via AI searches",
+        "Higher organic traffic",
+        "Targeted local visibility"
+      ]
+    },
+    "ads": {
+      "icon": "📢",
+      "title": "Targeted Ads & Direct Marketing",
+      "description": "Run country/language/industry-specific marketing funnels",
+      "features": [
+        "Google Ads & LinkedIn campaign management",
+        "Buyer persona-based targeting",
+        "A/B testing & conversion optimization",
+        "Email/DM template automation"
+      ],
+      "benefits": [
+        "3x higher conversion rate",
+        "Reduced CPA",
+        "Data-driven optimization"
+      ]
+    },
+    "crm": {
+      "icon": "📊",
+      "title": "Buyer CRM",
+      "description": "Automate inquiry management and buyer follow-ups",
+      "features": [
+        "Lead scoring & prioritization",
+        "Automated follow-up sequences",
+        "Deal pipeline management",
+        "Integration with existing tools"
+      ],
+      "benefits": [
+        "Zero missed follow-ups",
+        "85% faster response time",
+        "Clear visibility on pipeline"
+      ]
+    }
+  },
+  "socialProof": {
+    "title": "Trusted By",
+    "testimonials": {
+      "title": "Customer Success Stories"
+    }
+  }
+}

@@ -1,14 +1,17 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class", // Enable class-based dark mode
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./lib/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
       colors: {
+        // Dark mode (default)
         bg: "#0B0C0E",
         surface: "#101215",
         textPrimary: "#E9ECEF",
@@ -17,6 +20,14 @@ const config: Config = {
         line: "rgba(255,255,255,.08)",
         success: "#43D17A",
         warning: "#FFC857",
+
+        // Light mode variants
+        "bg-light": "#F8F9FA",
+        "surface-light": "#FFFFFF",
+        "textPrimary-light": "#212529",
+        "textSecondary-light": "#6C757D",
+        "accent-light": "#0D6EFD",
+        "line-light": "rgba(0,0,0,.08)",
       },
       fontFamily: {
         sans: [
