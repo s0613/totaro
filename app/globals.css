@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0b0c0e;
+  --surface: #101215;
+  --text-primary: #e9ecef;
+  --text-secondary: #a9b0b7;
+  --accent: #5ba4ff;
+  --line: rgba(255, 255, 255, 0.08);
+  --success: #43d17a;
+  --warning: #ffc857;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+@layer utilities {
+  .eyebrow {
+    @apply uppercase tracking-wide text-xs text-textSecondary;
+  }
+
+  .copy-hero {
+    font-size: clamp(32px, 6vw, 72px);
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .copy-sub {
+    max-width: 60ch;
+    font-weight: 300;
+    color: var(--text-secondary);
+  }
+
+  .btn-primary {
+    @apply bg-accent text-white font-bold py-4 px-8 rounded-lg hover:bg-accent/90 transition-colors;
+  }
+}
