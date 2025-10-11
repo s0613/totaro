@@ -70,7 +70,7 @@ export default function CTAForm({ content }: CTAFormProps) {
       } else {
         alert("오류가 발생했습니다. 다시 시도해주세요.");
       }
-    } catch (error) {
+    } catch {
       alert("오류가 발생했습니다. 다시 시도해주세요.");
     } finally {
       setIsSubmitting(false);

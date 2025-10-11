@@ -21,7 +21,7 @@ interface HeroProps {
   lang: "ko" | "en";
 }
 
-export default function Hero({ content, lang }: HeroProps) {
+export default function Hero({ content }: HeroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);

@@ -10,12 +10,12 @@ const schema = z.object({
   name: z.string().min(2, "이름을 입력해주세요"),
   email: z.string().email("유효한 이메일을 입력해주세요"),
   company: z.string().min(2, "회사명을 입력해주세요"),
-  plan: z.enum(["starter"], {
-    errorMap: () => ({ message: "요금제를 선택해주세요" }),
+  plan: z.enum(["starter"]).refine((val) => val === "starter", {
+    message: "요금제를 선택해주세요",
   }),
   message: z.string().optional(),
-  agree: z.literal(true, {
-    errorMap: () => ({ message: "약관에 동의해 주세요" }),
+  agree: z.literal(true).refine((val) => val === true, {
+    message: "약관에 동의해 주세요",
   }),
 });
 
@@ -50,7 +50,7 @@ export default function CheckoutPage() {
       const json = await res.json();
       const orderId = json.id as string;
       router.push(`/checkout/success?orderId=${encodeURIComponent(orderId)}${currentLang ? `&lang=${currentLang}` : ""}`);
-    } catch (e) {
+    } catch {
       alert(currentLang === "en" ? "Payment could not be created. Please try again." : "주문 생성에 실패했습니다. 다시 시도해주세요.");
     } finally {
       setSubmitting(false);
