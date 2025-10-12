@@ -10,7 +10,8 @@
  *   npm run check:payment-env
  */
 
-const chalk = require('chalk');
+// Load .env.local file
+require('dotenv').config({ path: '.env.local' });
 
 // ANSI 색상 코드 (chalk 없이 사용 가능)
 const colors = {
