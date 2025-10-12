@@ -34,13 +34,24 @@ console.log('1. Client Key 검증...');
 if (!clientKey) {
   console.log(colors.red('   ❌ NEXT_PUBLIC_TOSS_CLIENT_KEY가 설정되지 않았습니다.'));
   hasError = true;
-} else if (clientKey.startsWith('test_ck_')) {
-  console.log(colors.yellow('   ⚠️  테스트 모드입니다 (test_ck_)'));
-  console.log(colors.yellow(`      현재 키: ${clientKey.substring(0, 20)}...`));
-  warnings.push('테스트 키가 사용 중입니다. 프로덕션 배포 시 live_ck_ 키로 변경하세요.');
-} else if (clientKey.startsWith('live_ck_')) {
-  console.log(colors.green('   ✅ 실제 결제 모드입니다 (live_ck_)'));
+} else if (clientKey.startsWith('test_gck_')) {
+  console.log(colors.green('   ✅ Payment Widget 테스트 모드입니다 (test_gck_)'));
   console.log(colors.cyan(`      현재 키: ${clientKey.substring(0, 20)}...`));
+  if (clientKey.includes('docs')) {
+    warnings.push('Toss 공개 샘플 키를 사용 중입니다. 실제 프로젝트에서는 본인의 키를 발급받으세요.');
+  }
+} else if (clientKey.startsWith('live_gck_')) {
+  console.log(colors.green('   ✅ Payment Widget 실제 결제 모드입니다 (live_gck_)'));
+  console.log(colors.cyan(`      현재 키: ${clientKey.substring(0, 20)}...`));
+} else if (clientKey.startsWith('test_ck_') || clientKey.startsWith('live_ck_')) {
+  console.log(colors.red('   ❌ API 개별 연동 키입니다. Payment Widget에서는 사용할 수 없습니다!'));
+  console.log(colors.red(`      현재 키: ${clientKey.substring(0, 20)}...`));
+  console.log(colors.yellow('   💡 해결방법:'));
+  console.log(colors.yellow('      1. https://developers.tosspayments.com 로그인'));
+  console.log(colors.yellow('      2. "내 개발 정보" → "API 키 관리"'));
+  console.log(colors.yellow('      3. "결제위젯(Payment Widget)" 타입으로 키 발급'));
+  console.log(colors.yellow('      4. test_gck_ 또는 live_gck_로 시작하는 키 사용'));
+  hasError = true;
 } else {
   console.log(colors.red('   ❌ 올바르지 않은 Client Key 형식입니다.'));
   console.log(colors.red(`      현재 값: ${clientKey.substring(0, 20)}...`));
@@ -54,13 +65,17 @@ console.log('\n2. Secret Key 검증...');
 if (!secretKey) {
   console.log(colors.red('   ❌ TOSS_SECRET_KEY가 설정되지 않았습니다.'));
   hasError = true;
-} else if (secretKey.startsWith('test_sk_')) {
-  console.log(colors.yellow('   ⚠️  테스트 모드입니다 (test_sk_)'));
-  console.log(colors.yellow(`      현재 키: ${secretKey.substring(0, 20)}...`));
-  warnings.push('테스트 비밀키가 사용 중입니다. 프로덕션 배포 시 live_sk_ 키로 변경하세요.');
-} else if (secretKey.startsWith('live_sk_')) {
-  console.log(colors.green('   ✅ 실제 결제 모드입니다 (live_sk_)'));
+} else if (secretKey.startsWith('test_gsk_')) {
+  console.log(colors.green('   ✅ Payment Widget 테스트 모드입니다 (test_gsk_)'));
   console.log(colors.cyan(`      현재 키: ${secretKey.substring(0, 20)}...`));
+} else if (secretKey.startsWith('live_gsk_')) {
+  console.log(colors.green('   ✅ Payment Widget 실제 결제 모드입니다 (live_gsk_)'));
+  console.log(colors.cyan(`      현재 키: ${secretKey.substring(0, 20)}...`));
+} else if (secretKey.startsWith('test_sk_') || secretKey.startsWith('live_sk_')) {
+  console.log(colors.red('   ❌ API 개별 연동 키입니다. Payment Widget에서는 사용할 수 없습니다!'));
+  console.log(colors.red(`      현재 키: ${secretKey.substring(0, 20)}...`));
+  console.log(colors.yellow('   💡 test_gsk_ 또는 live_gsk_로 시작하는 키를 사용하세요.'));
+  hasError = true;
 } else {
   console.log(colors.red('   ❌ 올바르지 않은 Secret Key 형식입니다.'));
   console.log(colors.red(`      현재 값: ${secretKey.substring(0, 20)}...`));
@@ -70,8 +85,8 @@ if (!secretKey) {
 // 3. 키 모드 일치 확인
 console.log('\n3. 키 모드 일치 확인...');
 
-const clientKeyMode = clientKey?.startsWith('test_') ? 'test' : clientKey?.startsWith('live_') ? 'live' : 'unknown';
-const secretKeyMode = secretKey?.startsWith('test_') ? 'test' : secretKey?.startsWith('live_') ? 'live' : 'unknown';
+const clientKeyMode = clientKey?.startsWith('test_gck_') ? 'test' : clientKey?.startsWith('live_gck_') ? 'live' : 'unknown';
+const secretKeyMode = secretKey?.startsWith('test_gsk_') ? 'test' : secretKey?.startsWith('live_gsk_') ? 'live' : 'unknown';
 
 if (clientKeyMode !== secretKeyMode) {
   console.log(colors.red('   ❌ Client Key와 Secret Key의 모드가 일치하지 않습니다!'));
