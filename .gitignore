@@ -42,3 +42,9 @@ next-env.d.ts
 
 # OS
 Thumbs.db
+
+# Development
+dev.log
+nul
+test-*.js
+mcp-server-*.js
