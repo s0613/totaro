@@ -5,6 +5,8 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import PaymentWidget from "@/app/components/payment/PaymentWidget";
+import { generateOrderName } from "@/lib/payments/payment-utils";
 
 const schema = z.object({
   name: z.string().min(2, "이름을 입력해주세요"),
@@ -27,6 +29,8 @@ export default function CheckoutPage() {
   const pathname = usePathname();
   const currentLang = searchParams.get("lang") || "ko";
   const [submitting, setSubmitting] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
+  const [customerInfo, setCustomerInfo] = useState<FormData | null>(null);
 
   const {
     register,
@@ -38,24 +42,89 @@ export default function CheckoutPage() {
   const priceFormatted = new Intl.NumberFormat("ko-KR").format(priceKRW);
 
   const onSubmit = async (data: FormData) => {
-    try {
-      setSubmitting(true);
-      const res = await fetch("/api/orders" + (currentLang ? `?lang=${currentLang}` : ""), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, price: priceKRW, currency: "KRW" }),
-      });
-
-      if (!res.ok) throw new Error("Order failed");
-      const json = await res.json();
-      const orderId = json.id as string;
-      router.push(`/checkout/success?orderId=${encodeURIComponent(orderId)}${currentLang ? `&lang=${currentLang}` : ""}`);
-    } catch {
-      alert(currentLang === "en" ? "Payment could not be created. Please try again." : "주문 생성에 실패했습니다. 다시 시도해주세요.");
-    } finally {
-      setSubmitting(false);
-    }
+    // Form validation passed, proceed to payment step
+    setSubmitting(true);
+    setShowPayment(true);
+    setCustomerInfo(data);
   };
+
+  // Show payment widget after form submission
+  if (showPayment && customerInfo) {
+    return (
+      <section className="min-h-screen bg-bg text-textPrimary py-16 px-6">
+        <div className="max-w-4xl mx-auto">
+          <button
+            onClick={() => {
+              setShowPayment(false);
+              setSubmitting(false);
+            }}
+            className="mb-6 text-textSecondary hover:text-textPrimary flex items-center gap-2"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            {currentLang === "en" ? "Back to Form" : "폼으로 돌아가기"}
+          </button>
+
+          <h1 className="text-4xl font-bold mb-2">
+            {currentLang === "en" ? "Payment" : "결제"}
+          </h1>
+          <p className="text-textSecondary mb-10">
+            {currentLang === "en"
+              ? "Complete your order by entering payment information."
+              : "결제 정보를 입력하여 주문을 완료하세요."}
+          </p>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Order Summary */}
+            <aside className="lg:col-span-1 bg-surface border border-line rounded-xl p-6 h-max">
+              <h2 className="text-xl font-semibold mb-4">
+                {currentLang === "en" ? "Order Summary" : "주문 요약"}
+              </h2>
+              <div className="space-y-3 mb-6">
+                <div className="flex justify-between text-sm">
+                  <span className="text-textSecondary">{currentLang === "en" ? "Name" : "이름"}</span>
+                  <span className="font-semibold">{customerInfo.name}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-textSecondary">Email</span>
+                  <span className="font-semibold">{customerInfo.email}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-textSecondary">{currentLang === "en" ? "Company" : "회사명"}</span>
+                  <span className="font-semibold">{customerInfo.company}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-textSecondary">{currentLang === "en" ? "Plan" : "요금제"}</span>
+                  <span className="font-semibold">{currentLang === "en" ? "Starter" : "스타터"}</span>
+                </div>
+              </div>
+              <div className="border-t border-line pt-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-textSecondary">{currentLang === "en" ? "Total" : "총 금액"}</span>
+                  <span className="font-bold text-2xl text-accent">₩{priceFormatted}</span>
+                </div>
+              </div>
+            </aside>
+
+            {/* Payment Widget */}
+            <div className="lg:col-span-2">
+              <PaymentWidget
+                amount={priceKRW}
+                orderName={generateOrderName("starter", currentLang === "en" ? "en" : "ko")}
+                customerName={customerInfo.name}
+                customerEmail={customerInfo.email}
+                currency="KRW"
+                onPaymentRequest={(orderId) => {
+                  console.log("[Checkout] Payment initiated:", orderId);
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="min-h-screen bg-bg text-textPrimary py-16 px-6">

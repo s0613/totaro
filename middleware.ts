@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { updateSession } from "@/lib/supabase/middleware";
 
-export function middleware(request: NextRequest) {
-  const response = NextResponse.next();
+export async function middleware(request: NextRequest) {
+  // Supabase 세션 갱신
+  const response = await updateSession(request);
 
   // Security headers
   response.headers.set("X-Frame-Options", "SAMEORIGIN");
@@ -23,5 +25,14 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    /*
+     * Match all request paths except:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - public folder
+     */
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
 };
