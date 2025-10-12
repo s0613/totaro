@@ -11,6 +11,7 @@ interface PaymentWidgetProps {
   orderName: string;
   customerName?: string;
   customerEmail?: string;
+  customerMobilePhone?: string;
   currency?: "KRW" | "USD" | "JPY";
   onPaymentRequest?: (orderId: string) => void;
 }
@@ -27,15 +28,18 @@ export default function PaymentWidget({
   orderName,
   customerName,
   customerEmail,
+  customerMobilePhone,
   currency = "KRW",
   onPaymentRequest,
 }: PaymentWidgetProps) {
-  const paymentWidgetRef = useRef<any>(null);
-  const paymentMethodsWidgetRef = useRef<any>(null);
+  const widgetsRef = useRef<any>(null);
+  const paymentMethodWidgetRef = useRef<any>(null);
+  const agreementWidgetRef = useRef<any>(null);
   const [isReady, setIsReady] = useState(false);
   const [isSdkLoaded, setIsSdkLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [generatedOrderId] = useState(() => orderId || generateOrderId());
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>(null);
 
   // SDK 로드 완료 시 호출
   const onSdkLoad = () => {
@@ -56,54 +60,84 @@ export default function PaymentWidget({
           throw new Error("Toss Payments SDK가 로드되지 않았습니다.");
         }
 
-        // DOM이 렌더링될 때까지 대기
-        await new Promise(resolve => setTimeout(resolve, 100));
+        // DOM이 렌더링될 때까지 대기 (더 긴 시간)
+        await new Promise(resolve => setTimeout(resolve, 1000));
 
-        console.log("[PaymentWidget] Initializing with clientKey:", TOSS_CONFIG.clientKey.substring(0, 20) + '...');
+        // DOM 요소 확인 (여러 번 시도)
+        let paymentMethodElement = null;
+        let agreementElement = null;
+        
+        // 최대 3번 시도
+        for (let i = 0; i < 3; i++) {
+          paymentMethodElement = document.querySelector('#payment-method');
+          agreementElement = document.querySelector('#agreement');
+          
+          if (paymentMethodElement && agreementElement) {
+            break;
+          }
+          
+          console.log(`[PaymentWidget] DOM 요소 확인 시도 ${i + 1}/3:`, {
+            paymentMethod: !!paymentMethodElement,
+            agreement: !!agreementElement
+          });
+          
+          // 300ms 대기 후 재시도
+          await new Promise(resolve => setTimeout(resolve, 300));
+        }
+        
+        if (!paymentMethodElement || !agreementElement) {
+          throw new Error("결제 UI 영역을 찾을 수 없습니다. 페이지를 새로고침해주세요.");
+        }
 
-        // Payment Widget 생성
+        console.log("[PaymentWidget] 토스페이먼츠 SDK v2 초기화 중...");
+
+        // 토스페이먼츠 SDK 초기화
         const tossPayments = window.TossPayments(TOSS_CONFIG.clientKey);
-        console.log("[PaymentWidget] TossPayments instance created:", tossPayments);
-        console.log("[PaymentWidget] Available methods:", Object.keys(tossPayments));
-
-        // Payment Widget SDK v2 방식
-        // customerKey는 고객을 구분하는 고유 식별자 (이메일 또는 주문ID)
+        
+        // customerKey는 고객을 구분하는 고유 식별자
         const customerKey = customerEmail || generatedOrderId;
-        console.log("[PaymentWidget] Creating widget with customerKey:", customerKey);
+        console.log("[PaymentWidget] customerKey:", customerKey);
 
-        // widgets() 복수형으로 다시 시도
-        const paymentWidget = tossPayments.widgets({
+        // 결제위젯 인스턴스 생성
+        const widgets = tossPayments.widgets({
           customerKey: customerKey
         });
-        console.log("[PaymentWidget] Payment widget created:", paymentWidget);
-        console.log("[PaymentWidget] Widget methods:", Object.keys(paymentWidget));
 
-        paymentWidgetRef.current = paymentWidget;
+        widgetsRef.current = widgets;
 
-        // 금액 설정 (먼저 setAmount 호출)
-        console.log("[PaymentWidget] Setting amount:", amount);
-        paymentWidget.setAmount(amount);
+        // 결제 금액 설정 (반드시 렌더링 전에 호출)
+        await widgets.setAmount({
+          currency: currency,
+          value: amount
+        });
+        console.log("[PaymentWidget] 금액 설정 완료:", { currency, value: amount });
 
-        // 결제 수단 위젯 렌더링 (selector와 옵션만 전달)
-        console.log("[PaymentWidget] Rendering payment methods...");
-        const paymentMethodsWidget = paymentWidget.renderPaymentMethods({
-          selector: "#payment-methods",
+        // 결제 수단 UI 렌더링
+        const paymentMethodWidget = await widgets.renderPaymentMethods({
+          selector: "#payment-method",
           variantKey: "DEFAULT"
         });
-        console.log("[PaymentWidget] Payment methods widget rendered:", paymentMethodsWidget);
+        
+        paymentMethodWidgetRef.current = paymentMethodWidget;
 
-        paymentMethodsWidgetRef.current = paymentMethodsWidget;
+        // 결제수단 선택 이벤트 리스너
+        paymentMethodWidget.on('paymentMethodSelect', (selectedMethod: any) => {
+          console.log("[PaymentWidget] 선택된 결제수단:", selectedMethod);
+          setSelectedPaymentMethod(selectedMethod?.code || null);
+        });
 
-        // 이용약관 위젯 렌더링
-        paymentWidget.renderAgreement({
+        // 이용약관 UI 렌더링
+        const agreementWidget = await widgets.renderAgreement({
           selector: "#agreement",
           variantKey: "AGREEMENT"
         });
+        
+        agreementWidgetRef.current = agreementWidget;
 
-        console.log("[PaymentWidget] Widgets rendered successfully");
+        console.log("[PaymentWidget] 위젯 렌더링 완료");
         setIsReady(true);
       } catch (err: any) {
-        console.error("[PaymentWidget] Init error:", err);
+        console.error("[PaymentWidget] 초기화 오류:", err);
         setError(err?.message || "결제 위젯 초기화에 실패했습니다.");
       }
     };
@@ -112,7 +146,7 @@ export default function PaymentWidget({
   }, [isSdkLoaded, amount, currency, customerEmail, generatedOrderId]);
 
   const handlePayment = async () => {
-    if (!paymentWidgetRef.current) {
+    if (!widgetsRef.current) {
       alert("결제 위젯이 준비되지 않았습니다. 잠시만 기다려주세요.");
       return;
     }
@@ -124,25 +158,31 @@ export default function PaymentWidget({
       console.log("[PaymentWidget] 결제 요청:", {
         orderId: generatedOrderId,
         orderName,
-        amount
+        amount,
+        customerEmail,
+        customerName
       });
 
-      // 결제 요청
-      await paymentWidgetRef.current.requestPayment({
+      // 결제 요청 (Redirect 방식)
+      await widgetsRef.current.requestPayment({
         orderId: generatedOrderId,
         orderName: orderName,
         successUrl: TOSS_CONFIG.successUrl,
         failUrl: TOSS_CONFIG.failUrl,
         customerEmail: customerEmail,
         customerName: customerName,
+        customerMobilePhone: customerMobilePhone,
       });
     } catch (err: any) {
-      console.error("[PaymentWidget] Payment error:", err);
+      console.error("[PaymentWidget] 결제 요청 오류:", err);
 
-      if (err.code === "USER_CANCEL") {
+      // 에러 코드별 처리
+      if (err.code === "PAY_PROCESS_CANCELED") {
         alert("결제를 취소하셨습니다.");
-      } else if (err.code === "INVALID_CARD_COMPANY") {
-        alert("유효하지 않은 카드입니다.");
+      } else if (err.code === "PAY_PROCESS_ABORTED") {
+        alert("결제가 실패했습니다. 다시 시도해주세요.");
+      } else if (err.code === "REJECT_CARD_COMPANY") {
+        alert("카드사에서 거절했습니다. 카드 정보를 확인해주세요.");
       } else {
         alert("결제에 실패했습니다: " + (err?.message || "알 수 없는 오류"));
       }
@@ -162,55 +202,73 @@ export default function PaymentWidget({
 
   return (
     <>
+      {/* 토스페이먼츠 SDK v2 로드 */}
       <Script
         src="https://js.tosspayments.com/v2/standard"
         onLoad={onSdkLoad}
         onError={() => setError("Toss Payments SDK 로드에 실패했습니다.")}
       />
 
-      {/* DOM 엘리먼트를 항상 렌더링 */}
-      <div id="payment-methods" className="bg-surface border border-line rounded-lg p-4 mb-4" style={{ display: isSdkLoaded ? 'block' : 'none' }} />
-      <div id="agreement" className="bg-surface border border-line rounded-lg p-4 mb-4" style={{ display: isSdkLoaded ? 'block' : 'none' }} />
-
       <div className="space-y-6">
         {!isReady ? (
           <div className="p-12 text-center bg-surface border border-line rounded-lg">
             <div className="w-12 h-12 mx-auto mb-4 border-4 border-accent border-t-transparent rounded-full animate-spin" />
-            <p className="text-textSecondary">결제 위젯을 불러오는 중...</p>
+            <p className="text-textSecondary font-medium">결제 위젯을 불러오는 중...</p>
+            <p className="text-textSecondary text-sm mt-2">잠시만 기다려주세요</p>
           </div>
         ) : (
           <>
-            {/* 주문 정보 */}
-            <div className="p-4 bg-surface border border-line rounded-lg text-sm space-y-2">
-              <div className="flex justify-between">
-                <span className="text-textSecondary">주문번호</span>
-                <span className="font-mono text-textPrimary">{generatedOrderId}</span>
+            {/* 주문 정보 요약 */}
+            <div className="p-6 bg-surface border border-line rounded-xl space-y-3">
+              <h3 className="font-semibold text-textPrimary mb-4">주문 정보</h3>
+              <div className="flex justify-between items-center">
+                <span className="text-textSecondary text-sm">주문번호</span>
+                <span className="font-mono text-textPrimary text-sm">{generatedOrderId}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-textSecondary">상품명</span>
-                <span className="text-textPrimary">{orderName}</span>
+              <div className="flex justify-between items-center">
+                <span className="text-textSecondary text-sm">상품명</span>
+                <span className="text-textPrimary text-sm font-medium">{orderName}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-textSecondary">결제금액</span>
-                <span className="font-bold text-accent text-lg">
-                  {currency === "KRW" ? "₩" : "$"}
-                  {amount.toLocaleString()}
-                </span>
+              <div className="border-t border-line pt-3 mt-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-textPrimary font-semibold">결제금액</span>
+                  <span className="font-bold text-accent text-2xl">
+                    {currency === "KRW" ? "₩" : "$"}
+                    {amount.toLocaleString()}
+                  </span>
+                </div>
               </div>
+            </div>
+
+            {/* 결제 수단 선택 */}
+            <div className="space-y-3">
+              <h3 className="font-semibold text-textPrimary">결제 수단</h3>
+              <div id="payment-method" className="bg-surface border border-line rounded-xl overflow-hidden" />
+            </div>
+
+            {/* 이용약관 */}
+            <div className="space-y-3">
+              <h3 className="font-semibold text-textPrimary">이용약관</h3>
+              <div id="agreement" className="bg-surface border border-line rounded-xl overflow-hidden" />
             </div>
 
             {/* 결제하기 버튼 */}
             <button
               onClick={handlePayment}
-              className="w-full py-5 text-lg font-bold text-white bg-accent rounded-lg hover:bg-accent/90 transition-colors"
+              disabled={!selectedPaymentMethod}
+              className="w-full py-5 text-lg font-bold text-white bg-accent rounded-xl hover:bg-accent/90 transition-all disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300 shadow-lg hover:shadow-xl"
             >
-              결제하기
+              {selectedPaymentMethod ? "결제하기" : "결제수단을 선택해주세요"}
             </button>
 
             {/* 안내 메시지 */}
-            <p className="text-xs text-textSecondary text-center">
-              결제 버튼 클릭 시 Toss Payments 결제창으로 이동합니다.
-            </p>
+            <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-sm text-blue-800">
+                <span className="font-semibold">💳 테스트 결제</span>
+                <br />
+                테스트 환경에서는 실제 결제가 발생하지 않습니다.
+              </p>
+            </div>
           </>
         )}
       </div>

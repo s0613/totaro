@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>토스페이먼츠 결제위젯 연동</title>
+    <!-- 토스페이먼츠 SDK v2 -->
+    <script src="https://js.tosspayments.com/v2/standard"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>토스페이먼츠 결제위젯 연동</h1>
+        <p>토스페이먼츠 SDK v2를 사용한 결제위젯 연동 예제입니다.</p>
+      </header>
+
+      <main>
+        <div class="order-section">
+          <h2>주문 정보</h2>
+          <div class="order-item">
+            <span class="item-name">토스 티셔츠 외 2건</span>
+            <span class="item-price">50,000원</span>
+          </div>
+        </div>
+
+        <div class="payment-section">
+          <h2>결제 수단</h2>
+          <!-- 결제 UI -->
+          <div id="payment-method"></div>
+        </div>
+
+        <div class="agreement-section">
+          <h2>이용약관</h2>
+          <!-- 이용약관 UI -->
+          <div id="agreement"></div>
+        </div>
+
+        <div class="payment-button-section">
+          <button class="payment-button" id="payment-button" disabled>
+            결제하기
+          </button>
+        </div>
+      </main>
+
+      <footer>
+        <p>토스페이먼츠 SDK v2 결제위젯 연동 예제</p>
+      </footer>
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+</html>
