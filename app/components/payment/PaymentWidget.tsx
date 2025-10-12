@@ -46,28 +46,36 @@ export default function PaymentWidget({
         throw new Error("Toss Payments SDK가 로드되지 않았습니다.");
       }
 
+      console.log("[PaymentWidget] Initializing with clientKey:", TOSS_CONFIG.clientKey.substring(0, 20) + '...');
+
       // Payment Widget 생성
       const tossPayments = await window.TossPayments(TOSS_CONFIG.clientKey);
 
       // Payment Widget SDK v2 방식
-      const paymentWidget = tossPayments.widgets({
-        customerKey: customerEmail || generatedOrderId // 고객 식별자
+      // customerKey는 고객을 구분하는 고유 식별자 (이메일 또는 주문ID)
+      const paymentWidget = await tossPayments.widgets({
+        customerKey: customerEmail || generatedOrderId
       });
 
       paymentWidgetRef.current = paymentWidget;
 
       // 결제 수단 위젯 렌더링
-      const paymentMethodsWidget = paymentWidget.renderPaymentMethods(
+      // selector, amount(number), options(optional)
+      const paymentMethodsWidget = await paymentWidget.renderPaymentMethods(
         "#payment-methods",
-        { value: amount, currency, country: "KR" },
+        amount, // 숫자만 전달 (객체가 아님!)
         { variantKey: "DEFAULT" }
       );
 
       paymentMethodsWidgetRef.current = paymentMethodsWidget;
 
-      // 이용약관 위젯 렌더링 (선택사항)
-      await paymentWidget.renderAgreement("#agreement", { variantKey: "AGREEMENT" });
+      // 이용약관 위젯 렌더링
+      await paymentWidget.renderAgreement(
+        "#agreement",
+        { variantKey: "AGREEMENT" }
+      );
 
+      console.log("[PaymentWidget] Widgets rendered successfully");
       setIsReady(true);
     } catch (err: any) {
       console.error("[PaymentWidget] Init error:", err);
