@@ -66,6 +66,7 @@ export default function UseCases({ title, cases }: UseCasesProps) {
 
   return (
     <section
+      id="cases"
       ref={containerRef}
       className="relative min-h-screen flex items-center justify-center bg-bg py-24 px-8"
     >

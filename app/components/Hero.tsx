@@ -88,6 +88,7 @@ export default function Hero({ content }: HeroProps) {
 
   return (
     <section
+      id="home"
       ref={containerRef}
       className="relative h-screen flex items-center justify-center overflow-hidden bg-bg"
       style={{ willChange: "opacity" }}

@@ -67,7 +67,7 @@ export default function ServiceDetails({ content }: ServiceDetailsProps) {
   }, [prefersReducedMotion]);
 
   return (
-    <section ref={containerRef} className="relative bg-surface py-32 px-8">
+    <section id="solution" ref={containerRef} className="relative bg-surface py-32 px-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-20">
           <h2 className="text-5xl font-bold text-textPrimary mb-6">

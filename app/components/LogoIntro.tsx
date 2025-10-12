@@ -2,13 +2,7 @@
 
 import { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "@/lib/hooks/useReducedMotion";
-
-// Register GSAP plugins
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 interface LogoIntroProps {
   onComplete?: () => void;
@@ -16,6 +10,7 @@ interface LogoIntroProps {
 
 export default function LogoIntro({ onComplete }: LogoIntroProps) {
   const [isMounted, setIsMounted] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const fullLogoRef = useRef<HTMLDivElement>(null);
   const leftRectRef = useRef<SVGPathElement>(null);
@@ -30,204 +25,128 @@ export default function LogoIntro({ onComplete }: LogoIntroProps) {
     setIsMounted(true);
   }, []);
 
+  // Auto-play logo decomposition animation on site entry
   useEffect(() => {
-    if (!isMounted || prefersReducedMotion || !containerRef.current) {
-      if (containerRef.current) {
-        gsap.to(containerRef.current, {
-          opacity: 0,
-          duration: 0.6,
-          delay: 1,
-          onComplete,
-        });
-      }
+    if (!isMounted || !containerRef.current || !fullLogoRef.current) return;
+
+    if (prefersReducedMotion) {
+      // For reduced motion, just show briefly and hide
+      setTimeout(() => {
+        setIsCompleted(true);
+        onComplete?.();
+      }, 3000);
       return;
     }
 
-    // Ensure ScrollTrigger is ready and DOM is fully loaded
-    const initAnimation = () => {
-      ScrollTrigger.refresh();
-      
-      // Wait for DOM to be fully ready before creating timeline
-      setTimeout(() => {
-        ScrollTrigger.refresh();
-        
-        // Create timeline after ScrollTrigger is ready
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 1,
-            onUpdate: (self) => {
-              // Only control scroll at the very beginning and end
-              if (self.progress <= 0.01) {
-                // At the very start, allow scrolling but show the animation
-                document.body.style.overflow = 'auto';
-              } else if (self.progress >= 0.99) {
-                // At the very end, ensure scrolling is enabled
-                document.body.style.overflow = 'auto';
-              }
-            },
-            onComplete: () => {
-              // Ensure scrolling is enabled after animation completes
-              document.body.style.overflow = 'auto';
-            },
-            onLeave: () => {
-              // When leaving the trigger area, ensure scrolling is enabled
-              document.body.style.overflow = 'auto';
-            },
-            onEnterBack: () => {
-              // When entering back, ensure scrolling is enabled
-              document.body.style.overflow = 'auto';
-            },
-          },
-        });
+    // Initial state - logo visible
+    gsap.set(fullLogoRef.current, { opacity: 1, scale: 1 });
+    gsap.set(leftRectRef.current, { x: 0, y: 0, scale: 1, rotation: 0, opacity: 1 });
+    gsap.set(rightRectRef.current, { x: 0, y: 0, scale: 1, rotation: 0, opacity: 1 });
+    gsap.set(tHorizontalRef.current, { y: 0, scaleX: 1, scaleY: 1, opacity: 1 });
+    gsap.set(tVerticalRef.current, { y: 0, scale: 1, opacity: 1 });
+    gsap.set(mouseIconRef.current, { opacity: 0, scale: 0.8 });
 
-        // Set initial state - logo visible immediately
-        gsap.set(fullLogoRef.current, { opacity: 1, scale: 1 });
-        
-        // Set initial states for all animated elements
-        gsap.set(leftRectRef.current, { 
-          x: 0, 
-          y: 0, 
-          scale: 1, 
-          rotation: 0, 
-          opacity: 1 
-        });
-        gsap.set(rightRectRef.current, { 
-          x: 0, 
-          y: 0, 
-          scale: 1, 
-          rotation: 0, 
-          opacity: 1 
-        });
-        gsap.set(tHorizontalRef.current, { 
-          y: 0, 
-          scaleX: 1, 
-          scaleY: 1, 
-          opacity: 1 
-        });
-        gsap.set(tVerticalRef.current, { 
-          y: 0, 
-          scale: 1, 
-          opacity: 1 
-        });
-        gsap.set(mouseIconRef.current, { 
-          opacity: 0, 
-          scale: 0.8 
-        });
+    // Create auto-playing timeline that simulates scroll animation
+    const tl = gsap.timeline({
+      onComplete: () => {
+        setIsCompleted(true);
+        onComplete?.();
+      }
+    });
 
-        // Phase 1: Logo stays (0-15%)
-        tl.to(fullLogoRef.current, {
-          duration: 0.15,
-        })
-        // Phase 2: Rectangles split and expand (15-40%)
-        .to(
-          leftRectRef.current,
-          {
-            x: -window.innerWidth * 0.6,
-            y: window.innerHeight * 0.4,
-            scale: 12,
-            rotation: -8,
-            opacity: 0.15,
-            duration: 0.25,
-            ease: "power2.inOut",
-          },
-          0.15
-        )
-        .to(
-          rightRectRef.current,
-          {
-            x: window.innerWidth * 0.6,
-            y: -window.innerHeight * 0.4,
-            scale: 12,
-            rotation: 8,
-            opacity: 0.15,
-            duration: 0.25,
-            ease: "power2.inOut",
-          },
-          0.15
-        )
-        // Phase 3: T Horizontal → Navigation (35-60%)
-        .to(
-          tHorizontalRef.current,
-          {
-            y: -window.innerHeight * 0.45,
-            scaleX: 5,
-            scaleY: 0.5,
-            opacity: 0,
-            duration: 0.2,
-            ease: "power2.inOut",
-          },
-          0.35
-        )
-        // Phase 4: T Vertical → Mouse icon (50-75%)
-        .to(
-          tVerticalRef.current,
-          {
-            y: window.innerHeight * 0.4,
-            scale: 0.4,
-            opacity: 0,
-            duration: 0.2,
-            ease: "power2.inOut",
-          },
-          0.5
-        )
-        .to(
-          mouseIconRef.current,
-          {
-            opacity: 1,
-            scale: 1,
-            duration: 0.15,
-            ease: "power2.out",
-          },
-          0.6
-        )
-        // Phase 5: Rectangles fade more (70-85%)
-        .to(
-          [leftRectRef.current, rightRectRef.current],
-          {
-            opacity: 0.05,
-            duration: 0.15,
-          },
-          0.7
-        )
-        // Phase 6: Everything fades out (85-100%)
-        .to(
-          [leftRectRef.current, rightRectRef.current],
-          {
-            opacity: 0,
-            duration: 0.15,
-          },
-          0.85
-        )
-        .to(
-          containerRef.current,
-          {
-            opacity: 0,
-            duration: 0.15,
-            ease: "power2.in",
-          },
-          0.85
-        );
-
-        // Store timeline reference for cleanup
-        return tl;
-      }, 100);
-    };
-
-    // Initialize animation
-    const timeline = initAnimation();
-
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-      // Reset body overflow when component unmounts
-      document.body.style.overflow = 'auto';
-      // Force a scroll refresh to ensure proper state
-      setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 100);
-    };
+    // Phase 1: Logo stays (0-15%)
+    tl.to(fullLogoRef.current, {
+      duration: 0.45,
+    })
+    // Phase 2: Rectangles split and expand (15-40%)
+    .to(
+      leftRectRef.current,
+      {
+        x: -window.innerWidth * 0.6,
+        y: window.innerHeight * 0.4,
+        scale: 12,
+        rotation: -8,
+        opacity: 0.15,
+        duration: 0.75,
+        ease: "power2.inOut",
+      },
+      0.45
+    )
+    .to(
+      rightRectRef.current,
+      {
+        x: window.innerWidth * 0.6,
+        y: -window.innerHeight * 0.4,
+        scale: 12,
+        rotation: 8,
+        opacity: 0.15,
+        duration: 0.75,
+        ease: "power2.inOut",
+      },
+      0.45
+    )
+    // Phase 3: T Horizontal → Navigation (35-60%)
+    .to(
+      tHorizontalRef.current,
+      {
+        y: -window.innerHeight * 0.45,
+        scaleX: 5,
+        scaleY: 0.5,
+        opacity: 0,
+        duration: 0.6,
+        ease: "power2.inOut",
+      },
+      1.05
+    )
+    // Phase 4: T Vertical → Mouse icon (50-75%)
+    .to(
+      tVerticalRef.current,
+      {
+        y: window.innerHeight * 0.4,
+        scale: 0.4,
+        opacity: 0,
+        duration: 0.6,
+        ease: "power2.inOut",
+      },
+      1.5
+    )
+    .to(
+      mouseIconRef.current,
+      {
+        opacity: 1,
+        scale: 1,
+        duration: 0.45,
+        ease: "power2.out",
+      },
+      1.8
+    )
+    // Phase 5: Rectangles fade more (70-85%)
+    .to(
+      [leftRectRef.current, rightRectRef.current],
+      {
+        opacity: 0.05,
+        duration: 0.45,
+      },
+      2.1
+    )
+    // Phase 6: Everything fades out (85-100%)
+    .to(
+      [leftRectRef.current, rightRectRef.current],
+      {
+        opacity: 0,
+        duration: 0.45,
+      },
+      2.55
+    )
+    .to(
+      containerRef.current,
+      {
+        opacity: 0,
+        duration: 0.45,
+        ease: "power2.in",
+      },
+      2.55
+    );
   }, [isMounted, prefersReducedMotion, onComplete]);
 
   // Mouse icon bounce animation
@@ -245,57 +164,19 @@ export default function LogoIntro({ onComplete }: LogoIntroProps) {
 
   // Don't render until mounted to prevent hydration issues
   if (!isMounted) {
-    return (
-      <section
-        className="relative w-full overflow-hidden bg-bg"
-        style={{ height: "300vh", minHeight: "100vh" }}
-      >
-        {/* Loading state - just show the logo */}
-        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center z-10">
-          <svg
-            width="369"
-            height="367"
-            viewBox="0 0 369 367"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-auto h-auto"
-            style={{
-              maxWidth: "min(70vw, 500px)",
-              height: "auto",
-              overflow: "visible"
-            }}
-          >
-            <path
-              d="M183.473 366.583L0.446289 327.112V41.8849L92.0202 61.1978L42.3673 72.3027V294.522L278.188 345.822L183.473 366.583Z"
-              fill="#E9ECEF"
-            />
-            <path
-              d="M185.527 0L368.554 39.5915V324.698L276.98 305.385L326.633 294.28V72.182L90.812 20.7614L185.527 0Z"
-              fill="#E9ECEF"
-            />
-            <path
-              d="M278.188 99.5822L141.552 168.264L95.4028 145.571L232.28 77.0103L278.188 99.5822Z"
-              fill="#E9ECEF"
-            />
-            <path
-              d="M95.4028 145.571V191.198L141.552 214.494V168.264L95.4028 145.571Z"
-              fill="#E9ECEF"
-            />
-            <path
-              d="M232.522 214.494V260L186.856 282.451V236.221L232.522 214.494Z"
-              fill="#E9ECEF"
-            />
-          </svg>
-        </div>
-      </section>
-    );
+    return null;
+  }
+
+  // Don't render if animation is completed
+  if (isCompleted) {
+    return null;
   }
 
   return (
     <section
       ref={containerRef}
-      className="relative w-full overflow-hidden bg-bg"
-      style={{ height: "300vh", minHeight: "100vh" }}
+      className="relative w-full bg-bg"
+      style={{ height: "100vh" }}
     >
       {/* Full Logo with separating parts */}
       <div
@@ -404,7 +285,6 @@ export default function LogoIntro({ onComplete }: LogoIntroProps) {
           </defs>
         </svg>
       </div>
-
 
       {/* Mouse Icon */}
       <div
