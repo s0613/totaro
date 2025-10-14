@@ -37,30 +37,93 @@ export default function UseCases({ title, cases }: UseCasesProps) {
       return;
     }
 
-    // Stagger animation on scroll enter
-    cardRefs.current.forEach((el, i) => {
-      if (!el) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const isInView = rect.top < window.innerHeight && rect.bottom > 0;
 
-      gsap.fromTo(
-        el,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          delay: i * 0.15, // 150ms stagger
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top 70%",
-            toggleActions: "play none none none",
-          },
+    // IntersectionObserver 폴백: 트리거 미동작 시 가시성 진입 즉시 실행
+    let io: IntersectionObserver | null = null;
+    const runImmediate = () => {
+      cardRefs.current.forEach((el, i) => {
+        if (!el) return;
+        gsap.fromTo(
+          el,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.55,
+            delay: i * 0.12,
+            ease: "power2.out",
+          }
+        );
+      });
+    };
+
+    // 뷰포트 안이면 즉시 스태거 재생, 아니면 스크롤 진입 시 재생
+    if (isInView) {
+      cardRefs.current.forEach((el, i) => {
+        if (!el) return;
+        gsap.fromTo(
+          el,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.55,
+            delay: i * 0.12,
+            ease: "power2.out",
+          }
+        );
+      });
+    } else {
+      // Stagger animation on scroll enter
+      cardRefs.current.forEach((el, i) => {
+        if (!el) return;
+        gsap.fromTo(
+          el,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            delay: i * 0.15, // 150ms stagger
+            ease: "power2.out",
+            immediateRender: false,
+            scrollTrigger: {
+              trigger: el,
+              start: "top 85%",
+              toggleActions: "play none none none",
+              once: true,
+            },
+          }
+        );
+      });
+    }
+
+    // IO 등록 (스크롤 트리거 불발 시 안전망)
+    io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          runImmediate();
+          io && io.disconnect();
         }
-      );
-    });
+      },
+      { root: null, rootMargin: "200px 0px", threshold: 0.05 }
+    );
+    io.observe(containerRef.current);
+
+    // 레이아웃/이미지 로드 후 트리거 재계산
+    const onLoad = () => {
+      try {
+        ScrollTrigger.refresh();
+      } catch {}
+    };
+    window.addEventListener("load", onLoad);
 
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      window.removeEventListener("load", onLoad);
+      if (io) io.disconnect();
     };
   }, [prefersReducedMotion]);
 

@@ -36,30 +36,93 @@ export default function Outcomes({ title, metrics }: OutcomesProps) {
       return;
     }
 
-    // Count-up animation on scroll enter
-    metricRefs.current.forEach((el, i) => {
-      if (!el) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const isInView = rect.top < window.innerHeight && rect.bottom > 0;
 
-      gsap.fromTo(
-        el,
-        { opacity: 0, scale: 0.8 },
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 0.8,
-          delay: i * 0.2,
-          ease: "back.out(1.7)",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top 60%",
-            toggleActions: "play none none none",
-          },
+    // IntersectionObserver 폴백: 트리거 미동작 시 가시성 진입 즉시 실행
+    let io: IntersectionObserver | null = null;
+    const runImmediate = () => {
+      metricRefs.current.forEach((el, i) => {
+        if (!el) return;
+        gsap.fromTo(
+          el,
+          { opacity: 0, scale: 0.92 },
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 0.7,
+            delay: i * 0.16,
+            ease: "back.out(1.6)",
+          }
+        );
+      });
+    };
+
+    // 뷰포트 안이면 즉시 재생, 아니면 스크롤 진입 시 1회 재생
+    if (isInView) {
+      metricRefs.current.forEach((el, i) => {
+        if (!el) return;
+        gsap.fromTo(
+          el,
+          { opacity: 0, scale: 0.92 },
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 0.7,
+            delay: i * 0.16,
+            ease: "back.out(1.6)",
+          }
+        );
+      });
+    } else {
+      // Count-up animation on scroll enter
+      metricRefs.current.forEach((el, i) => {
+        if (!el) return;
+        gsap.fromTo(
+          el,
+          { opacity: 0, scale: 0.8 },
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 0.8,
+            delay: i * 0.2,
+            ease: "back.out(1.7)",
+            immediateRender: false,
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: "top 60%",
+              toggleActions: "play none none none",
+              once: true,
+            },
+          }
+        );
+      });
+    }
+
+    // IO 등록 (스크롤 트리거 불발 시 안전망)
+    io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          runImmediate();
+          io && io.disconnect();
         }
-      );
-    });
+      },
+      { root: null, rootMargin: "200px 0px", threshold: 0.05 }
+    );
+    io.observe(containerRef.current);
+
+    // 레이아웃/이미지 로드 후 트리거 재계산
+    const onLoad = () => {
+      try {
+        ScrollTrigger.refresh();
+      } catch {}
+    };
+    window.addEventListener("load", onLoad);
 
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      window.removeEventListener("load", onLoad);
+      if (io) io.disconnect();
     };
   }, [prefersReducedMotion]);
 

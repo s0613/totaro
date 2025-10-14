@@ -24,9 +24,6 @@
     "paths": {
       "@/*": [
         "./*"
-      ],
-      "@src/*": [
-        "src/visioncreate/*"
       ]
     },
     "target": "ES2017"

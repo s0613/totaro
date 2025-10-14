@@ -41,24 +41,20 @@ export default function ServiceDetails({ content }: ServiceDetailsProps) {
   useEffect(() => {
     if (prefersReducedMotion || !containerRef.current) return;
 
-    serviceRefs.current.forEach((el, i) => {
-      if (!el) return;
+    const children = containerRef.current.querySelectorAll(".js-service-child");
 
-      gsap.fromTo(
-        el,
-        { opacity: 0, x: i % 2 === 0 ? -60 : 60 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.8,
+    ScrollTrigger.batch(children, {
+      start: "top 92%",
+      once: true,
+      onEnter: (batch) => {
+        gsap.from(batch as Element[], {
+          opacity: 0,
+          y: 20,
+          duration: 0.6,
           ease: "power2.out",
-          scrollTrigger: {
-            trigger: el,
-            start: "top 80%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
+          stagger: 0.08,
+        });
+      },
     });
 
     return () => {
@@ -91,16 +87,16 @@ export default function ServiceDetails({ content }: ServiceDetailsProps) {
             >
               {/* Icon & Title */}
               <div className="flex-1 text-center lg:text-left">
-                <div className="inline-block text-8xl mb-6">{service.icon}</div>
-                <h3 className="text-4xl font-bold text-textPrimary mb-4">
+                <div className="inline-block text-8xl mb-6 js-service-child">{service.icon}</div>
+                <h3 className="text-4xl font-bold text-textPrimary mb-4 js-service-child">
                   {service.title}
                 </h3>
-                <p className="text-lg text-textSecondary mb-8">
+                <p className="text-lg text-textSecondary mb-8 js-service-child">
                   {service.description}
                 </p>
 
                 {/* Benefits */}
-                <div className="space-y-3">
+                <div className="space-y-3 js-service-child">
                   {service.benefits.map((benefit, i) => (
                     <div key={i} className="flex items-center gap-3">
                       <div className="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
@@ -130,7 +126,7 @@ export default function ServiceDetails({ content }: ServiceDetailsProps) {
 
               {/* Features */}
               <div className="flex-1">
-                <div className="bg-bg rounded-2xl p-8 border border-line">
+                <div className="bg-bg rounded-2xl p-8 border border-line js-service-child">
                   <h4 className="text-xl font-bold text-textPrimary mb-6">
                     주요 기능
                   </h4>

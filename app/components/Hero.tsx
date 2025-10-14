@@ -38,48 +38,83 @@ export default function Hero({ content }: HeroProps) {
       return;
     }
 
-    // Depth zoom on background
-    gsap.fromTo(
-      bgRef.current,
-      {
-        scale: 1.2,
-        opacity: 0,
-      },
-      {
-        scale: 1.0,
-        opacity: 1,
-        duration: 0.6,
-        ease: "power2.out",
+    const rect = containerRef.current.getBoundingClientRect();
+    const isInView = rect.top < window.innerHeight && rect.bottom > 0;
+
+    if (isInView) {
+      // 페이지 진입 시 뷰포트 안이면 즉시 인트로 애니메이션 실행
+      gsap.fromTo(
+        bgRef.current,
+        { scale: 1.08, opacity: 0 },
+        { scale: 1.0, opacity: 1, duration: 0.5, ease: "power2.out" }
+      );
+      gsap.fromTo(
+        headlineRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out", delay: 0.05 }
+      );
+      gsap.fromTo(
+        subcopyRef.current,
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.45, ease: "power2.out", delay: 0.1 }
+      );
+
+      // 이후 스크롤 패럴럭스만 연결
+      gsap.to(headlineRef.current, {
+        y: -80,
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: `+=${window.innerHeight * 0.5}`,
+          end: "bottom top",
           scrub: 1,
         },
-      }
-    );
-
-    // Parallax on headline (moves faster)
-    gsap.to(headlineRef.current, {
-      y: -80,
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top top",
-        end: "bottom top",
-        scrub: 1,
-      },
-    });
-
-    // Parallax on subcopy (moves slower)
-    gsap.to(subcopyRef.current, {
-      y: -40,
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top top",
-        end: "bottom top",
-        scrub: 1,
-      },
-    });
+      });
+      gsap.to(subcopyRef.current, {
+        y: -40,
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
+    } else {
+      // 스크롤로 진입할 때 기존 동작 유지
+      gsap.fromTo(
+        bgRef.current,
+        { scale: 1.2, opacity: 0 },
+        {
+          scale: 1.0,
+          opacity: 1,
+          duration: 0.6,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: `+=${window.innerHeight * 0.5}`,
+            scrub: 1,
+          },
+        }
+      );
+      gsap.to(headlineRef.current, {
+        y: -80,
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
+      gsap.to(subcopyRef.current, {
+        y: -40,
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
+    }
 
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
@@ -102,20 +137,7 @@ export default function Hero({ content }: HeroProps) {
         {/* Gradient background */}
         <div className="absolute inset-0 bg-gradient-to-b from-bg via-surface to-bg opacity-80" />
 
-        {/* Grain overlay */}
-        <div className="absolute inset-0 opacity-5">
-          <svg width="100%" height="100%">
-            <filter id="noise">
-              <feTurbulence
-                type="fractalNoise"
-                baseFrequency="0.8"
-                numOctaves="4"
-                stitchTiles="stitch"
-              />
-            </filter>
-            <rect width="100%" height="100%" filter="url(#noise)" opacity="0.5" />
-          </svg>
-        </div>
+        {/* Grain overlay removed for performance */}
 
         {/* Accent glow */}
         <div

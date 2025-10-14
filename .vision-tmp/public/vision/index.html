@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sora Extend Korean – 영상 생성</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; max-width: 900px; }
+    textarea { width: 100%; height: 120px; }
+    label { display:block; margin-top: 12px; font-weight: 600; }
+    input, select, button { padding: 6px 10px; }
+    .row { display:flex; gap:12px; }
+    .row > div { flex: 1; }
+    .log { white-space: pre-wrap; background:#f8f8f8; padding:12px; border:1px solid #eee; }
+  </style>
+</head>
+<body>
+  <h1>Sora Extend Korean – 30초+ 영상 생성</h1>
+  <p>간단한 프롬프트만 입력하면 30초 이상 영상(연결/일관성 유지)을 생성합니다.</p>
+
+  <label>프롬프트</label>
+  <textarea id="prompt" placeholder="예: 미래 도시 배경으로 감성적인 자동차 드라이빙 영상"></textarea>
+
+  <div class="row">
+    <div>
+      <label>세그먼트 길이(초)</label>
+      <select id="seconds">
+        <option value="4">4</option>
+        <option value="8" selected>8</option>
+        <option value="12">12</option>
+      </select>
+    </div>
+    <div>
+      <label>세그먼트 개수</label>
+      <input id="segments" type="number" min="1" value="4" />
+    </div>
+    <div>
+      <label>해상도</label>
+      <select id="resolution">
+        <option value="720p" selected>720p</option>
+        <option value="1080p">1080p</option>
+      </select>
+    </div>
+    <div>
+      <label>화면비</label>
+      <select id="aspect">
+        <option value="16:9" selected>16:9</option>
+        <option value="9:16">9:16</option>
+        <option value="1:1">1:1</option>
+      </select>
+    </div>
+  </div>
+
+  <p style="margin-top:16px;"><button id="start">생성 시작</button></p>
+
+  <div id="status"></div>
+  <div id="log" class="log" style="display:none;"></div>
+  <div id="result"></div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    async function start() {
+      const base_prompt = $("prompt").value.trim();
+      const seconds = parseInt($("seconds").value, 10);
+      const segments = parseInt($("segments").value, 10);
+      const resolution = $("resolution").value;
+      const aspect = $("aspect").value;
+
+      if (!base_prompt) {
+        alert("프롬프트를 입력하세요");
+        return;
+      }
+
+      // 시작
+      $("status").textContent = "작업 생성 중…";
+      $("result").textContent = "";
+      $("log").style.display = 'block';
+      $("log").textContent = "";
+
+      const resp = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ base_prompt, seconds, segments, resolution, aspect })
+      });
+      const data = await resp.json();
+      const job_id = data.job_id;
+      $("status").textContent = `작업 ID: ${job_id}`;
+
+      // 폴링
+      const t = setInterval(async () => {
+        const r = await fetch(`/api/status/${job_id}`);
+        const s = await r.json();
+        $("status").textContent = `상태: ${s.status} (${Math.round(s.progress * 100)}%)`;
+        if (s.message) {
+          $("log").textContent = s.message;
+        }
+        if (s.status === 'success' || s.status === 'error' || s.status === 'not_found') {
+          clearInterval(t);
+          const rr = await fetch(`/api/result/${job_id}`);
+          const res = await rr.json();
+          if (s.status === 'success' && res.final_path) {
+            $("result").innerHTML = `완료! 파일 경로: <code>${res.final_path}</code>`;
+          } else {
+            $("result").textContent = `완료 상태: ${s.status}. ${s.message || ''}`;
+          }
+        }
+      }, 2000);
+    }
+
+    $("start").addEventListener("click", start);
+  </script>
+</body>
+</html>
+

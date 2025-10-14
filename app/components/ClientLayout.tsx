@@ -2,14 +2,18 @@
 
 import ThemeToggle from "./ThemeToggle";
 import LanguageSwitcher from "./LanguageSwitcher";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const needsHeaderSpacer = pathname?.startsWith("/payments");
   return (
     <>
       {/* Header Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-bg/80 backdrop-blur-lg border-b border-line">
         <div className="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3">
             <svg
               width="32"
               height="32"
@@ -32,31 +36,19 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             <span className="text-lg font-bold text-textPrimary tracking-tight">
               totaro
             </span>
-          </div>
+          </Link>
           <div className="flex items-center gap-10">
-            <a
-              href="#home"
-              className="text-sm font-medium text-textPrimary hover:text-accent transition-colors duration-200"
-            >
-              Home
-            </a>
-            <a
-              href="#solution"
-              className="text-sm font-medium text-textPrimary hover:text-accent transition-colors duration-200"
-            >
-              Solution
-            </a>
-            <a
-              href="#cases"
-              className="text-sm font-medium text-textPrimary hover:text-accent transition-colors duration-200"
-            >
-              Cases
-            </a>
             <a
               href="/payments/test"
               className="text-sm font-medium text-textPrimary hover:text-accent transition-colors duration-200"
             >
               Payment
+            </a>
+            <a
+              href="/vision"
+              className="text-sm font-medium text-textPrimary hover:text-accent transition-colors duration-200"
+            >
+              Vision
             </a>
             <a
               href="#contact"
@@ -67,6 +59,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </div>
         </div>
       </nav>
+      {needsHeaderSpacer && <div className="h-20" />}
       
       <LanguageSwitcher />
       <ThemeToggle />
