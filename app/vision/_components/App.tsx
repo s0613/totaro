@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import AboutSection from "./AboutSection";
 import { VideoPlayer } from "./VideoPlayer";
 
@@ -17,6 +17,21 @@ export interface Video {
   updated_at: string;
 }
 
+// Deterministic PRNG (Mulberry32)
+function createSeededRng(seed: number) {
+  let t = seed >>> 0;
+  return function random() {
+    t += 0x6D2B79F5;
+    let r = Math.imul(t ^ (t >>> 15), 1 | t);
+    r ^= r + Math.imul(r ^ (r >>> 7), 61 | r);
+    return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+// Deterministic timestamps to avoid SSR/CSR mismatch
+const FIXED_CREATED_AT = "2025-01-01T00:00:00.000Z";
+const FIXED_UPDATED_AT = "2025-01-01T00:00:00.000Z";
+
 const mockVideos: Video[] = [
   {
     id: "1",
@@ -30,8 +45,8 @@ const mockVideos: Video[] = [
     thumbnail_url:
       "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800",
     duration: 10,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
+    created_at: FIXED_CREATED_AT,
+    updated_at: FIXED_UPDATED_AT,
   },
   {
     id: "2",
@@ -40,8 +55,8 @@ const mockVideos: Video[] = [
     prompt: "높은 빌딩들 사이로 네온사인이 반짝이고 차량들이 지나가는 야경",
     status: "processing",
     duration: 5,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
+    created_at: FIXED_CREATED_AT,
+    updated_at: FIXED_UPDATED_AT,
   },
   {
     id: "3",
@@ -54,8 +69,8 @@ const mockVideos: Video[] = [
     thumbnail_url:
       "https://images.unsplash.com/photo-1511497584788-876760111969?w=800",
     duration: 8,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
+    created_at: FIXED_CREATED_AT,
+    updated_at: FIXED_UPDATED_AT,
   },
 ];
 
@@ -315,18 +330,22 @@ const VisionApp: React.FC = () => {
         </div>
 
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-1 bg-white rounded-full animate-float opacity-20"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 5}s`,
-                animationDuration: `${10 + Math.random() * 10}s`,
-              }}
-            />
-          ))}
+          {useMemo(() => {
+            const rng = createSeededRng(12345); // fixed seed for deterministic SSR/CSR
+            return [...Array(20)].map((_, i) => {
+              const left = `${rng() * 100}%`;
+              const top = `${rng() * 100}%`;
+              const animationDelay = `${rng() * 5}s`;
+              const animationDuration = `${10 + rng() * 10}s`;
+              return (
+                <div
+                  key={i}
+                  className="absolute w-1 h-1 bg-white rounded-full animate-float opacity-20"
+                  style={{ left, top, animationDelay, animationDuration }}
+                />
+              );
+            });
+          }, [])}
         </div>
 
         <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 animate-bounce">
@@ -502,7 +521,7 @@ const VisionApp: React.FC = () => {
                     <h4 className="text-xl font-bold mb-3 line-clamp-2 group-hover:text-gradient transition-all">{video.title}</h4>
                     <p className="text-sm text-gray-400 mb-5 line-clamp-2 leading-relaxed">{video.prompt}</p>
                     <div className="flex items-center justify-between text-xs text-gray-500 mb-5 font-semibold">
-                      <span>{new Date(video.created_at).toLocaleDateString("ko-KR", { month: "short", day: "numeric" })}</span>
+                      <span>{new Date(video.created_at).toLocaleDateString("ko-KR", { month: "short", day: "numeric", timeZone: "UTC" })}</span>
                       {video.duration && <span className="px-2 py-1 bg-white/5 rounded-lg">{video.duration}초</span>}
                     </div>
                     <div className="flex gap-3">
