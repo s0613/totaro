@@ -1,6 +1,6 @@
 {
   "brand": {
-    "name": "totaro",
+    "name": "TOTARO",
     "tagline": "Export, all in one—no extra team."
   },
   "nav": {
@@ -12,11 +12,11 @@
   "hero": {
     "eyebrow": "AI Export Orchestration",
     "headline": "Sell to global buyers,<br/>easier.",
-    "subcopy": "B2B Website · AEO/SEO/GEO · Targeted Marketing · Buyer CRM—all with totaro.",
+    "subcopy": "B2B Website · AEO/SEO/GEO · Targeted Marketing · Buyer CRM—all with TOTARO.",
     "primaryCta": "Get Started"
   },
   "howItWorks": {
-    "title": "How totaro Works",
+    "title": "How TOTARO Works",
     "steps": [
       {
         "step": 1,
@@ -79,7 +79,7 @@
   },
   "cta": {
     "title": "Get Started Today",
-    "subtitle": "The totaro team will reach out to you shortly.",
+    "subtitle": "The TOTARO team will reach out to you shortly.",
     "form": {
       "name": "Name",
       "email": "Email",
@@ -102,12 +102,12 @@
     }
   },
   "footer": {
-    "copyright": "© 2025 totaro. All rights reserved.",
+    "copyright": "© 2025 TOTARO. All rights reserved.",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service"
   },
   "signatureFeature": {
-    "title": "totaro, Your Complete Export Solution",
+    "title": "TOTARO, Your Complete Export Solution",
     "subtitle": "From buyer discovery to management, automate your entire export process with one platform"
   },
   "serviceDetails": {

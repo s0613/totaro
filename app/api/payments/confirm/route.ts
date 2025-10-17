@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { createClient } from "@/lib/supabase/server";
+// Supabase removed
 
 /**
  * 결제 승인 API
@@ -68,22 +68,6 @@ export async function POST(req: NextRequest) {
 
     if (!resp.ok) {
       console.error("[Payments] Toss API error:", data);
-
-      // Supabase에 실패 상태 업데이트
-      try {
-        const supabase = await createClient();
-        await supabase
-          .from("orders")
-          .update({
-            status: "failed",
-            error_message: data?.message || "Payment confirmation failed",
-            updated_at: new Date().toISOString()
-          })
-          .eq("id", orderId);
-      } catch (dbErr) {
-        console.error("[Payments] Failed to update order status:", dbErr);
-      }
-
       return NextResponse.json(
         {
           success: false,
@@ -95,33 +79,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 4. Supabase에 결제 완료 상태 저장
-    try {
-      const supabase = await createClient();
-
-      const { error: updateError } = await supabase
-        .from("orders")
-        .update({
-          status: "paid",
-          payment_key: paymentKey,
-          payment_method: data.method || "CARD",
-          payment_data: data,
-          updated_at: new Date().toISOString()
-        })
-        .eq("id", orderId);
-
-      if (updateError) {
-        console.error("[Payments] Supabase update error:", updateError);
-        // 결제는 성공했으나 DB 업데이트 실패 - 수동 처리 필요
-        // TODO: Send alert to admin
-      } else {
-        console.log("[Payments] Order updated successfully:", orderId);
-      }
-    } catch (dbErr) {
-      console.error("[Payments] Database error:", dbErr);
-      // 결제는 성공했으나 DB 저장 실패
-      // TODO: Implement retry logic or alert system
-    }
+    // 4. Database persistence removed
 
     // 5. 성공 응답 (Toss 공식 샘플과 동일한 형식)
     return NextResponse.json({

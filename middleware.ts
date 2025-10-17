@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { updateSession } from "@/lib/supabase/middleware";
+// Supabase middleware removed
 
 export async function middleware(request: NextRequest) {
-  // Supabase 세션 갱신
-  const response = await updateSession(request);
+  const response = NextResponse.next({
+    request: { headers: request.headers },
+  });
 
   // Security headers
   response.headers.set("X-Frame-Options", "SAMEORIGIN");

@@ -23,7 +23,7 @@ export default function Home() {
       {/* Hero Section */}
       <Hero content={content.hero} lang={lang} />
 
-      {/* Signature Feature - totaro 통합 솔루션 시각화 */}
+      {/* Signature Feature - TOTARO 통합 솔루션 시각화 */}
       <SignatureFeature content={content.signatureFeature} />
 
       {/* Service Details - 각 서비스별 상세 설명 */}

@@ -33,7 +33,7 @@ export default function Footer({ content }: FooterProps) {
                 fill="#E9ECEF"
               />
             </svg>
-            <span className="text-lg font-bold text-textPrimary">totaro</span>
+            <span className="text-lg font-bold text-textPrimary">TOTARO</span>
           </div>
 
           {/* Links */}

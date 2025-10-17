@@ -47,12 +47,7 @@ export default function LogoIntro({ onComplete }: LogoIntroProps) {
     gsap.set(mouseIconRef.current, { opacity: 0, scale: 0.8 });
 
     // Create auto-playing timeline that simulates scroll animation
-    const tl = gsap.timeline({
-      onComplete: () => {
-        setIsCompleted(true);
-        onComplete?.();
-      }
-    });
+    const tl = gsap.timeline();
 
     // Phase 1: Logo stays (0-15%)
     tl.to(fullLogoRef.current, {
@@ -139,13 +134,28 @@ export default function LogoIntro({ onComplete }: LogoIntroProps) {
       2.55
     )
     .to(
+      mouseIconRef.current,
+      {
+        opacity: 0,
+        duration: 0.3,
+      },
+      2.7
+    )
+    .to(
       containerRef.current,
       {
         opacity: 0,
-        duration: 0.45,
-        ease: "power2.in",
+        duration: 0.6,
+        ease: "power2.inOut",
+        onComplete: () => {
+          // 페이드아웃 완료 후 약간의 딜레이를 주고 완전히 제거
+          setTimeout(() => {
+            setIsCompleted(true);
+            onComplete?.();
+          }, 100);
+        }
       },
-      2.55
+      2.7
     );
   }, [isMounted, prefersReducedMotion, onComplete]);
 
@@ -175,8 +185,8 @@ export default function LogoIntro({ onComplete }: LogoIntroProps) {
   return (
     <section
       ref={containerRef}
-      className="relative w-full bg-bg"
-      style={{ height: "100vh" }}
+      className="fixed inset-0 w-full h-screen bg-bg z-50 pointer-events-none"
+      style={{ willChange: "opacity" }}
     >
       {/* Full Logo with separating parts */}
       <div

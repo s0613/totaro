@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: 'export',
-  trailingSlash: true,
+  // 서버 런타임 배포를 위해 정적 export 비활성화
   images: {
     unoptimized: true,
     formats: ['image/avif', 'image/webp'],

@@ -1,6 +1,6 @@
 # Toss Payments 통합 가이드
 
-이 문서는 totaro 프로젝트의 Toss Payments 통합 구현을 설명합니다.
+이 문서는 TOTARO 프로젝트의 Toss Payments 통합 구현을 설명합니다.
 
 ## 📁 파일 구조
 
@@ -83,6 +83,7 @@ Production Environment Variables:
 환경변수만 변경하면 코드 수정 없이 자동으로 실제 결제로 전환됩니다.
 
 모든 API 호출은 `payment-config.ts`의 환경변수를 참조하므로:
+
 - 테스트 키 → 테스트 모드
 - 실제 키 → 실제 모드
 
@@ -91,18 +92,18 @@ Production Environment Variables:
 ### 결제 위젯 사용 (권장)
 
 ```tsx
-import PaymentWidget from '@/app/components/payment/PaymentWidget';
+import PaymentWidget from "@/app/components/payment/PaymentWidget";
 
 export default function CheckoutPage() {
   return (
     <PaymentWidget
       amount={890000}
-      orderName="totaro 웹사이트 스타터 플랜"
+      orderName="TOTARO 웹사이트 스타터 플랜"
       customerName="홍길동"
       customerEmail="hong@example.com"
       currency="KRW"
       onPaymentRequest={(orderId) => {
-        console.log('결제 시작:', orderId);
+        console.log("결제 시작:", orderId);
       }}
     />
   );
@@ -135,12 +136,12 @@ export default function CheckoutPage() {
 
 개발 환경에서 사용 가능한 테스트 카드:
 
-| 카드 번호 | 만료일 | CVC | 비밀번호 | 결과 |
-|----------|--------|-----|---------|------|
-| 5570-1234-5678-9012 | 12/25 | 123 | 1234 | ✅ 성공 |
-| 5570-1234-5678-9013 | 12/25 | 123 | 1234 | ❌ 잔액 부족 |
-| 5570-1234-5678-9014 | 12/25 | 123 | 1234 | ❌ 유효하지 않은 카드 |
-| 5570-1234-5678-9015 | 12/25 | 123 | 1234 | ❌ 만료된 카드 |
+| 카드 번호           | 만료일 | CVC | 비밀번호 | 결과                  |
+| ------------------- | ------ | --- | -------- | --------------------- |
+| 5570-1234-5678-9012 | 12/25  | 123 | 1234     | ✅ 성공               |
+| 5570-1234-5678-9013 | 12/25  | 123 | 1234     | ❌ 잔액 부족          |
+| 5570-1234-5678-9014 | 12/25  | 123 | 1234     | ❌ 유효하지 않은 카드 |
+| 5570-1234-5678-9015 | 12/25  | 123 | 1234     | ❌ 만료된 카드        |
 
 ## 🔧 API 엔드포인트
 
@@ -149,6 +150,7 @@ export default function CheckoutPage() {
 결제 승인 처리
 
 **Request:**
+
 ```json
 {
   "paymentKey": "payment_key_from_toss",
@@ -158,6 +160,7 @@ export default function CheckoutPage() {
 ```
 
 **Response (성공):**
+
 ```json
 {
   "success": true,
@@ -175,11 +178,12 @@ export default function CheckoutPage() {
 결제 취소 처리
 
 **Request:**
+
 ```json
 {
   "paymentKey": "payment_key_from_toss",
   "cancelReason": "고객 요청",
-  "cancelAmount": 890000  // 부분 취소 시 금액 지정
+  "cancelAmount": 890000 // 부분 취소 시 금액 지정
 }
 ```
 
@@ -190,7 +194,7 @@ Toss Payments 웹훅 수신 (선택사항)
 ## 🛡️ 보안 체크리스트
 
 - [x] Secret Key는 절대 클라이언트에 노출되지 않음 (서버 사이드만)
-- [x] Client Key만 클라이언트에서 사용 (NEXT_PUBLIC_*)
+- [x] Client Key만 클라이언트에서 사용 (NEXT*PUBLIC*\*)
 - [x] 결제 금액 검증 (서버에서 재확인)
 - [x] HTTPS 사용 (프로덕션)
 - [x] CORS 설정 확인
@@ -216,6 +220,7 @@ CREATE TABLE orders (
 ```
 
 **상태 값:**
+
 - `pending` - 결제 대기
 - `paid` - 결제 완료
 - `failed` - 결제 실패
@@ -226,6 +231,7 @@ CREATE TABLE orders (
 ### 문제: "TOSS_SECRET_KEY is not configured" 에러
 
 **해결:**
+
 ```bash
 # .env.local 파일 확인
 cat .env.local | grep TOSS_SECRET_KEY
@@ -247,10 +253,7 @@ export function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
   // Toss Payments 도메인 허용
-  response.headers.set(
-    'Access-Control-Allow-Origin',
-    'https://api.tosspayments.com'
-  );
+  response.headers.set("Access-Control-Allow-Origin", "https://api.tosspayments.com");
 
   return response;
 }
@@ -262,10 +265,10 @@ export function middleware(request: NextRequest) {
 
 ```typescript
 // ❌ 잘못된 예
-const amount = 890000.00;  // Float 사용 금지
+const amount = 890000.0; // Float 사용 금지
 
 // ✅ 올바른 예
-const amount = 890000;  // Integer 사용
+const amount = 890000; // Integer 사용
 ```
 
 ## 📚 참고 문서

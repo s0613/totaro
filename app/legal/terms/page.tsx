@@ -31,7 +31,7 @@ export default function TermsOfService() {
               제1조 (목적)
             </h2>
             <p className="text-textSecondary leading-relaxed">
-              본 약관은 totaro(이하 "회사"라 합니다)가 제공하는 모든 서비스(이하 "서비스"라 합니다)의 이용조건 및 절차, 회사와 회원 간의 권리, 의무 및 기타 필요한 사항을 규정함을 목적으로 합니다.
+              본 약관은 TOTARO(이하 "회사"라 합니다)가 제공하는 모든 서비스(이하 "서비스"라 합니다)의 이용조건 및 절차, 회사와 회원 간의 권리, 의무 및 기타 필요한 사항을 규정함을 목적으로 합니다.
             </p>
           </section>
 

@@ -66,7 +66,7 @@ function CheckoutContent() {
           <h1 className="text-4xl font-bold mb-2">
             {currentLang === "en" ? "Payment" : "결제"}
           </h1>
-          <p className="text-textSecondary mb-10">
+          <p className="text-textSecondary mb-10 text-pretty break-keep">
             {currentLang === "en"
               ? "Complete your order by entering payment information."
               : "결제 정보를 입력하여 주문을 완료하세요."}
@@ -123,7 +123,7 @@ function CheckoutContent() {
         <h1 className="text-4xl font-bold mb-2">
           {currentLang === "en" ? "Checkout" : "구매하기"}
         </h1>
-        <p className="text-textSecondary mb-10">
+        <p className="text-textSecondary mb-10 text-pretty break-keep">
           {currentLang === "en"
             ? "AEO/SEO/GEO‑ready website production."
             : "AEO·SEO·GEO 친화적 웹사이트 제작."}
@@ -140,11 +140,6 @@ function CheckoutContent() {
                 <span className="text-textSecondary">{currentLang === "en" ? "Plan" : "요금제"}</span>
                 <span className="font-semibold">{currentLang === "en" ? "Starter" : "스타터"}</span>
               </div>
-              <p className="text-xs text-textSecondary/70">
-                {currentLang === "en"
-                  ? "Price shown is the starting price. Final quote may vary based on scope."
-                  : "표시 가격은 시작가입니다. 최종 견적은 범위에 따라 달라질 수 있습니다."}
-              </p>
             </div>
           </aside>
 
@@ -185,7 +180,7 @@ function CheckoutContent() {
 
               <label className="flex items-start gap-3 text-sm">
                 <input type="checkbox" className="mt-1" {...register("agree")} />
-                <span className="text-textSecondary">
+                <span className="text-textSecondary text-pretty break-keep">
                   {currentLang === "en"
                     ? (
                         <>I agree to the <a className="text-accent hover:underline" href="/legal/terms">Terms</a> and <a className="text-accent hover:underline" href="/legal/privacy">Privacy Policy</a>.</>

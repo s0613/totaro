@@ -1,13 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useReducedMotion } from "@/lib/hooks/useReducedMotion";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+// Animations removed for this section
 
 interface Service {
   id?: string;
@@ -34,39 +27,10 @@ export default function ServiceDetails({ content }: ServiceDetailsProps) {
     { ...content.ads, id: "ads" },
     { ...content.crm, id: "crm" },
   ];
-  const containerRef = useRef<HTMLDivElement>(null);
-  const serviceRefs = useRef<HTMLDivElement[]>([]);
-  const prefersReducedMotion = useReducedMotion();
-
-  useEffect(() => {
-    if (prefersReducedMotion || !containerRef.current) return;
-
-    const children = containerRef.current.querySelectorAll(".js-service-child");
-
-    // 초기 상태 세팅 후 더 짧고 부드러운 트윈으로 전환
-    gsap.set(children, { opacity: 0, y: 12 });
-
-    ScrollTrigger.batch(children, {
-      start: "top 88%",
-      once: true,
-      onEnter: (batch) => {
-        gsap.to(batch as Element[], {
-          opacity: 1,
-          y: 0,
-          duration: 0.45,
-          ease: "power3.out",
-          stagger: 0.06,
-        });
-      },
-    });
-
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-  }, [prefersReducedMotion]);
+  
 
   return (
-    <section id="solution" ref={containerRef} className="relative bg-surface py-32 px-8">
+    <section id="solution" className="relative bg-surface py-32 px-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-20">
           <h2 className="text-5xl font-bold text-textPrimary mb-6">
@@ -81,25 +45,22 @@ export default function ServiceDetails({ content }: ServiceDetailsProps) {
           {services.map((service, index) => (
             <div
               key={service.id}
-              ref={(el) => {
-                if (el) serviceRefs.current[index] = el;
-              }}
               className={`flex flex-col lg:flex-row gap-12 items-center ${
                 index % 2 === 1 ? "lg:flex-row-reverse" : ""
               }`}
             >
               {/* Icon & Title */}
               <div className="flex-1 text-center lg:text-left">
-                <div className="inline-block text-8xl mb-6 js-service-child" style={{ willChange: "transform, opacity" }}>{service.icon}</div>
-                <h3 className="text-4xl font-bold text-textPrimary mb-4 js-service-child" style={{ willChange: "transform, opacity" }}>
+                <div className="inline-block text-8xl mb-6">{service.icon}</div>
+                <h3 className="text-4xl font-bold text-textPrimary mb-4">
                   {service.title}
                 </h3>
-                <p className="text-lg text-textSecondary mb-8 js-service-child" style={{ willChange: "transform, opacity" }}>
+                <p className="text-lg text-textSecondary mb-8">
                   {service.description}
                 </p>
 
                 {/* Benefits */}
-                <div className="space-y-3 js-service-child">
+                <div className="space-y-3">
                   {service.benefits.map((benefit, i) => (
                     <div key={i} className="flex items-center gap-3">
                       <div className="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
@@ -129,7 +90,7 @@ export default function ServiceDetails({ content }: ServiceDetailsProps) {
 
               {/* Features */}
               <div className="flex-1">
-                <div className="bg-bg rounded-2xl p-8 border border-line js-service-child" style={{ willChange: "transform, opacity" }}>
+                <div className="bg-bg rounded-2xl p-8 border border-line">
                   <h4 className="text-xl font-bold text-textPrimary mb-6">
                     주요 기능
                   </h4>

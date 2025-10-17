@@ -31,7 +31,7 @@ export default function PrivacyPolicy() {
               1. 개인정보의 수집 및 이용 목적
             </h2>
             <p className="text-textSecondary leading-relaxed mb-4">
-              totaro는 다음의 목적을 위하여 개인정보를 처리합니다. 처리하고 있는
+              TOTARO는 다음의 목적을 위하여 개인정보를 처리합니다. 처리하고 있는
               개인정보는 다음의 목적 이외의 용도로는 이용되지 않으며, 이용 목적이
               변경되는 경우에는 별도의 동의를 받는 등 필요한 조치를 이행할
               예정입니다.
@@ -49,7 +49,7 @@ export default function PrivacyPolicy() {
               2. 수집하는 개인정보 항목
             </h2>
             <p className="text-textSecondary leading-relaxed mb-4">
-              totaro는 문의 폼을 통해 다음의 개인정보를 수집합니다:
+              TOTARO는 문의 폼을 통해 다음의 개인정보를 수집합니다:
             </p>
             <ul className="list-disc list-inside text-textSecondary space-y-2 ml-4">
               <li>필수항목: 이름, 이메일, 회사명, 메시지 내용</li>
@@ -73,7 +73,7 @@ export default function PrivacyPolicy() {
               4. 개인정보의 제3자 제공
             </h2>
             <p className="text-textSecondary leading-relaxed">
-              totaro는 이용자의 개인정보를 원칙적으로 외부에 제공하지 않습니다.
+              TOTARO는 이용자의 개인정보를 원칙적으로 외부에 제공하지 않습니다.
               다만, 아래의 경우에는 예외로 합니다:
             </p>
             <ul className="list-disc list-inside text-textSecondary space-y-2 ml-4 mt-4">

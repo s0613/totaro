@@ -22,8 +22,8 @@ export default function SignatureFeature({ content }: SignatureFeatureProps) {
   );
 
   const getHref = (label: string) => {
-    if (label === "WEB BUILDER") return "/solutions/builder";
-    if (label === "AEO/SEO/GEO") return "/payments/test";
+    if (label === "WEB BUILDER") return "/web";
+    if (label === "AEO/SEO/GEO") return "/optimize";
     if (label === "Ads/DM") return "/vision";
     return undefined;
   };
@@ -49,8 +49,8 @@ export default function SignatureFeature({ content }: SignatureFeatureProps) {
             {content.subtitle}
           </p>
         </div>
-        {/* Horizontal list */}
-        <div className="flex flex-row flex-nowrap gap-6 overflow-x-auto pb-2">
+        {/* 2x2 Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {steps.map((step, index) => {
             const href = getHref(step.label);
             const CardContent = (
@@ -60,7 +60,7 @@ export default function SignatureFeature({ content }: SignatureFeatureProps) {
               </div>
             );
             return (
-              <div key={index} className="text-center min-w-[260px] md:min-w-[280px] flex-none">
+              <div key={index} className="text-center">
                 {href ? (
                   <Link href={href} className="block focus:outline-none focus:ring-2 focus:ring-accent rounded-2xl">
                     {CardContent}

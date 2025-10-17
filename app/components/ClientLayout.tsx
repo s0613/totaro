@@ -11,9 +11,9 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       <nav className="fixed top-0 left-0 right-0 z-50 bg-bg/80 backdrop-blur-lg border-b border-line">
         <div className="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <img src="/logo.png" alt="totaro" className="w-8 h-8" />
+            <img src="/logo.png" alt="TOTARO" className="w-8 h-8" />
             <span className="text-lg font-bold text-textPrimary tracking-tight">
-              totaro
+              TOTARO
             </span>
           </Link>
           <div className="flex items-center gap-10">

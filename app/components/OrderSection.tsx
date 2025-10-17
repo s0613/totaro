@@ -1,6 +1,6 @@
 "use client";
 
-import { trackCTAClick, trackCheckoutStart } from "@/lib/analytics";
+import { trackCTAClick } from "@/lib/analytics";
 
 interface OrderSectionProps {
   lang: "ko" | "en";
@@ -8,7 +8,6 @@ interface OrderSectionProps {
 
 export default function OrderSection({ lang }: OrderSectionProps) {
   const isEn = lang === "en";
-  const priceKRW = 890000;
 
   const bulletsKo = [
     "AEO·SEO·GEO 친화적 설계",
@@ -25,7 +24,6 @@ export default function OrderSection({ lang }: OrderSectionProps) {
   ];
 
   const bullets = isEn ? bulletsEn : bulletsKo;
-  const priceText = new Intl.NumberFormat("ko-KR").format(priceKRW);
 
   return (
     <section className="relative bg-surface py-24 px-8 border-t border-line">
@@ -34,20 +32,17 @@ export default function OrderSection({ lang }: OrderSectionProps) {
           <h2 className="text-5xl font-bold text-textPrimary mb-4">
             {isEn ? "Website Purchase Order" : "웹사이트 구매 주문하기"}
           </h2>
-          <p className="text-lg text-textSecondary">
+          <p className="text-lg text-textSecondary text-pretty break-keep">
             {isEn
-              ? "AEO/SEO/GEO‑ready website production—starting from ₩890,000."
-              : "AEO·SEO·GEO 친화적 웹사이트 제작 — 89만원부터"}
+              ? "AEO/SEO/GEO‑ready website production."
+              : "AEO·SEO·GEO 친화적 웹사이트 제작."}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-bg rounded-xl p-8 border border-line">
             <h3 className="text-2xl font-semibold mb-4">{isEn ? "Starter Plan" : "스타터 플랜"}</h3>
-            <div className="flex items-end gap-2 mb-6">
-              <span className="text-4xl font-bold text-textPrimary">₩{priceText}</span>
-              <span className="text-textSecondary">{isEn ? "from" : "부터"}</span>
-            </div>
+            {/* price display removed */}
             <ul className="space-y-3 mb-8">
               {bullets.map((b, i) => (
                 <li key={i} className="flex items-start gap-3">
@@ -57,14 +52,13 @@ export default function OrderSection({ lang }: OrderSectionProps) {
               ))}
             </ul>
             <a
-              href="/checkout"
+            href="/#contact"
               onClick={() => {
-                trackCTAClick("Order Website", "order_section");
-                trackCheckoutStart("Starter Plan", priceKRW);
+              trackCTAClick("Contact", "order_section");
               }}
               className="btn-primary px-8 py-4 inline-block"
             >
-              {isEn ? "Order Website" : "웹사이트 주문하기"}
+            {isEn ? "Contact Us" : "문의하기"}
             </a>
           </div>
 

@@ -1,14 +1,14 @@
 {
-  "brand": { "name": "totaro", "tagline": "수출, 한 번에. 추가 인력 없이." },
+  "brand": { "name": "TOTARO", "tagline": "수출, 한 번에. 추가 인력 없이." },
   "nav": { "home": "홈", "solution": "솔루션", "cases": "사례", "contact": "문의" },
   "hero": {
     "eyebrow": "AI Export Orchestration",
-    "headline": "글로벌 바이어에게,<br/>더 쉽게 판매하세요.",
-    "subcopy": "B2B 웹사이트 · AEO/SEO/GEO · 타겟 마케팅 · 바이어 CRM을 한 번에.",
+    "headline": "제조업체의 글로벌 진출을 위한 효과적인 노출을 위해 SEO·GEO·AEO 기반 <br/> 웹빌딩과 콘텐츠 발행을 통합 지원하는 AI 플랫폼",
+    "subcopy": "",
     "primaryCta": "문의하기"
   },
   "howItWorks": {
-    "title": "totaro가 작동하는 방식",
+    "title": "TOTARO가 작동하는 방식",
     "steps": [
       { "step": 1, "label": "Website", "desc": "B2B 랜딩/제품 카탈로그 자동 생성" },
       { "step": 2, "label": "AEO/SEO/GEO", "desc": "AI·검색·지역 동시 최적화" },
@@ -34,7 +34,7 @@
   },
   "cta": {
     "title": "지금 시작하세요",
-    "subtitle": "totaro 팀이 곧 연락드리겠습니다.",
+    "subtitle": "TOTARO 팀이 곧 연락드리겠습니다.",
     "form": {
       "name": "이름",
       "email": "이메일",
@@ -49,12 +49,12 @@
     "success": { "title": "문의 접수 완료", "message": "빠르게 확인 후 연락드리겠습니다." }
   },
   "footer": {
-    "copyright": "© 2025 totaro. All rights reserved.",
+    "copyright": "© 2025 TOTARO. All rights reserved.",
     "privacy": "개인정보처리방침",
     "terms": "이용약관"
   },
   "signatureFeature": {
-    "title": "totaro, 수출의 모든 것",
+    "title": "TOTARO, 수출의 모든 것",
     "subtitle": "바이어 발굴부터 관리까지, 수출 프로세스를 자동화합니다"
   },
   "serviceDetails": {

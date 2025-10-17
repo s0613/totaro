@@ -13,29 +13,29 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "totaro - 팀 없이, 수출을 한 번에",
+  title: "TOTARO - 팀 없이, 수출을 한 번에",
   description: "B2B 홈페이지, AEO/SEO/GEO, 타겟 마케팅, 바이어 관리까지 토탈로.",
   keywords: ["B2B", "export", "AEO", "SEO", "GEO", "Korean manufacturers", "global buyers", "수출", "바이어"],
-  authors: [{ name: "totaro" }],
+  authors: [{ name: "TOTARO" }],
   openGraph: {
     type: "website",
     locale: "ko_KR",
     url: "https://totaro.com",
-    siteName: "totaro",
-    title: "totaro - 팀 없이, 수출을 한 번에",
+    siteName: "TOTARO",
+    title: "TOTARO - 팀 없이, 수출을 한 번에",
     description: "B2B 홈페이지, AEO/SEO/GEO, 타겟 마케팅, 바이어 관리까지 토탈로.",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "totaro",
+        alt: "TOTARO",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "totaro - 팀 없이, 수출을 한 번에",
+    title: "TOTARO - 팀 없이, 수출을 한 번에",
     description: "B2B 홈페이지, AEO/SEO/GEO, 타겟 마케팅, 바이어 관리까지 토탈로.",
     images: ["/og-image.jpg"],
   },
@@ -59,7 +59,7 @@ const jsonLd = {
     {
       "@type": "Organization",
       "@id": "https://totaro.com/#organization",
-      name: "totaro",
+      name: "TOTARO",
       url: "https://totaro.com",
       logo: "https://totaro.com/logo.png",
       description: "AI-powered B2B export solution for Korean manufacturers",
@@ -68,7 +68,7 @@ const jsonLd = {
       "@type": "WebSite",
       "@id": "https://totaro.com/#website",
       url: "https://totaro.com",
-      name: "totaro",
+      name: "TOTARO",
       publisher: {
         "@id": "https://totaro.com/#organization",
       },
@@ -78,7 +78,7 @@ const jsonLd = {
       "@type": "WebPage",
       "@id": "https://totaro.com/#webpage",
       url: "https://totaro.com",
-      name: "totaro - 팀 없이, 수출을 한 번에",
+      name: "TOTARO - 팀 없이, 수출을 한 번에",
       isPartOf: {
         "@id": "https://totaro.com/#website",
       },

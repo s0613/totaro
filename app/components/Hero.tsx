@@ -122,10 +122,11 @@ export default function Hero({ content }: HeroProps) {
   }, [prefersReducedMotion]);
 
   return (
+    <>
     <section
       id="home"
       ref={containerRef}
-      className="relative h-screen flex items-center justify-center overflow-hidden bg-bg"
+      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-bg"
       style={{ willChange: "opacity" }}
     >
       {/* Background with depth zoom */}
@@ -137,9 +138,51 @@ export default function Hero({ content }: HeroProps) {
         {/* Gradient background */}
         <div className="absolute inset-0 bg-gradient-to-b from-bg via-surface to-bg opacity-80" />
 
-        {/* Grain overlay removed for performance */}
+        {/* Arc Reactor Effect - Iron Man Heart */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          {/* Core glow */}
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full"
+            style={{
+              background: `radial-gradient(circle, rgba(91, 164, 255, 0.8) 0%, rgba(91, 164, 255, 0.4) 50%, transparent 100%)`,
+              boxShadow: '0 0 60px rgba(91, 164, 255, 0.6), 0 0 120px rgba(91, 164, 255, 0.4)',
+              animation: 'pulse 2s ease-in-out infinite',
+            }}
+          />
+          
+          {/* Rotating rings */}
+          {[1, 2, 3, 4, 5].map((ring) => (
+            <div
+              key={ring}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2"
+              style={{
+                width: `${ring * 120}px`,
+                height: `${ring * 120}px`,
+                borderColor: `rgba(91, 164, 255, ${0.3 / ring})`,
+                animation: `rotate${ring % 2 === 0 ? 'Clockwise' : 'CounterClockwise'} ${15 + ring * 3}s linear infinite`,
+                borderStyle: ring % 2 === 0 ? 'dashed' : 'solid',
+                borderWidth: ring === 1 ? '3px' : '2px',
+              }}
+            />
+          ))}
+          
+          {/* Energy particles */}
+          {[...Array(12)].map((_, i) => (
+            <div
+              key={`particle-${i}`}
+              className="absolute top-1/2 left-1/2 w-2 h-2 rounded-full bg-blue-400"
+              style={{
+                transform: `rotate(${i * 30}deg) translateY(-${150 + (i % 3) * 50}px)`,
+                opacity: 0.6,
+                animation: `particleFloat ${3 + (i % 3)}s ease-in-out infinite`,
+                animationDelay: `${i * 0.2}s`,
+                boxShadow: '0 0 10px rgba(91, 164, 255, 0.8)',
+              }}
+            />
+          ))}
+        </div>
 
-        {/* Accent glow */}
+        {/* Accent glow background */}
         <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-10"
           style={{
@@ -147,41 +190,79 @@ export default function Hero({ content }: HeroProps) {
           }}
         />
       </div>
+      
+      {/* CSS animations */}
+      <style jsx>{`
+        @keyframes rotateClockwise {
+          from {
+            transform: translate(-50%, -50%) rotate(0deg);
+          }
+          to {
+            transform: translate(-50%, -50%) rotate(360deg);
+          }
+        }
+        
+        @keyframes rotateCounterClockwise {
+          from {
+            transform: translate(-50%, -50%) rotate(360deg);
+          }
+          to {
+            transform: translate(-50%, -50%) rotate(0deg);
+          }
+        }
+        
+        @keyframes pulse {
+          0%, 100% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.8;
+          }
+          50% {
+            transform: translate(-50%, -50%) scale(1.1);
+            opacity: 1;
+          }
+        }
+        
+        @keyframes particleFloat {
+          0%, 100% {
+            opacity: 0.3;
+          }
+          50% {
+            opacity: 0.8;
+          }
+        }
+      `}</style>
 
-      {/* Content overlay */}
-      <div className="relative z-10 text-center px-8 max-w-6xl">
-        <p className="eyebrow mb-6 text-accent">{content.eyebrow}</p>
-
-        <h1
-          ref={headlineRef}
-          className="copy-hero text-textPrimary mb-8"
-          dangerouslySetInnerHTML={{ __html: content.headline }}
-          style={{ willChange: "transform" }}
-        />
-
-        <p
-          ref={subcopyRef}
-          className="copy-sub text-textSecondary mb-10 mx-auto max-w-3xl text-lg"
-          style={{ willChange: "transform" }}
-        >
-          {content.subcopy}
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <a
-            href="#contact"
-            onClick={() => trackCTAClick("Get Started", "hero")}
-            className="btn-primary text-lg px-10 py-5 shadow-soft hover:shadow-lg transition-shadow inline-block"
-          >
-            {content.primaryCta}
-          </a>
-          <a
-            href="/solutions/builder"
-            onClick={() => trackCTAClick("Web Builder", "hero")}
-            className="btn-secondary text-lg px-10 py-5 shadow-soft hover:shadow-lg transition-shadow inline-block"
-          >
-            웹빌더 솔루션 보기
-          </a>
+      {/* Center brand only */}
+      <div className="relative z-10 text-center px-8 max-w-6xl select-none">
+        <h1 className="text-textPrimary font-extrabold tracking-[0.25em] text-5xl sm:text-6xl md:text-7xl">TOTARO</h1>
+        {/* Explanation within hero for single-screen view */}
+        <div className="mt-8 text-center">
+          <h2
+            ref={headlineRef}
+            className="text-textPrimary text-xl md:text-2xl font-bold mb-4 text-pretty break-keep leading-snug"
+            dangerouslySetInnerHTML={{ __html: content.headline }}
+          />
+          {content.subcopy && (
+            <p ref={subcopyRef} className="text-textSecondary max-w-3xl mx-auto text-base md:text-lg text-pretty break-keep">
+              {content.subcopy}
+            </p>
+          )}
+          <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="#contact"
+              onClick={() => trackCTAClick("Get Started", "hero_inline")}
+              className="btn-primary text-base md:text-lg px-8 md:px-10 py-4 md:py-5 shadow-soft hover:shadow-lg transition-shadow inline-block"
+            >
+              {content.primaryCta}
+            </a>
+            <a
+              href="/web"
+              onClick={() => trackCTAClick("Web Builder", "hero_inline")}
+              className="btn-secondary text-base md:text-lg px-8 md:px-10 py-4 md:py-5 shadow-soft hover:shadow-lg transition-shadow inline-block"
+            >
+              웹빌더 솔루션 보기
+            </a>
+          </div>
         </div>
       </div>
 
@@ -222,5 +303,6 @@ export default function Hero({ content }: HeroProps) {
         </div>
       </div>
     </section>
+    </>
   );
 }
