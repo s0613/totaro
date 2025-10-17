@@ -111,9 +111,3 @@ export default function PaymentWindow({ amount, orderName, orderId, currency = "
   );
 }
 
-declare global {
-  interface Window {
-    TossPayments: (clientKey: string) => TossPaymentsWidgetSDK;
-  }
-}
-

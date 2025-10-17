@@ -13,7 +13,7 @@ interface SignatureFeatureProps {
 export default function SignatureFeature({ content }: SignatureFeatureProps) {
   const steps = useMemo(
     () => [
-      { label: "WEBSITE", desc: "바이어 중심 웹사이트" },
+      { label: "WEB BUILDER", desc: "AI 기반 웹사이트 제작" },
       { label: "AEO/SEO/GEO", desc: "AI·검색·지역 최적화" },
       { label: "Ads/DM", desc: "타겟 마케팅 캠페인" },
       { label: "CRM", desc: "바이어 관리 자동화" },
@@ -22,7 +22,7 @@ export default function SignatureFeature({ content }: SignatureFeatureProps) {
   );
 
   const getHref = (label: string) => {
-    if (label === "WEBSITE") return "/payments/test";
+    if (label === "WEB BUILDER") return "/solutions/builder";
     if (label === "AEO/SEO/GEO") return "/payments/test";
     if (label === "Ads/DM") return "/vision";
     return undefined;

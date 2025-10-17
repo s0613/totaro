@@ -2,8 +2,9 @@
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { parsePaymentParams, parseTossErrorMessage } from "@/lib/payments/payment-utils";
+import { Suspense } from "react";
 
-export default function CheckoutFailPage() {
+function CheckoutFailContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -129,6 +130,14 @@ export default function CheckoutFailPage() {
         </p>
       </div>
     </section>
+  );
+}
+
+export default function CheckoutFailPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-bg text-textPrimary flex items-center justify-center px-6">Loading...</div>}>
+      <CheckoutFailContent />
+    </Suspense>
   );
 }
 

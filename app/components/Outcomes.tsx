@@ -104,7 +104,7 @@ export default function Outcomes({ title, metrics }: OutcomesProps) {
       ([entry]) => {
         if (entry.isIntersecting) {
           runImmediate();
-          io && io.disconnect();
+          if (io) io.disconnect();
         }
       },
       { root: null, rootMargin: "200px 0px", threshold: 0.05 }

@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { parsePaymentParams } from "@/lib/payments/payment-utils";
 import type { PaymentConfirmResponse } from "@/lib/payments/payment-types";
 
-export default function CheckoutSuccessPage() {
+function CheckoutSuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [confirming, setConfirming] = useState(true);
@@ -265,5 +265,13 @@ export default function CheckoutSuccessPage() {
         </div>
       </div>
     </section>
+  );
+}
+
+export default function CheckoutSuccessPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-bg text-textPrimary flex items-center justify-center px-6">Loading...</div>}>
+      <CheckoutSuccessContent />
+    </Suspense>
   );
 }

@@ -24,6 +24,8 @@ export interface PaymentRequestOptions {
   method: 'CARD' | 'TRANSFER' | 'VIRTUAL_ACCOUNT' | 'MOBILE_PHONE';
   orderId: string;
   orderName: string;
+  amount: number;
+  currency: string;
   customerName?: string;
   customerEmail?: string;
   successUrl: string;
@@ -157,7 +159,9 @@ export interface PaymentCancelRequest {
 }
 
 export interface PaymentCancelResponse extends PaymentConfirmResponse {
-  // Same structure as confirm response
+  // Payment cancellation extends confirmation response
+  // Additional fields can be added here if needed
+  cancelReason?: string;
 }
 
 // Webhook Types

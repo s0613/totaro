@@ -40,12 +40,12 @@ const testimonials = [
 ];
 
 const partnerLogos = [
-  { name: "삼성", logo: "SAMSUNG" },
-  { name: "LG", logo: "LG" },
-  { name: "현대", logo: "HYUNDAI" },
-  { name: "SK", logo: "SK" },
-  { name: "포스코", logo: "POSCO" },
-  { name: "한화", logo: "HANWHA" },
+  { name: "청원농산", logo: "청원***" },
+  { name: "트라이닉", logo: "트**닉" },
+  { name: "기버케밥", logo: "기버**" },
+  { name: "벤처클럽", logo: "벤처**" },
+  { name: "업플로우", logo: "업**우" },
+  { name: "메디뷰", logo: "메**뷰" },
 ];
 
 export default function SocialProof({ content, lang }: SocialProofProps) {

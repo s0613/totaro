@@ -1,18 +1,16 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useMemo } from "react";
-import AboutSection from "./AboutSection";
-import { VideoPlayer } from "./VideoPlayer";
 
-export interface Video {
+export interface Website {
   id: string;
   user_id: string;
   title: string;
-  prompt: string;
+  description: string;
+  category: string;
   status: "pending" | "processing" | "completed" | "failed";
-  video_url?: string;
+  preview_url?: string;
   thumbnail_url?: string;
-  duration?: number;
   created_at: string;
   updated_at: string;
 }
@@ -32,62 +30,56 @@ function createSeededRng(seed: number) {
 const FIXED_CREATED_AT = "2025-01-01T00:00:00.000Z";
 const FIXED_UPDATED_AT = "2025-01-01T00:00:00.000Z";
 
-const mockVideos: Video[] = [
+const mockWebsites: Website[] = [
   {
     id: "1",
     user_id: "demo",
-    title: "아름다운 일몰 풍경",
-    prompt:
-      "해변에서 파도가 부드럽게 밀려오는 모습, 석양이 지평선에 걸쳐있고 갈매기들이 날아다니는 평화로운 장면",
+    title: "청원푸드 온라인 주문 사이트",
+    description: "신선한 식자재를 온라인으로 주문할 수 있는 쇼핑몰 웹사이트",
+    category: "쇼핑몰",
     status: "completed",
-    video_url:
-      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-    thumbnail_url:
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800",
-    duration: 10,
+    preview_url: "https://example.com/preview1",
+    thumbnail_url: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800",
     created_at: FIXED_CREATED_AT,
     updated_at: FIXED_UPDATED_AT,
   },
   {
     id: "2",
     user_id: "demo",
-    title: "도시의 밤 풍경",
-    prompt: "높은 빌딩들 사이로 네온사인이 반짝이고 차량들이 지나가는 야경",
+    title: "카페 브랜드 홍보 사이트",
+    description: "로컬 카페의 브랜드 스토리와 메뉴를 소개하는 웹사이트",
+    category: "브랜드",
     status: "processing",
-    duration: 5,
     created_at: FIXED_CREATED_AT,
     updated_at: FIXED_UPDATED_AT,
   },
   {
     id: "3",
     user_id: "demo",
-    title: "숲속의 고요함",
-    prompt: "안개가 낀 숲속에서 햇살이 나무 사이로 비치는 모습",
+    title: "영상 생성 플랫폼 trynicai",
+    description: "AI 기반 영상 생성과 편집 서비스를 제공하는 플랫폼",
+    category: "영상",
     status: "completed",
-    video_url:
-      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-    thumbnail_url:
-      "https://images.unsplash.com/photo-1511497584788-876760111969?w=800",
-    duration: 8,
+    preview_url: "https://example.com/preview3",
+    thumbnail_url: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800",
     created_at: FIXED_CREATED_AT,
     updated_at: FIXED_UPDATED_AT,
   },
 ];
 
-const VisionApp: React.FC = () => {
+const WebApp: React.FC = () => {
   const [title, setTitle] = useState("");
-  const [prompt, setPrompt] = useState("");
-  const [duration, setDuration] = useState(5);
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("쇼핑몰");
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
-  const [videos, setVideos] = useState<Video[]>(mockVideos);
+  const [websites, setWebsites] = useState<Website[]>(mockWebsites);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [cardTilts, setCardTilts] = useState<{ [key: string]: { x: number; y: number } }>({});
   const [autoAnimationStarted, setAutoAnimationStarted] = useState(false);
   const [showForm, setShowForm] = useState(true);
-  const [showGeneratedVideo, setShowGeneratedVideo] = useState(false);
-  const [generatedVideo, setGeneratedVideo] = useState<Video | null>(null);
+  const [showGeneratedWebsite, setShowGeneratedWebsite] = useState(false);
+  const [generatedWebsite, setGeneratedWebsite] = useState<Website | null>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
   const heroRef = useRef<HTMLElement>(null);
   const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
@@ -148,39 +140,44 @@ const VisionApp: React.FC = () => {
     setLoading(true);
     setProgress(0);
 
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setLoading(false);
-          const newVideo: Video = {
-            id: Date.now().toString(),
-            user_id: "demo",
-            title,
-            prompt,
-            status: "completed",
-            video_url:
-              "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-            thumbnail_url: "/video.mp4",
-            duration,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          };
-          setVideos([newVideo, ...videos]);
-          setTitle("");
-          setPrompt("");
-          return 100;
-        }
-        return prev + 10;
-      });
-    }, 500);
+    if (reducedMotion) {
+      setTimeout(() => setProgress(100), 300);
+    } else {
+      const interval = setInterval(() => {
+        setProgress((prev) => {
+          if (prev >= 100) {
+            clearInterval(interval);
+            return 100;
+          }
+          const increment = Math.max(1, Math.round(5 * (1 - prev / 100)));
+          return Math.min(100, prev + increment);
+        });
+      }, 100);
+    }
+
+    const finishTimer = setInterval(() => {
+      if (progress >= 100) {
+        clearInterval(finishTimer);
+        setLoading(false);
+        const newWebsite: Website = {
+          id: Date.now().toString(),
+          user_id: "demo",
+          title,
+          description,
+          category,
+          status: "completed",
+          preview_url: "https://example.com/preview",
+          thumbnail_url: "/video.mp4",
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+        setWebsites([newWebsite, ...websites]);
+        setTitle("");
+        setDescription("");
+      }
+    }, 120);
   };
 
-  const handleDelete = (videoId: string) => {
-    if (confirm("정말로 이 비디오를 삭제하시겠습니까?")) {
-      setVideos(videos.filter((v) => v.id !== videoId));
-    }
-  };
 
   const typeText = (
     text: string,
@@ -205,75 +202,19 @@ const VisionApp: React.FC = () => {
     if (autoAnimationStarted) return;
     setAutoAnimationStarted(true);
 
-    // 비디오 제목 자동 입력
-    const titleText = "청원푸드 홈페이지 홍보 영상";
+    // 웹사이트 제목 자동 입력
+    const titleText = "청원푸드 온라인 주문 사이트";
     await typeText(titleText, setTitle, 80);
     
     await new Promise((resolve) => setTimeout(resolve, 500));
     
-    // 프롬프트 자동 입력
-    const promptText = "홈페이지를 영어 나레이션으로 주문 방법 같은 것들을 설명하는 영상 만들어줘";
-    await typeText(promptText, setPrompt, 50);
+    // 웹사이트 설명 자동 입력
+    const descriptionText = "신선한 식자재를 온라인으로 주문할 수 있는 쇼핑몰 웹사이트를 만들어주세요. 주문 기능, 결제 시스템, 배송 추적이 포함되어야 합니다.";
+    await typeText(descriptionText, setDescription, 50);
     
     await new Promise((resolve) => setTimeout(resolve, 1000));
     
-    // 비디오 생성 시뮬레이션 시작: 정확히 5초 표시 후 전환
-    setLoading(true);
-    setProgress(0);
-
-    const DURATION_MS = 5000;
-    const startAt = Date.now();
-
-    let progressTimer: any;
-    if (reducedMotion) {
-      // 모션 최소화: 바로 100%로
-      progressTimer = setTimeout(() => setProgress(100), 300);
-    } else {
-      progressTimer = setInterval(() => {
-        const elapsed = Date.now() - startAt;
-        const pct = Math.min(100, Math.round((elapsed / DURATION_MS) * 100));
-        setProgress(pct);
-        if (pct >= 100) {
-          clearInterval(progressTimer);
-        }
-      }, 100);
-    }
-
-    setTimeout(() => {
-      // 5초 후 바로 예시 영상 표시
-      setLoading(false);
-      setProgress(100);
-      const newVideo: Video = {
-        id: Date.now().toString(),
-        user_id: "demo",
-        title: titleText,
-        prompt: promptText,
-        status: "completed",
-            video_url: "/video.mp4",
-        thumbnail_url: "/video.mp4",
-        duration: 5,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      };
-      setGeneratedVideo(newVideo);
-      setShowForm(false);
-      setShowGeneratedVideo(true);
-    }, DURATION_MS);
-  };
-
-  const handleStartDemo = async () => {
-    createSectionRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-    });
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    const titleText = "청원푸드 홈페이지 홍보 영상";
-    await typeText(titleText, setTitle, 80);
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    const promptText =
-      "홈페이지를 영어 나레이션으로 주문 방법 같은 것들을 설명하는 영상 만들어줘";
-    await typeText(promptText, setPrompt, 50);
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    // 웹사이트 생성 시뮬레이션 시작
     setLoading(true);
     setProgress(0);
 
@@ -282,29 +223,34 @@ const VisionApp: React.FC = () => {
         if (prev >= 100) {
           clearInterval(interval);
           setLoading(false);
-          const newVideo: Video = {
+          
+          // 생성된 웹사이트 객체 생성
+          const newWebsite: Website = {
             id: Date.now().toString(),
             user_id: "demo",
             title: titleText,
-            prompt: promptText,
+            description: descriptionText,
+            category: "쇼핑몰",
             status: "completed",
-            video_url: "/video.mp4",
+            preview_url: "https://example.com/preview",
             thumbnail_url: "/video.mp4",
-            duration: 5,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
           };
-          setVideos([newVideo, ...videos]);
-          setTitle("");
-          setPrompt("");
+          
+          setGeneratedWebsite(newWebsite);
+          
+          // 5초 후 폼 숨기고 웹사이트 표시
           setTimeout(() => {
-            setSelectedVideo(newVideo);
-          }, 500);
+            setShowForm(false);
+            setShowGeneratedWebsite(true);
+          }, 5000);
+          
           return 100;
         }
         return prev + 20;
       });
-    }, 1000);
+    }, 200);
   };
 
   const getStatusBadge = (status: string) => {
@@ -334,15 +280,13 @@ const VisionApp: React.FC = () => {
         }}
       />
 
-      {/* in-vision header removed as requested */}
-
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-mesh-gradient">
+        <div className="absolute inset-0 bg-web-mesh-gradient">
           <div className="absolute inset-0">
             {[...Array(5)].map((_, i) => (
               <div
                 key={i}
-                className="absolute rounded-full bg-gradient-apple blur-3xl animate-float opacity-10"
+                className="absolute rounded-full bg-web-gradient-apple blur-3xl animate-web-float opacity-10"
                 style={{
                   width: `${300 + i * 150}px`,
                   height: `${300 + i * 150}px`,
@@ -365,17 +309,17 @@ const VisionApp: React.FC = () => {
         </div>
 
         <div className="relative z-10 text-center px-6 max-w-6xl mx-auto">
-          <div className="animate-fade-in">
+          <div className="web-animate-fade-in">
             <div className="mb-12 flex justify-center">
-              <img src="/logo.png" alt="Vision Create" className="h-32 w-32 md:h-40 md:w-40 logo-glow animate-float opacity-90" style={{ animationDuration: "10s" }} />
+              <img src="/logo.png" alt="Web Create" className="h-32 w-32 md:h-40 md:w-40 web-logo-glow web-animate-float opacity-90" style={{ animationDuration: "10s" }} />
             </div>
             <div className="inline-block px-5 py-2.5 mb-10 bg-white/5 backdrop-blur-md rounded-full border border-white/10 shadow-lg shadow-black/20">
-              <span className="text-sm font-bold text-gradient-silver tracking-wide">✦ 사내 전용 AI 영상 생성(In‑house)</span>
+              <span className="text-sm font-bold web-text-gradient-silver tracking-wide">✦ AI POWERED WEB DEVELOPMENT</span>
             </div>
             <h2 className="text-6xl md:text-8xl lg:text-9xl font-black mb-10 leading-[0.9] tracking-tighter">
-              <span className="text-gray-400 font-medium text-5xl md:text-7xl lg:text-8xl block mb-3">영상은 누구나 만들지만,</span>
+              <span className="text-gray-400 font-medium text-5xl md:text-7xl lg:text-8xl block mb-3">웹사이트는 누구나 만들지만,</span>
               <span className="inline-block">
-                <span className="inline-block cursor-default relative animate-pulse-scale">
+                <span className="inline-block cursor-default relative web-animate-pulse-scale">
                   <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-100 to-gray-300">결과</span>
                   <span className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 blur-2xl opacity-30 animate-pulse -z-10"></span>
                 </span>
@@ -383,8 +327,8 @@ const VisionApp: React.FC = () => {
               </span>
             </h2>
             <p className="text-xl md:text-3xl text-gray-400 mb-14 max-w-3xl mx-auto leading-relaxed font-light">
-              모든 처리가 사내 전용 파이프라인에서 이뤄지며 데이터가 외부로 나가지 않습니다.<br />
-              <span className="text-gray-500 text-lg md:text-2xl">보안·프라이버시 기준을 준수하는 기업용 워크플로우.</span>
+              AI 웹사이트가 SEO·GEO·AEO까지 최적화되어<br />
+              <span className="text-gray-500 text-lg md:text-2xl">브랜드 노출을 확장합니다.</span>
             </p>
           </div>
         </div>
@@ -400,7 +344,7 @@ const VisionApp: React.FC = () => {
               return (
                 <div
                   key={i}
-                  className="absolute w-1 h-1 bg-white rounded-full animate-float opacity-20"
+                  className="absolute w-1 h-1 bg-white rounded-full web-animate-float opacity-20"
                   style={{ left, top, animationDelay, animationDuration }}
                 />
               );
@@ -408,40 +352,50 @@ const VisionApp: React.FC = () => {
           }, [])}
         </div>
 
-        {/* 스크롤 인디케이터 제거 */}
       </section>
 
       <section ref={createSectionRef} id="create" className="py-40 px-6 relative">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-20 animate-slide-up">
+          <div className="text-center mb-20 web-animate-slide-up">
             <div className="inline-block px-5 py-2.5 mb-8 bg-white/5 backdrop-blur-md rounded-full border border-white/10 shadow-lg shadow-black/20">
-              <span className="text-sm font-bold text-gradient-silver tracking-wide">🎬 In‑house Video Creation</span>
+              <span className="text-sm font-bold web-text-gradient-silver tracking-wide">🌐 WEB CREATION</span>
             </div>
             <h3 className="text-6xl md:text-7xl font-black mb-8 tracking-tighter leading-tight">
-              <span className="text-gradient-blue block mb-2">AI가 만드는</span>
-              <span className="inline-block hover:scale-105 transition-transform text-gray-100">당신만의 영상</span>
+              <span className="web-text-gradient-blue block mb-2">AI가 만드는</span>
+              <span className="inline-block hover:scale-105 transition-transform text-gray-100">당신만의 웹사이트</span>
             </h3>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
               프롬프트를 입력하고 몇 초만 기다리면<br />
-              <span className="text-gradient-silver font-semibold">프리미엄 퀄리티</span>의 비디오가 완성됩니다
+              <span className="web-text-gradient-silver font-semibold">프리미엄 퀄리티</span>의 웹사이트가 완성됩니다
             </p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-silver rounded-3xl blur-xl opacity-10 group-hover:opacity-25 transition duration-1000"></div>
-              <div className="relative glass-strong rounded-3xl p-10 animate-slide-up hover-lift shadow-2xl shadow-black/40 border-white/20">
+              <div className="absolute -inset-1 bg-web-gradient-silver rounded-3xl blur-xl opacity-10 group-hover:opacity-25 transition duration-1000"></div>
+              <div className="relative web-glass-strong rounded-3xl p-10 web-animate-slide-up web-hover-lift shadow-2xl shadow-black/40 border-white/20">
                 {showForm ? (
                   <form onSubmit={handleSubmit} className="space-y-7">
                     {!loading && (
                       <>
                         <div>
-                          <label className="block text-sm font-bold text-gray-300 mb-3 tracking-wide">비디오 제목</label>
-                          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-gray-500 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all font-medium" placeholder="예: 아름다운 일몰 풍경" disabled={autoAnimationStarted} />
+                          <label className="block text-sm font-bold text-gray-300 mb-3 tracking-wide">웹사이트 제목</label>
+                          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-gray-500 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all font-medium" placeholder="예: 청원푸드 온라인 주문 사이트" disabled={autoAnimationStarted} />
                         </div>
                         <div>
-                          <label className="block text-sm font-bold text-gray-300 mb-3 tracking-wide">프롬프트</label>
-                          <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} required rows={6} className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-gray-500 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all resize-none font-medium leading-relaxed" placeholder="생성하고 싶은 비디오를 상세히 설명해주세요...&#10;&#10;예: 해변에서 파도가 부드럽게 밀려오는 모습, 석양이 지평선에 걸쳐있고 갈매기들이 날아다니는 평화로운 장면" disabled={autoAnimationStarted} />
+                          <label className="block text-sm font-bold text-gray-300 mb-3 tracking-wide">웹사이트 설명</label>
+                          <textarea value={description} onChange={(e) => setDescription(e.target.value)} required rows={6} className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-gray-500 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all resize-none font-medium leading-relaxed" placeholder="생성하고 싶은 웹사이트를 상세히 설명해주세요...&#10;&#10;예: 신선한 식자재를 온라인으로 주문할 수 있는 쇼핑몰 웹사이트" disabled={autoAnimationStarted} />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-bold text-gray-300 mb-3 tracking-wide">카테고리</label>
+                          <select value={category} onChange={(e) => setCategory(e.target.value)} className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-2xl text-white focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all font-medium" disabled={autoAnimationStarted}>
+                            <option value="쇼핑몰">쇼핑몰</option>
+                            <option value="브랜드">브랜드</option>
+                            <option value="영상">영상</option>
+                            <option value="교육">교육</option>
+                            <option value="의료">의료</option>
+                            <option value="기타">기타</option>
+                          </select>
                         </div>
                       </>
                     )}
@@ -454,18 +408,18 @@ const VisionApp: React.FC = () => {
                               <div className="absolute inset-0 w-16 h-16 border-4 border-pink-500 border-r-transparent rounded-full animate-spin" style={{ animationDirection: "reverse", animationDuration: "1.5s" }}></div>
                             </div>
                           </div>
-                          <h4 className="text-lg font-bold text-white mb-2">AI가 영상을 생성하고 있습니다</h4>
+                          <h4 className="text-lg font-bold text-white mb-2">AI가 웹사이트를 생성하고 있습니다</h4>
                           <p className="text-sm text-gray-400 mb-4">잠시만 기다려주세요...</p>
                         </div>
                         
                         <div className="space-y-3">
                           <div className="flex justify-between text-sm font-bold text-gray-300">
                             <span>진행률</span>
-                            <span className="text-gradient">{progress}%</span>
+                            <span className="web-text-gradient">{progress}%</span>
                           </div>
                           <div className="relative w-full h-4 bg-white/10 rounded-full overflow-hidden">
-                            <div className="absolute inset-0 bg-gradient-apple transition-all duration-500 ease-out" style={{ width: `${progress}%` }} />
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" style={{ animationDuration: "1.5s", animationIterationCount: "infinite" }} />
+                            <div className="absolute inset-0 bg-web-gradient-apple transition-all duration-500 ease-out" style={{ width: `${progress}%` }} />
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent web-animate-shimmer" style={{ animationDuration: "1.5s", animationIterationCount: "infinite" }} />
                           </div>
                         </div>
 
@@ -476,11 +430,11 @@ const VisionApp: React.FC = () => {
                           </div>
                           <div className="flex items-center gap-2">
                             <div className={`w-2 h-2 rounded-full animate-pulse ${progress > 30 ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
-                            <span>{progress > 30 ? '이미지 생성 완료' : '이미지 생성 중...'}</span>
+                            <span>{progress > 30 ? '디자인 생성 완료' : '디자인 생성 중...'}</span>
                           </div>
                           <div className="flex items-center gap-2">
                             <div className={`w-2 h-2 rounded-full animate-pulse ${progress > 70 ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
-                            <span>{progress > 70 ? '비디오 합성 완료' : '비디오 합성 중...'}</span>
+                            <span>{progress > 70 ? '코드 생성 완료' : '코드 생성 중...'}</span>
                           </div>
                           <div className="flex items-center gap-2">
                             <div className={`w-2 h-2 rounded-full animate-pulse ${progress === 100 ? 'bg-green-500' : 'bg-gray-500'}`}></div>
@@ -491,49 +445,59 @@ const VisionApp: React.FC = () => {
                         {/* 미리보기 스켈레톤 */}
                         <div className="mt-4">
                           <div className="aspect-video rounded-xl overflow-hidden bg-white/5 border border-white/10 relative">
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" style={{ animationDuration: "2s" }} />
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent web-animate-shimmer" style={{ animationDuration: "2s" }} />
                           </div>
                         </div>
                       </div>
                     )}
-                    {!loading && (
-                      <button type="button" onClick={() => { window.location.href = 'http://localhost:3001/#contact'; }} className="group relative w-full py-6 bg-gradient-apple rounded-2xl text-white font-bold text-lg hover:scale-[1.02] transition-all shadow-2xl shadow-purple-500/40 hover:shadow-purple-500/60 overflow-hidden btn-shimmer ripple">
-                        <span className="relative z-10 flex items-center justify-center gap-2">
-                          <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                          </svg>
-                          서비스 문의하기
-                          <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                          </svg>
-                        </span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      </button>
-                    )}
+                    <button type="button" onClick={() => { window.location.href = 'http://localhost:3001/#contact'; }} disabled={loading || autoAnimationStarted} className="group relative w-full py-6 bg-web-gradient-apple rounded-2xl text-white font-bold text-lg hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 transition-all shadow-2xl shadow-purple-500/40 hover:shadow-purple-500/60 overflow-hidden web-btn-shimmer web-ripple">
+                      <span className="relative z-10 flex items-center justify-center gap-2">
+                        {loading ? (
+                          <>
+                            <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            생성 중...
+                          </>
+                        ) : (
+                          <>
+                            <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            서비스 문의하기
+                            <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                          </>
+                        )}
+                      </span>
+                      {!loading && <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />}
+                    </button>
                   </form>
-                ) : showGeneratedVideo && generatedVideo ? (
+                ) : showGeneratedWebsite && generatedWebsite ? (
                   <div className="space-y-6">
                     <div className="text-center">
-                      <h4 className="text-2xl font-bold text-gradient-silver mb-4">생성 완료!</h4>
-                      <p className="text-gray-400">AI가 당신의 영상을 완성했습니다</p>
+                      <h4 className="text-2xl font-bold web-text-gradient-silver mb-4">생성 완료!</h4>
+                      <p className="text-gray-400">AI가 당신의 웹사이트를 완성했습니다</p>
                     </div>
                     <div className="relative">
                       <div className="aspect-video bg-gradient-to-br from-gray-900 to-black rounded-2xl overflow-hidden">
                         <video 
                           className="w-full h-full object-cover" 
                           controls 
-                          poster={generatedVideo.thumbnail_url}
+                          poster={generatedWebsite.thumbnail_url}
                         >
-                          <source src={generatedVideo.video_url} type="video/mp4" />
+                          <source src="/video.mp4" type="video/mp4" />
                         </video>
                       </div>
                       <div className="mt-4">
-                        <h5 className="text-lg font-bold text-white mb-2">{generatedVideo.title}</h5>
-                        <p className="text-sm text-gray-400 mb-6">{generatedVideo.prompt}</p>
+                        <h5 className="text-lg font-bold text-white mb-2">{generatedWebsite.title}</h5>
+                        <p className="text-sm text-gray-400 mb-6">{generatedWebsite.description}</p>
                         <div className="text-center">
                           <button 
                             onClick={() => { window.location.href = 'http://localhost:3001/#contact'; }} 
-                            className="group relative px-8 py-4 bg-gradient-apple rounded-xl text-white font-bold text-lg hover:scale-105 transition-all shadow-xl shadow-purple-500/40 hover:shadow-purple-500/60 overflow-hidden btn-shimmer ripple"
+                            className="group relative px-8 py-4 bg-web-gradient-apple rounded-xl text-white font-bold text-lg hover:scale-105 transition-all shadow-xl shadow-purple-500/40 hover:shadow-purple-500/60 overflow-hidden web-btn-shimmer web-ripple"
                           >
                             <span className="relative z-10 flex items-center justify-center gap-3">
                               <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -547,7 +511,7 @@ const VisionApp: React.FC = () => {
                             <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                           </button>
                           <p className="text-xs text-gray-500 mt-3">
-                            이 영상처럼 AI가 만드는 맞춤형 비디오를 원하신다면 문의해주세요
+                            이 웹사이트처럼 AI가 만드는 맞춤형 웹사이트를 원하신다면 문의해주세요
                           </p>
                         </div>
                       </div>
@@ -557,15 +521,15 @@ const VisionApp: React.FC = () => {
               </div>
             </div>
 
-            <div className="space-y-6 animate-slide-up" style={{ animationDelay: "0.2s" }}>
-              <div className="glass rounded-3xl p-10 hover-lift shadow-xl shadow-black/30 border-white/10">
-                <h4 className="text-3xl font-black mb-8 text-gradient-silver">AI 비디오 생성 프로세스</h4>
+            <div className="space-y-6 web-animate-slide-up" style={{ animationDelay: "0.2s" }}>
+              <div className="web-glass rounded-3xl p-10 web-hover-lift shadow-xl shadow-black/30 border-white/10">
+                <h4 className="text-3xl font-black mb-8 web-text-gradient-silver">AI 웹사이트 생성 프로세스</h4>
                 <div className="space-y-7">
                   {[
                     { icon: "✨", title: "프롬프트 분석", desc: "AI가 당신의 설명을 정확히 이해하고 분석합니다", color: "from-slate-400 to-slate-600" },
-                    { icon: "🎨", title: "이미지 생성", desc: "고품질 키프레임 이미지들을 생성합니다", color: "from-gray-400 to-gray-600" },
-                    { icon: "🎬", title: "비디오 합성", desc: "프레임들을 자연스럽게 연결하여 비디오를 만듭니다", color: "from-zinc-400 to-zinc-600" },
-                    { icon: "✅", title: "최종 완성", desc: "고품질 비디오가 완성되어 다운로드 가능합니다", color: "from-neutral-400 to-neutral-600" },
+                    { icon: "🎨", title: "디자인 생성", desc: "모던하고 반응형 디자인을 자동으로 생성합니다", color: "from-gray-400 to-gray-600" },
+                    { icon: "💻", title: "코드 생성", desc: "최적화된 HTML, CSS, JavaScript 코드를 생성합니다", color: "from-zinc-400 to-zinc-600" },
+                    { icon: "✅", title: "최종 완성", desc: "SEO·GEO·AEO 최적화된 웹사이트가 완성됩니다", color: "from-neutral-400 to-neutral-600" },
                   ].map((step, i) => (
                     <div key={i} className="flex items-start gap-5 group/item hover:translate-x-2 transition-transform duration-300">
                       <div className={`flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br ${step.color} flex items-center justify-center text-2xl shadow-xl shadow-black/40 group-hover/item:scale-110 group-hover/item:shadow-2xl transition-all duration-300`}>{step.icon}</div>
@@ -578,18 +542,90 @@ const VisionApp: React.FC = () => {
                 </div>
               </div>
 
-              <div className="glass rounded-3xl p-8 hover-lift shadow-xl shadow-black/30 border-white/10">
+              <div className="web-glass rounded-3xl p-8 web-hover-lift shadow-xl shadow-black/30 border-white/10">
                 <div className="flex items-center gap-3 mb-5">
                   <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-slate-300 to-slate-500 flex items-center justify-center text-xl shadow-lg shadow-black/40">💡</div>
                   <h5 className="text-lg font-bold text-gray-100">프로 팁</h5>
                 </div>
                 <ul className="space-y-3.5 text-sm text-gray-400">
                   <li className="flex items-start gap-3 group/tip hover:text-gray-300 transition-colors"><span className="text-slate-400 mt-0.5 group-hover/tip:text-slate-300 transition-colors">▸</span><span>구체적인 설명일수록 더 정확한 결과를 얻을 수 있습니다</span></li>
-                  <li className="flex items-start gap-3 group/tip hover:text-gray-300 transition-colors"><span className="text-slate-400 mt-0.5 group-hover/tip:text-slate-300 transition-colors">▸</span><span>색상, 분위기, 카메라 각도 등을 명시하세요</span></li>
-                  <li className="flex items-start gap-3 group/tip hover:text-gray-300 transition-colors"><span className="text-slate-400 mt-0.5 group-hover/tip:text-slate-300 transition-colors">▸</span><span>5-10초 길이가 가장 안정적인 품질을 제공합니다</span></li>
+                  <li className="flex items-start gap-3 group/tip hover:text-gray-300 transition-colors"><span className="text-slate-400 mt-0.5 group-hover/tip:text-slate-300 transition-colors">▸</span><span>색상, 레이아웃, 기능 등을 명시하세요</span></li>
+                  <li className="flex items-start gap-3 group/tip hover:text-gray-300 transition-colors"><span className="text-slate-400 mt-0.5 group-hover/tip:text-slate-300 transition-colors">▸</span><span>SEO·GEO·AEO 최적화가 자동으로 적용됩니다</span></li>
                 </ul>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" className="py-40 px-6 bg-gradient-to-b from-black via-gray-900/10 to-black relative">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-20 left-10 w-96 h-96 bg-slate-600 rounded-full blur-3xl opacity-15 animate-pulse" style={{ animationDuration: "8s" }} />
+          <div className="absolute bottom-20 right-10 w-[32rem] h-[32rem] bg-gray-700 rounded-full blur-3xl opacity-15 animate-pulse" style={{ animationDelay: "2s", animationDuration: "10s" }} />
+        </div>
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center mb-20">
+            <div className="inline-block px-5 py-2.5 mb-8 bg-white/5 backdrop-blur-md rounded-full border border-white/10 shadow-lg shadow-black/20">
+              <span className="text-sm font-bold web-text-gradient-silver tracking-wide">🚀 FEATURES</span>
+            </div>
+            <h3 className="text-6xl md:text-7xl font-black mb-8 tracking-tighter leading-tight">
+              <span className="web-text-gradient-silver">완벽한 웹사이트 솔루션</span>
+            </h3>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+              AI 웹사이트 제작부터 마케팅까지<br />
+              <span className="text-sm text-gray-500 mt-2 inline-block">모든 것을 한 번에 해결</span>
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                icon: "🎯",
+                title: "SEO 최적화",
+                description: "검색엔진 최적화로 상위 노출을 보장합니다",
+                color: "from-blue-400 to-blue-600"
+              },
+              {
+                icon: "🌍",
+                title: "GEO 최적화",
+                description: "지역 검색 최적화로 로컬 고객을 확보합니다",
+                color: "from-green-400 to-green-600"
+              },
+              {
+                icon: "📱",
+                title: "AEO 최적화",
+                description: "음성 검색 최적화로 미래를 준비합니다",
+                color: "from-purple-400 to-purple-600"
+              },
+              {
+                icon: "📈",
+                title: "웹사이트 마케팅",
+                description: "전문 마케팅팀이 성과를 극대화합니다",
+                color: "from-orange-400 to-orange-600"
+              },
+              {
+                icon: "🛠️",
+                title: "자체 웹빌더",
+                description: "직관적인 드래그 앤 드롭으로 쉽게 편집",
+                color: "from-pink-400 to-pink-600"
+              },
+              {
+                icon: "⚡",
+                title: "빠른 로딩",
+                description: "최적화된 코드로 빠른 속도를 보장합니다",
+                color: "from-yellow-400 to-yellow-600"
+              }
+            ].map((feature, i) => (
+              <div key={i} className="relative group">
+                <div className="relative web-glass rounded-3xl p-8 web-hover-lift shadow-xl shadow-black/40 border-white/10">
+                  <div className={`flex-shrink-0 w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center text-3xl shadow-xl shadow-black/40 group-hover:scale-110 group-hover:shadow-2xl transition-all duration-300 mb-6`}>
+                    {feature.icon}
+                  </div>
+                  <h4 className="text-xl font-bold mb-3 line-clamp-2 group-hover:web-text-gradient transition-all">{feature.title}</h4>
+                  <p className="text-sm text-gray-400 leading-relaxed">{feature.description}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -602,31 +638,31 @@ const VisionApp: React.FC = () => {
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-20">
             <div className="inline-block px-5 py-2.5 mb-8 bg-white/5 backdrop-blur-md rounded-full border border-white/10 shadow-lg shadow-black/20">
-              <span className="text-sm font-bold text-gradient-silver tracking-wide">🎥 GALLERY</span>
+              <span className="text-sm font-bold web-text-gradient-silver tracking-wide">🌐 GALLERY</span>
             </div>
             <h3 className="text-6xl md:text-7xl font-black mb-8 tracking-tighter leading-tight">
-              <span className="text-gradient-silver">영상 Preview</span>
+              <span className="web-text-gradient-silver">웹사이트 Preview</span>
             </h3>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
-              AI가 만들어낸 놀라운 비디오들을 확인해보세요<br />
-              <span className="text-sm text-gray-500 mt-2 inline-block">당신의 다음 창작물을 위한 영감</span>
+              AI가 만들어낸 놀라운 웹사이트들을 확인해보세요<br />
+              <span className="text-sm text-gray-500 mt-2 inline-block">당신의 다음 프로젝트를 위한 영감</span>
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {videos.map((video) => (
-              <div key={video.id} className="relative group">
-                <div className="relative glass rounded-3xl overflow-hidden shadow-xl shadow-black/40 border-white/10">
-                  <div className="relative h-72 bg-gradient-to-br from-gray-900 to-black cursor-pointer overflow-hidden" onClick={() => video.status === "completed" && setSelectedVideo(video)}>
-                    {video.thumbnail_url ? (
-                      <img src={video.thumbnail_url} alt={video.title} className="w-full h-full object-cover" />
+            {websites.map((website) => (
+              <div key={website.id} className="relative group">
+                <div className="relative web-glass rounded-3xl overflow-hidden shadow-xl shadow-black/40 border-white/10">
+                  <div className="relative h-72 bg-gradient-to-br from-gray-900 to-black overflow-hidden">
+                    {website.thumbnail_url ? (
+                      <img src={website.thumbnail_url} alt={website.title} className="w-full h-full object-cover" />
                     ) : (
                       <div className="flex items-center justify-center h-full">
                         <svg className="w-20 h-20 text-gray-700" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" />
+                          <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
                         </svg>
                       </div>
                     )}
-                    {video.status === "processing" && (
+                    {website.status === "processing" && (
                       <div className="absolute inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center">
                         <div className="text-center">
                           <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
@@ -634,57 +670,14 @@ const VisionApp: React.FC = () => {
                         </div>
                       </div>
                     )}
-                    {video.status === "completed" && (
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
-                        <div className="transform scale-75 group-hover:scale-100 transition-transform duration-500">
-                          <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
-                            <svg className="w-10 h-10 text-white ml-1" fill="currentColor" viewBox="0 0 20 20">
-                              <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                            </svg>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                    <div className="absolute top-4 right-4">{getStatusBadge(video.status)}</div>
+                    <div className="absolute top-4 right-4">{getStatusBadge(website.status)}</div>
                   </div>
                   <div className="p-7">
-                    <h4 className="text-xl font-bold mb-3 line-clamp-2 group-hover:text-gradient transition-all">{video.title}</h4>
-                    <p className="text-sm text-gray-400 mb-5 line-clamp-2 leading-relaxed">{video.prompt}</p>
+                    <h4 className="text-xl font-bold mb-3 web-line-clamp-2 group-hover:web-text-gradient transition-all">{website.title}</h4>
+                    <p className="text-sm text-gray-400 mb-5 web-line-clamp-2 leading-relaxed">{website.description}</p>
                     <div className="flex items-center justify-between text-xs text-gray-500 mb-5 font-semibold">
-                      <span>{new Date(video.created_at).toLocaleDateString("ko-KR", { month: "short", day: "numeric", timeZone: "UTC" })}</span>
-                      {video.duration && <span className="px-2 py-1 bg-white/5 rounded-lg">{video.duration}초</span>}
-                    </div>
-                    <div className="flex gap-3">
-                      {video.status === "completed" && (
-                        <>
-                          <button onClick={() => setSelectedVideo(video)} className="group/btn flex-1 px-4 py-3 bg-gradient-apple rounded-xl text-sm font-bold hover:scale-105 transition-all shadow-lg ripple">
-                            <span className="flex items-center justify-center gap-1.5">
-                              <svg className="w-4 h-4 group-hover/btn:scale-110 transition-transform" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                              </svg>
-                              재생
-                            </span>
-                          </button>
-                          {video.video_url && (
-                            <a href={video.video_url} download className="group/btn flex-1 px-4 py-3 bg-white/10 hover:bg-white/20 rounded-xl transition-all text-sm font-bold text-center ripple">
-                              <span className="flex items-center justify-center gap-1.5">
-                                <svg className="w-4 h-4 group-hover/btn:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                                </svg>
-                                다운로드
-                              </span>
-                            </a>
-                          )}
-                        </>
-                      )}
-                      <button onClick={() => handleDelete(video.id)} className="group/btn px-4 py-3 bg-red-500/20 hover:bg-red-500/30 rounded-xl transition-all text-sm font-bold ripple">
-                        <span className="flex items-center justify-center gap-1.5">
-                          <svg className="w-4 h-4 group-hover/btn:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-                          삭제
-                        </span>
-                      </button>
+                      <span>{new Date(website.created_at).toLocaleDateString("ko-KR", { month: "short", day: "numeric", timeZone: "UTC" })}</span>
+                      <span className="px-2 py-1 bg-white/5 rounded-lg">{website.category}</span>
                     </div>
                   </div>
                 </div>
@@ -694,27 +687,19 @@ const VisionApp: React.FC = () => {
         </div>
       </section>
 
-      <AboutSection />
-
       <footer className="relative py-20 px-6 border-t border-white/5 bg-gradient-to-b from-black to-gray-950">
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
             <div className="flex justify-center mb-6">
-              <img src="/logo.png" alt="Vision Create" className="h-16 w-16 logo-glow opacity-80" />
+              <img src="/logo.png" alt="Web Create" className="h-16 w-16 web-logo-glow opacity-80" />
             </div>
-            <h2 className="text-3xl font-black text-gradient-silver mb-4 tracking-tight">VISIONCREATE</h2>
-            <p className="text-gray-500 text-base mb-10 font-medium">© 2025 VISIONCREATE. Powered by Advanced AI Technology.</p>
+            <h2 className="text-3xl font-black web-text-gradient-silver mb-4 tracking-tight">TOTARO WEB</h2>
+            <p className="text-gray-500 text-base mb-10 font-medium">© 2025 TOTARO WEB. Powered by Advanced AI Technology.</p>
           </div>
         </div>
       </footer>
-
-      {selectedVideo && (
-        <VideoPlayer video={selectedVideo} onClose={() => setSelectedVideo(null)} />
-      )}
     </div>
   );
 };
 
-export default VisionApp;
-
-
+export default WebApp;

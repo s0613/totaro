@@ -105,7 +105,7 @@ export default function UseCases({ title, cases }: UseCasesProps) {
       ([entry]) => {
         if (entry.isIntersecting) {
           runImmediate();
-          io && io.disconnect();
+          if (io) io.disconnect();
         }
       },
       { root: null, rootMargin: "200px 0px", threshold: 0.05 }

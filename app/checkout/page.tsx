@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { useState, Suspense } from "react";
+import { useSearchParams, usePathname } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,8 +23,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-export default function CheckoutPage() {
-  const router = useRouter();
+function CheckoutContent() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const currentLang = searchParams.get("lang") || "ko";
@@ -38,8 +37,6 @@ export default function CheckoutPage() {
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema), defaultValues: { plan: "starter" } });
 
-  const priceKRW = 890000;
-  const priceFormatted = new Intl.NumberFormat("ko-KR").format(priceKRW);
 
   const onSubmit = async (data: FormData) => {
     // Form validation passed, proceed to payment step
@@ -99,18 +96,12 @@ export default function CheckoutPage() {
                   <span className="font-semibold">{currentLang === "en" ? "Starter" : "스타터"}</span>
                 </div>
               </div>
-              <div className="border-t border-line pt-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-textSecondary">{currentLang === "en" ? "Total" : "총 금액"}</span>
-                  <span className="font-bold text-2xl text-accent">₩{priceFormatted}</span>
-                </div>
-              </div>
             </aside>
 
             {/* Payment Widget */}
             <div className="lg:col-span-2">
               <PaymentWidget
-                amount={priceKRW}
+                amount={0}
                 orderName={generateOrderName("starter", currentLang === "en" ? "en" : "ko")}
                 customerName={customerInfo.name}
                 customerEmail={customerInfo.email}
@@ -134,8 +125,8 @@ export default function CheckoutPage() {
         </h1>
         <p className="text-textSecondary mb-10">
           {currentLang === "en"
-            ? "AEO/SEO/GEO‑ready website production. From ₩890,000."
-            : "AEO·SEO·GEO 친화적 웹사이트 제작. 89만원부터."}
+            ? "AEO/SEO/GEO‑ready website production."
+            : "AEO·SEO·GEO 친화적 웹사이트 제작."}
         </p>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -148,10 +139,6 @@ export default function CheckoutPage() {
               <div className="flex items-center justify-between">
                 <span className="text-textSecondary">{currentLang === "en" ? "Plan" : "요금제"}</span>
                 <span className="font-semibold">{currentLang === "en" ? "Starter" : "스타터"}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-textSecondary">{currentLang === "en" ? "Price" : "가격"}</span>
-                <span className="font-bold text-2xl">₩{priceFormatted}</span>
               </div>
               <p className="text-xs text-textSecondary/70">
                 {currentLang === "en"
@@ -186,7 +173,7 @@ export default function CheckoutPage() {
               <div>
                 <label className="block text-sm font-semibold mb-2">{currentLang === "en" ? "Plan" : "요금제"}</label>
                 <select className="w-full px-4 py-3 bg-bg border border-line rounded-lg" {...register("plan")}>
-                  <option value="starter">{currentLang === "en" ? "Starter (from ₩890,000)" : "스타터 (89만원부터)"}</option>
+                  <option value="starter">{currentLang === "en" ? "Starter" : "스타터"}</option>
                 </select>
                 {errors.plan && <p className="text-warning text-sm mt-2">{errors.plan.message}</p>}
               </div>
@@ -225,5 +212,13 @@ export default function CheckoutPage() {
         </div>
       </div>
     </section>
+  );
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={<div className="py-20 text-center">Loading...</div>}>
+      <CheckoutContent />
+    </Suspense>
   );
 }

@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
     });
 
     // TODO: Send email notification
-    // await sendEmail({ to: 'hello@totalo.com', subject: 'New Contact Form', body: ... });
+    // await sendEmail({ to: 'hello@totaro.com', subject: 'New Contact Form', body: ... });
 
     return NextResponse.json({
       success: true,

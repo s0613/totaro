@@ -43,16 +43,19 @@ export default function ServiceDetails({ content }: ServiceDetailsProps) {
 
     const children = containerRef.current.querySelectorAll(".js-service-child");
 
+    // 초기 상태 세팅 후 더 짧고 부드러운 트윈으로 전환
+    gsap.set(children, { opacity: 0, y: 12 });
+
     ScrollTrigger.batch(children, {
-      start: "top 92%",
+      start: "top 88%",
       once: true,
       onEnter: (batch) => {
-        gsap.from(batch as Element[], {
-          opacity: 0,
-          y: 20,
-          duration: 0.6,
-          ease: "power2.out",
-          stagger: 0.08,
+        gsap.to(batch as Element[], {
+          opacity: 1,
+          y: 0,
+          duration: 0.45,
+          ease: "power3.out",
+          stagger: 0.06,
         });
       },
     });
@@ -87,11 +90,11 @@ export default function ServiceDetails({ content }: ServiceDetailsProps) {
             >
               {/* Icon & Title */}
               <div className="flex-1 text-center lg:text-left">
-                <div className="inline-block text-8xl mb-6 js-service-child">{service.icon}</div>
-                <h3 className="text-4xl font-bold text-textPrimary mb-4 js-service-child">
+                <div className="inline-block text-8xl mb-6 js-service-child" style={{ willChange: "transform, opacity" }}>{service.icon}</div>
+                <h3 className="text-4xl font-bold text-textPrimary mb-4 js-service-child" style={{ willChange: "transform, opacity" }}>
                   {service.title}
                 </h3>
-                <p className="text-lg text-textSecondary mb-8 js-service-child">
+                <p className="text-lg text-textSecondary mb-8 js-service-child" style={{ willChange: "transform, opacity" }}>
                   {service.description}
                 </p>
 
@@ -126,7 +129,7 @@ export default function ServiceDetails({ content }: ServiceDetailsProps) {
 
               {/* Features */}
               <div className="flex-1">
-                <div className="bg-bg rounded-2xl p-8 border border-line js-service-child">
+                <div className="bg-bg rounded-2xl p-8 border border-line js-service-child" style={{ willChange: "transform, opacity" }}>
                   <h4 className="text-xl font-bold text-textPrimary mb-6">
                     주요 기능
                   </h4>

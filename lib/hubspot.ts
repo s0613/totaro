@@ -24,7 +24,7 @@ interface HubSpotContact {
 /**
  * Create or update a contact in HubSpot
  */
-export async function createHubSpotContact(data: ContactData) {
+export async function createHubSpotContact(data: ContactData): Promise<{ success: boolean; message: string; contactId?: string }> {
   const HUBSPOT_API_KEY = process.env.HUBSPOT_API_KEY;
 
   if (!HUBSPOT_API_KEY) {
@@ -83,7 +83,7 @@ export async function createHubSpotContact(data: ContactData) {
     const result = await response.json();
     console.log("[HubSpot] Contact created:", result.id);
 
-    return { success: true, contactId: result.id };
+    return { success: true, message: "Contact created successfully", contactId: result.id };
   } catch (error) {
     console.error("[HubSpot] Error:", error);
     return { success: false, message: "HubSpot API error" };
@@ -93,7 +93,7 @@ export async function createHubSpotContact(data: ContactData) {
 /**
  * Update an existing contact in HubSpot
  */
-async function updateHubSpotContact(data: ContactData) {
+async function updateHubSpotContact(data: ContactData): Promise<{ success: boolean; message: string; contactId?: string }> {
   const HUBSPOT_API_KEY = process.env.HUBSPOT_API_KEY;
 
   if (!HUBSPOT_API_KEY) {
@@ -175,7 +175,7 @@ async function updateHubSpotContact(data: ContactData) {
     const result = await updateResponse.json();
     console.log("[HubSpot] Contact updated:", contactId);
 
-    return { success: true, contactId };
+    return { success: true, message: "Contact updated successfully", contactId };
   } catch (error) {
     console.error("[HubSpot] Update error:", error);
     return { success: false, message: "HubSpot API error" };
@@ -185,7 +185,7 @@ async function updateHubSpotContact(data: ContactData) {
 /**
  * Send email notification via HubSpot (optional)
  */
-export async function sendHubSpotEmail(to: string, subject: string, body: string) {
+export async function sendHubSpotEmail(to: string, subject: string, body: string): Promise<{ success: boolean; message?: string }> {
   const HUBSPOT_API_KEY = process.env.HUBSPOT_API_KEY;
 
   if (!HUBSPOT_API_KEY) {
@@ -198,9 +198,9 @@ export async function sendHubSpotEmail(to: string, subject: string, body: string
     // This requires HubSpot email template setup
     console.log("[HubSpot] Email notification:", { to, subject });
 
-    return { success: true };
+    return { success: true, message: "Email sent successfully" };
   } catch (error) {
     console.error("[HubSpot] Email error:", error);
-    return { success: false };
+    return { success: false, message: "Email sending failed" };
   }
 }

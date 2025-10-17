@@ -68,4 +68,8 @@ body {
   .btn-primary {
     @apply bg-accent text-white font-bold py-4 px-8 rounded-lg hover:bg-accent/90 transition-colors;
   }
+
+  .btn-secondary {
+    @apply bg-surface text-textPrimary font-bold py-4 px-8 rounded-lg border border-line hover:bg-surface/80 transition-colors;
+  }
 }

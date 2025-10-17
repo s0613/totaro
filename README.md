@@ -1,16 +1,18 @@
-# AI 비디오 생성 플랫폼
+# Totaro - AI 비디오 생성 플랫폼
 
 텍스트 프롬프트로 AI 비디오를 생성하는 풀스택 웹 애플리케이션입니다.
 
 ## 기술 스택
 
 ### 프론트엔드
+
 - **React 18** + **TypeScript** - UI 프레임워크
 - **Vite** - 빌드 도구
 - **Tailwind CSS** - 스타일링
 - **Supabase Client** - 실시간 데이터베이스 연동
 
 ### 백엔드
+
 - **Supabase** - 데이터베이스, 인증, 스토리지
   - PostgreSQL 데이터베이스
   - Row Level Security (RLS)
@@ -18,6 +20,7 @@
   - Storage 버킷
 
 ### AI 서비스
+
 - **fal.ai** - AI 비디오 생성 API
 
 ## 주요 기능
@@ -115,12 +118,14 @@ src/
 ## 데이터베이스 스키마
 
 ### users 테이블
+
 - `id` (UUID) - 사용자 ID
 - `email` (TEXT) - 이메일
 - `name` (TEXT) - 이름
 - `created_at` (TIMESTAMP) - 생성 시간
 
 ### videos 테이블
+
 - `id` (UUID) - 비디오 ID
 - `user_id` (UUID) - 사용자 ID
 - `title` (TEXT) - 제목
@@ -138,26 +143,26 @@ src/
 ### 비디오 생성
 
 ```typescript
-import { videoApi } from './lib/api';
-import { falService } from './lib/falService';
+import { videoApi } from "./lib/api";
+import { falService } from "./lib/falService";
 
 // 1. 비디오 레코드 생성
 const video = await videoApi.createVideo({
-  title: '제목',
-  prompt: '프롬프트',
+  title: "제목",
+  prompt: "프롬프트",
   user_id: user.id,
 });
 
 // 2. AI 비디오 생성
 const { request_id } = await falService.generateVideoAsync({
-  prompt: '프롬프트',
+  prompt: "프롬프트",
   duration: 5,
-  aspectRatio: '16:9',
+  aspectRatio: "16:9",
 });
 
 // 3. 비디오 상태 업데이트
 await videoApi.updateVideo(video.id, {
-  status: 'completed',
+  status: "completed",
   video_url: result.video_url,
 });
 ```
@@ -165,10 +170,10 @@ await videoApi.updateVideo(video.id, {
 ### 실시간 구독
 
 ```typescript
-import { subscriptions } from './lib/api';
+import { subscriptions } from "./lib/api";
 
 const subscription = subscriptions.subscribeToVideos(userId, (payload) => {
-  console.log('비디오 업데이트:', payload);
+  console.log("비디오 업데이트:", payload);
 });
 
 // 구독 해제
@@ -185,15 +190,18 @@ subscription.unsubscribe();
 ## 문제 해결
 
 ### 비디오 생성 실패
+
 - fal.ai API 키가 올바른지 확인
 - 프롬프트가 너무 길거나 짧지 않은지 확인
 - 네트워크 연결 확인
 
 ### 실시간 업데이트 작동 안 함
+
 - Supabase 프로젝트의 Realtime 기능이 활성화되어 있는지 확인
 - RLS 정책이 올바르게 설정되어 있는지 확인
 
 ### 인증 오류
+
 - Supabase URL과 Anon Key가 올바른지 확인
 - 이메일 인증이 활성화되어 있는지 확인
 

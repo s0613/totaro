@@ -11,13 +11,8 @@ import OrderSection from "./components/OrderSection";
 import Footer from "./components/Footer";
 import { getContent, type Lang } from "@/lib/i18n";
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: Promise<{ lang?: string }>;
-}) {
-  const params = await searchParams;
-  const lang = (params.lang === "en" ? "en" : "ko") as Lang;
+export default function Home() {
+  const lang = "ko" as Lang;
   const content = getContent(lang);
 
   return (
@@ -28,7 +23,7 @@ export default async function Home({
       {/* Hero Section */}
       <Hero content={content.hero} lang={lang} />
 
-      {/* Signature Feature - totalo 통합 솔루션 시각화 */}
+      {/* Signature Feature - totaro 통합 솔루션 시각화 */}
       <SignatureFeature content={content.signatureFeature} />
 
       {/* Service Details - 각 서비스별 상세 설명 */}

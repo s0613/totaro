@@ -3,8 +3,9 @@
 import { useSearchParams, usePathname } from "next/navigation";
 import Link from "next/link";
 import { trackLanguageChange } from "@/lib/analytics";
+import { Suspense } from "react";
 
-export default function LanguageSwitcher() {
+function LanguageSwitcherContent() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const currentLang = searchParams.get("lang") || "ko";
@@ -24,5 +25,13 @@ export default function LanguageSwitcher() {
     >
       {displayText}
     </Link>
+  );
+}
+
+export default function LanguageSwitcher() {
+  return (
+    <Suspense fallback={<div className="fixed bottom-8 right-8 z-[60] px-5 py-3 bg-surface/90 backdrop-blur-lg border border-line rounded-full text-sm font-bold text-textPrimary">...</div>}>
+      <LanguageSwitcherContent />
+    </Suspense>
   );
 }

@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
 
       // Supabase에 실패 상태 업데이트
       try {
-        const supabase = createClient();
+        const supabase = await createClient();
         await supabase
           .from("orders")
           .update({
@@ -97,7 +97,7 @@ export async function POST(req: NextRequest) {
 
     // 4. Supabase에 결제 완료 상태 저장
     try {
-      const supabase = createClient();
+      const supabase = await createClient();
 
       const { error: updateError } = await supabase
         .from("orders")

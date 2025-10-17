@@ -167,13 +167,22 @@ export default function Hero({ content }: HeroProps) {
           {content.subcopy}
         </p>
 
-        <a
-          href="#contact"
-          onClick={() => trackCTAClick("Get Started", "hero")}
-          className="btn-primary text-lg px-10 py-5 shadow-soft hover:shadow-lg transition-shadow inline-block"
-        >
-          {content.primaryCta}
-        </a>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="#contact"
+            onClick={() => trackCTAClick("Get Started", "hero")}
+            className="btn-primary text-lg px-10 py-5 shadow-soft hover:shadow-lg transition-shadow inline-block"
+          >
+            {content.primaryCta}
+          </a>
+          <a
+            href="/solutions/builder"
+            onClick={() => trackCTAClick("Web Builder", "hero")}
+            className="btn-secondary text-lg px-10 py-5 shadow-soft hover:shadow-lg transition-shadow inline-block"
+          >
+            웹빌더 솔루션 보기
+          </a>
+        </div>
       </div>
 
       {/* Scroll indicator */}

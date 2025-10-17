@@ -1,4 +1,4 @@
-// Design Tokens for totalo B2B Marketing Site
+// Design Tokens for totaro B2B Marketing Site
 // Based on PRD/LLD specifications
 
 export const tokens = {
