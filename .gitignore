@@ -48,3 +48,4 @@ dev.log
 nul
 test-*.js
 mcp-server-*.js
+.claude/
