@@ -48,7 +48,7 @@ const AboutSection: React.FC = () => {
             <div className="absolute -inset-4 bg-gradient-silver rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition duration-1000"></div>
             <div className="relative glass-strong rounded-3xl p-8 hover-lift shadow-2xl shadow-black/40 border-white/20">
               <div className="relative overflow-hidden rounded-2xl">
-                <img src="/songseungju.png" alt="송승주 개발자" className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700" />
+                <img src="/songseungju.webp" alt="송승주 개발자" className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               </div>
               <div className="absolute -top-4 -right-4 w-16 h-16 bg-gradient-apple rounded-full flex items-center justify-center text-2xl shadow-xl shadow-black/40 animate-float">💻</div>
