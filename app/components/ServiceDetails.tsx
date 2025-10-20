@@ -34,7 +34,7 @@ export default function ServiceDetails({ content }: ServiceDetailsProps) {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-20">
           <h2 className="text-5xl font-bold text-textPrimary mb-6">
-            토탈로가 제공하는 솔루션
+            토타로가 제공하는 솔루션
           </h2>
           <p className="text-xl text-textSecondary max-w-3xl mx-auto">
             각 단계별 최적화된 도구로 수출 성공률을 높입니다

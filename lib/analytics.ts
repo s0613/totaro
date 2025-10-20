@@ -99,34 +99,3 @@ export const trackThemeChange = (theme: string) => {
     label: theme,
   });
 };
-
-/**
- * Track checkout start
- */
-export const trackCheckoutStart = (plan: string, price: number) => {
-  event({
-    action: "begin_checkout",
-    category: "ecommerce",
-    label: plan,
-    value: price,
-  });
-};
-
-/**
- * Track purchase
- */
-export const trackPurchase = (orderId: string, plan: string, price: number) => {
-  if (typeof window.gtag !== "undefined") {
-    window.gtag("event", "purchase", {
-      transaction_id: orderId,
-      value: price,
-      currency: "KRW",
-      items: [
-        {
-          item_name: plan,
-          price: price,
-        },
-      ],
-    });
-  }
-};

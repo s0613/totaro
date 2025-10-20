@@ -26,6 +26,7 @@ export default function Hero({ content }: HeroProps) {
   const bgRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subcopyRef = useRef<HTMLParagraphElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
@@ -35,6 +36,12 @@ export default function Hero({ content }: HeroProps) {
         opacity: 1,
         duration: 0.6,
       });
+      // Play video after animation
+      if (videoRef.current) {
+        setTimeout(() => {
+          videoRef.current?.play();
+        }, 600);
+      }
       return;
     }
 
@@ -56,7 +63,19 @@ export default function Hero({ content }: HeroProps) {
       gsap.fromTo(
         subcopyRef.current,
         { opacity: 0, y: 16 },
-        { opacity: 1, y: 0, duration: 0.45, ease: "power2.out", delay: 0.1 }
+        { 
+          opacity: 1, 
+          y: 0, 
+          duration: 0.45, 
+          ease: "power2.out", 
+          delay: 0.1,
+          onComplete: () => {
+            // 애니메이션이 완료되면 비디오 재생
+            if (videoRef.current) {
+              videoRef.current.play();
+            }
+          }
+        }
       );
 
       // 이후 스크롤 패럴럭스만 연결
@@ -93,6 +112,12 @@ export default function Hero({ content }: HeroProps) {
             start: "top top",
             end: `+=${window.innerHeight * 0.5}`,
             scrub: 1,
+            onEnter: () => {
+              // 스크롤로 진입하면 비디오 재생
+              if (videoRef.current) {
+                videoRef.current.play();
+              }
+            },
           },
         }
       );
@@ -135,8 +160,18 @@ export default function Hero({ content }: HeroProps) {
         className="absolute inset-0"
         style={{ willChange: "transform, opacity" }}
       >
-        {/* Gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-bg via-surface to-bg opacity-80" />
+        {/* Video background */}
+        <video
+          ref={videoRef}
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/herosectionVideo.mp4" type="video/mp4" />
+        </video>
+        
+        {/* Gradient overlay for better text readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-bg/60 via-surface/40 to-bg/80" />
 
         {/* Arc Reactor Effect - Iron Man Heart */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
