@@ -4,6 +4,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/lib/contexts/ThemeContext";
 import ClientLayout from "./components/ClientLayout";
 import Analytics from "./components/Analytics";
+import JsonLd from "@/components/seo/JsonLd";
+import { organizationJsonLd, websiteJsonLd } from "@/lib/schemas";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -13,10 +15,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "TOTARO - 팀 없이, 수출을 한 번에",
-  description: "B2B 홈페이지, AEO/SEO/GEO, 타겟 마케팅, 바이어 관리까지 토탈로.",
-  keywords: ["B2B", "export", "AEO", "SEO", "GEO", "Korean manufacturers", "global buyers", "수출", "바이어"],
-  authors: [{ name: "TOTARO" }],
+  metadataBase: new URL('https://koreanacorn.com'),
+  title: "Korean Acorn - Premium Korean Products",
+  description: "Discover premium Korean products and services. Quality guaranteed.",
+  keywords: ["Korean products", "premium", "quality", "Korea"],
+  authors: [{ name: "Korean Acorn" }],
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
@@ -25,23 +28,23 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "ko_KR",
-    url: "https://totaro.com",
-    siteName: "TOTARO",
-    title: "TOTARO - 팀 없이, 수출을 한 번에",
-    description: "B2B 홈페이지, AEO/SEO/GEO, 타겟 마케팅, 바이어 관리까지 토탈로.",
+    url: "https://koreanacorn.com",
+    siteName: "Korean Acorn",
+    title: "Korean Acorn - Premium Korean Products",
+    description: "Discover premium Korean products and services. Quality guaranteed.",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "TOTARO",
+        alt: "Korean Acorn",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "TOTARO - 팀 없이, 수출을 한 번에",
-    description: "B2B 홈페이지, AEO/SEO/GEO, 타겟 마케팅, 바이어 관리까지 토탈로.",
+    title: "Korean Acorn - Premium Korean Products",
+    description: "Discover premium Korean products and services. Quality guaranteed.",
     images: ["/og-image.jpg"],
   },
   robots: {
@@ -57,40 +60,22 @@ export const metadata: Metadata = {
   },
 };
 
-// JSON-LD structured data
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      "@id": "https://totaro.com/#organization",
-      name: "TOTARO",
-      url: "https://totaro.com",
-      logo: "https://totaro.com/logo.png",
-      description: "AI-powered B2B export solution for Korean manufacturers",
-    },
-    {
-      "@type": "WebSite",
-      "@id": "https://totaro.com/#website",
-      url: "https://totaro.com",
-      name: "TOTARO",
-      publisher: {
-        "@id": "https://totaro.com/#organization",
-      },
-      inLanguage: ["ko", "en"],
-    },
-    {
-      "@type": "WebPage",
-      "@id": "https://totaro.com/#webpage",
-      url: "https://totaro.com",
-      name: "TOTARO - 팀 없이, 수출을 한 번에",
-      isPartOf: {
-        "@id": "https://totaro.com/#website",
-      },
-      description: "B2B 홈페이지, AEO/SEO/GEO, 타겟 마케팅, 바이어 관리까지 토탈로.",
-    },
+// Global JSON-LD data
+const organizationData = organizationJsonLd({
+  name: "Korean Acorn",
+  url: "https://koreanacorn.com",
+  logo: "https://koreanacorn.com/logo.png",
+  sameAs: [
+    "https://www.facebook.com/koreanacorn",
+    "https://www.instagram.com/koreanacorn",
+    "https://twitter.com/koreanacorn",
   ],
-};
+});
+
+const websiteData = websiteJsonLd({
+  url: "https://koreanacorn.com",
+  searchUrl: "https://koreanacorn.com/search",
+});
 
 export default function RootLayout({
   children,
@@ -111,10 +96,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           }}
         />
         {/* End Google Tag Manager */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        <JsonLd data={organizationData} />
+        <JsonLd data={websiteData} />
       </head>
       <body className="antialiased bg-bg text-textPrimary transition-colors duration-300">
         {/* Google Tag Manager (noscript) */}

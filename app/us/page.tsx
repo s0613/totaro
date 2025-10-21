@@ -1,47 +1,47 @@
-import LogoIntro from "./components/LogoIntro";
-import Hero from "./components/Hero";
-import SignatureFeature from "./components/SignatureFeature";
-import ServiceDetails from "./components/ServiceDetails";
-import HowItWorks from "./components/HowItWorks";
-import UseCases from "./components/UseCases";
-import Outcomes from "./components/Outcomes";
-import SocialProof from "./components/SocialProof";
-import CTAForm from "./components/CTAForm";
-import OrderSection from "./components/OrderSection";
-import Footer from "./components/Footer";
+import LogoIntro from "../components/LogoIntro";
+import Hero from "../components/Hero";
+import SignatureFeature from "../components/SignatureFeature";
+import ServiceDetails from "../components/ServiceDetails";
+import HowItWorks from "../components/HowItWorks";
+import UseCases from "../components/UseCases";
+import Outcomes from "../components/Outcomes";
+import SocialProof from "../components/SocialProof";
+import CTAForm from "../components/CTAForm";
+import OrderSection from "../components/OrderSection";
+import Footer from "../components/Footer";
 import { getContent, type Lang } from "@/lib/i18n";
 import { buildSEO } from "@/lib/seo";
 import JsonLd from "@/components/seo/JsonLd";
 import { serviceJsonLd, faqJsonLd } from "@/lib/schemas";
 
-export const metadata = buildSEO('/', 'default');
+export const metadata = buildSEO('/us', 'us');
 
-export default function Home() {
-  const lang = "ko" as Lang;
+export default function USPage() {
+  const lang = "en" as Lang;
   const content = getContent(lang);
 
   // Service JSON-LD
   const serviceData = serviceJsonLd({
-    name: "Korean Acorn Premium Products",
-    url: "https://koreanacorn.com",
-    areaServed: ["South Korea", "United States", "Canada"],
-    inLanguage: ["ko-KR", "en-US", "en-CA"],
-    description: "Premium Korean products and services delivered worldwide with quality guarantee.",
+    name: "Korean Acorn Premium Products USA",
+    url: "https://koreanacorn.com/us",
+    areaServed: ["United States"],
+    inLanguage: ["en-US"],
+    description: "Premium Korean products delivered to the USA with fast shipping and quality guarantee.",
   });
 
   // FAQ JSON-LD
   const faqData = faqJsonLd([
     {
-      q: "What products does Korean Acorn offer?",
-      a: "Korean Acorn offers premium Korean products including cosmetics, food items, traditional goods, and cultural products.",
+      q: "How long does shipping take to the USA?",
+      a: "Standard shipping to the USA takes 7-14 business days, with express shipping available for 3-5 business days.",
     },
     {
-      q: "Do you ship internationally?",
-      a: "Yes, we ship to the United States, Canada, and other countries worldwide with fast and reliable shipping.",
+      q: "Do you offer free shipping to the USA?",
+      a: "Yes, we offer free shipping on orders over $75 to the USA.",
     },
     {
-      q: "What is your quality guarantee?",
-      a: "We guarantee 100% authentic Korean products with quality assurance and customer satisfaction guarantee.",
+      q: "What payment methods do you accept?",
+      a: "We accept all major credit cards, PayPal, and other secure payment methods for USA customers.",
     },
   ]);
 
