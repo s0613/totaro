@@ -17,6 +17,11 @@ export const metadata: Metadata = {
   description: "B2B 홈페이지, AEO/SEO/GEO, 타겟 마케팅, 바이어 관리까지 토탈로.",
   keywords: ["B2B", "export", "AEO", "SEO", "GEO", "Korean manufacturers", "global buyers", "수출", "바이어"],
   authors: [{ name: "TOTARO" }],
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
+  },
   openGraph: {
     type: "website",
     locale: "ko_KR",
@@ -102,7 +107,7 @@ export default function RootLayout({
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-NWTRDPCW');`,
+})(window,document,'script','dataLayer','GTM-MBFSQ6BC');`,
           }}
         />
         {/* End Google Tag Manager */}
@@ -115,7 +120,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-NWTRDPCW"
+            src="https://www.googletagmanager.com/ns.html?id=GTM-MBFSQ6BC"
             height="0"
             width="0"
             style={{ display: "none", visibility: "hidden" }}
