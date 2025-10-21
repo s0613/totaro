@@ -27,6 +27,6 @@ export default function robots(): MetadataRoute.Robots {
 
   return {
     rules,
-    sitemap: 'https://koreanacorn.com/sitemap.xml',
+    sitemap: 'https://totaro.com/sitemap.xml',
   };
 }

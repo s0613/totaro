@@ -1,23 +1,26 @@
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-  const baseUrl = 'https://koreanacorn.com';
+  const baseUrl = 'https://totaro.com';
   const generatedAt = new Date().toISOString();
 
   const entities = [
     {
       type: 'entity',
-      id: 'korean-acorn-org',
+      id: 'totaro-org',
       data: {
         '@type': 'Organization',
-        name: 'Korean Acorn',
+        name: 'TOTARO',
         url: baseUrl,
-        description: 'Premium Korean products and services provider',
+        description: 'AI-powered B2B export platform providing complete solutions for global businesses',
         sameAs: [
-          'https://www.facebook.com/koreanacorn',
-          'https://www.instagram.com/koreanacorn',
-          'https://twitter.com/koreanacorn',
+          'https://www.linkedin.com/company/totaro',
+          'https://twitter.com/totaro_ai',
+          'https://github.com/totaro-ai',
         ],
+        industry: 'Technology',
+        foundingDate: '2024',
+        numberOfEmployees: '50-200',
       },
     },
   ];
@@ -26,74 +29,97 @@ export async function GET() {
     {
       type: 'page',
       url: baseUrl,
-      title: 'Korean Acorn - Premium Korean Products',
-      description: 'Discover premium Korean products and services. Quality guaranteed.',
-      language: 'ko-KR',
+      title: 'TOTARO - Complete B2B Export Solutions',
+      description: 'AI-powered B2B export platform: websites, AEO/SEO/GEO, targeted marketing, and buyer management. Transform your global business.',
+      language: 'en-US',
       lastModified: generatedAt,
       priority: 1.0,
     },
     {
       type: 'page',
-      url: `${baseUrl}/us`,
-      title: 'Korean Acorn - Premium Korean Products USA',
-      description: 'Premium Korean products delivered to the USA. Fast shipping, quality guaranteed.',
+      url: `${baseUrl}/solutions`,
+      title: 'TOTARO Solutions - AI-Powered B2B Export Platform',
+      description: 'Discover TOTARO\'s comprehensive B2B export solutions: AI-powered websites, SEO optimization, targeted marketing, and buyer management for global success.',
       language: 'en-US',
       lastModified: generatedAt,
       priority: 0.8,
     },
     {
       type: 'page',
-      url: `${baseUrl}/ca`,
-      title: 'Korean Acorn - Premium Korean Products Canada',
-      description: 'Premium Korean products delivered to Canada. Fast shipping, quality guaranteed.',
-      language: 'en-CA',
+      url: `${baseUrl}/products`,
+      title: 'TOTARO Products - AI Export Platform Tools',
+      description: 'Explore TOTARO\'s AI-powered export platform products: website builder, SEO optimizer, marketing automation, and buyer management tools.',
+      language: 'en-US',
       lastModified: generatedAt,
       priority: 0.8,
+    },
+    {
+      type: 'page',
+      url: `${baseUrl}/contact`,
+      title: 'Contact TOTARO - Get Started with B2B Export Solutions',
+      description: 'Contact TOTARO to learn more about our AI-powered B2B export solutions. Get expert consultation for your global business expansion.',
+      language: 'en-US',
+      lastModified: generatedAt,
+      priority: 0.7,
     },
   ];
 
   const faqs = [
     {
       type: 'faq',
-      question: 'What products does Korean Acorn offer?',
-      answer: 'Korean Acorn offers premium Korean products including cosmetics, food items, traditional goods, and cultural products.',
+      question: 'What is TOTARO\'s complete B2B export solution?',
+      answer: 'TOTARO provides AI-powered B2B export solutions including professional websites, AEO/SEO/GEO optimization, targeted marketing campaigns, and comprehensive buyer management tools.',
       url: baseUrl,
-      language: 'ko-KR',
-    },
-    {
-      type: 'faq',
-      question: 'Do you ship internationally?',
-      answer: 'Yes, we ship to the United States, Canada, and other countries worldwide with fast and reliable shipping.',
-      url: baseUrl,
-      language: 'ko-KR',
-    },
-    {
-      type: 'faq',
-      question: 'What is your quality guarantee?',
-      answer: 'We guarantee 100% authentic Korean products with quality assurance and customer satisfaction guarantee.',
-      url: baseUrl,
-      language: 'ko-KR',
-    },
-    {
-      type: 'faq',
-      question: 'How long does shipping take to the USA?',
-      answer: 'Standard shipping to the USA takes 7-14 business days, with express shipping available for 3-5 business days.',
-      url: `${baseUrl}/us`,
       language: 'en-US',
     },
     {
       type: 'faq',
-      question: 'Do you offer free shipping to the USA?',
-      answer: 'Yes, we offer free shipping on orders over $75 to the USA.',
-      url: `${baseUrl}/us`,
+      question: 'How does TOTARO help with global market expansion?',
+      answer: 'TOTARO uses AI to optimize your online presence, identify target markets, create localized content, and manage buyer relationships across multiple countries and languages.',
+      url: baseUrl,
       language: 'en-US',
     },
     {
       type: 'faq',
-      question: 'How long does shipping take to Canada?',
-      answer: 'Standard shipping to Canada takes 10-15 business days, with express shipping available for 5-7 business days.',
-      url: `${baseUrl}/ca`,
-      language: 'en-CA',
+      question: 'What makes TOTARO different from other export platforms?',
+      answer: 'TOTARO combines website development, SEO optimization, targeted marketing, and buyer management in one integrated platform powered by AI for maximum efficiency and results.',
+      url: baseUrl,
+      language: 'en-US',
+    },
+    {
+      type: 'faq',
+      question: 'What solutions does TOTARO offer for B2B export businesses?',
+      answer: 'TOTARO offers AI-powered website development, AEO/SEO/GEO optimization, targeted marketing campaigns, buyer management tools, and comprehensive export strategy consulting.',
+      url: `${baseUrl}/solutions`,
+      language: 'en-US',
+    },
+    {
+      type: 'faq',
+      question: 'How does TOTARO\'s AI technology improve export success?',
+      answer: 'TOTARO\'s AI analyzes market trends, optimizes content for different regions, identifies potential buyers, and automates marketing processes to maximize export opportunities.',
+      url: `${baseUrl}/solutions`,
+      language: 'en-US',
+    },
+    {
+      type: 'faq',
+      question: 'What products does TOTARO offer for export businesses?',
+      answer: 'TOTARO offers AI-powered website builder, SEO optimization tools, marketing automation platform, buyer management system, and analytics dashboard for comprehensive export management.',
+      url: `${baseUrl}/products`,
+      language: 'en-US',
+    },
+    {
+      type: 'faq',
+      question: 'How can I contact TOTARO for consultation?',
+      answer: 'You can contact TOTARO through our contact form, email, phone, or schedule a consultation call. We provide expert guidance on B2B export solutions and platform implementation.',
+      url: `${baseUrl}/contact`,
+      language: 'en-US',
+    },
+    {
+      type: 'faq',
+      question: 'Does TOTARO offer free consultations?',
+      answer: 'Yes, TOTARO offers free initial consultations to assess your export needs and provide customized recommendations for your global business expansion.',
+      url: `${baseUrl}/contact`,
+      language: 'en-US',
     },
   ];
 

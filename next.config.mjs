@@ -15,17 +15,17 @@ const nextConfig = {
         has: [
           {
             type: 'host',
-            value: 'www.koreanacorn.com',
+            value: 'www.totaro.com',
           },
         ],
-        destination: 'https://koreanacorn.com/:path*',
+        destination: 'https://totaro.com/:path*',
         permanent: true,
       },
     ];
   },
   i18n: {
-    locales: ['default', 'us', 'ca'],
-    defaultLocale: 'default',
+    locales: ['en', 'ko', 'jp'],
+    defaultLocale: 'en',
     localeDetection: false,
   },
 };

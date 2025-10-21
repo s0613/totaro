@@ -12,9 +12,9 @@ import Footer from "./components/Footer";
 import { getContent, type Lang } from "@/lib/i18n";
 import { buildSEO } from "@/lib/seo";
 import JsonLd from "@/components/seo/JsonLd";
-import { serviceJsonLd, faqJsonLd } from "@/lib/schemas";
+import { serviceJsonLd, faqJsonLd, createAnswerFirstBlock } from "@/lib/schemas";
 
-export const metadata = buildSEO('/', 'default');
+export const metadata = buildSEO('/', 'en');
 
 export default function Home() {
   const lang = "ko" as Lang;
@@ -22,33 +22,46 @@ export default function Home() {
 
   // Service JSON-LD
   const serviceData = serviceJsonLd({
-    name: "Korean Acorn Premium Products",
-    url: "https://koreanacorn.com",
-    areaServed: ["South Korea", "United States", "Canada"],
-    inLanguage: ["ko-KR", "en-US", "en-CA"],
-    description: "Premium Korean products and services delivered worldwide with quality guarantee.",
+    name: "TOTARO Complete B2B Export Solutions",
+    url: "https://totaro.com",
+    areaServed: ["Global"],
+    inLanguage: ["en-US", "ko-KR", "ja-JP"],
+    description: "AI-powered B2B export platform providing complete solutions: websites, AEO/SEO/GEO optimization, targeted marketing, and buyer management for global businesses.",
   });
 
   // FAQ JSON-LD
   const faqData = faqJsonLd([
     {
-      q: "What products does Korean Acorn offer?",
-      a: "Korean Acorn offers premium Korean products including cosmetics, food items, traditional goods, and cultural products.",
+      q: "What is TOTARO's complete B2B export solution?",
+      a: "TOTARO provides AI-powered B2B export solutions including professional websites, AEO/SEO/GEO optimization, targeted marketing campaigns, and comprehensive buyer management tools.",
     },
     {
-      q: "Do you ship internationally?",
-      a: "Yes, we ship to the United States, Canada, and other countries worldwide with fast and reliable shipping.",
+      q: "How does TOTARO help with global market expansion?",
+      a: "TOTARO uses AI to optimize your online presence, identify target markets, create localized content, and manage buyer relationships across multiple countries and languages.",
     },
     {
-      q: "What is your quality guarantee?",
-      a: "We guarantee 100% authentic Korean products with quality assurance and customer satisfaction guarantee.",
+      q: "What makes TOTARO different from other export platforms?",
+      a: "TOTARO combines website development, SEO optimization, targeted marketing, and buyer management in one integrated platform powered by AI for maximum efficiency and results.",
     },
   ]);
+
+  // Answer-first block for AI Overviews
+  const answerFirstData = createAnswerFirstBlock(
+    "TOTARO is an AI-powered B2B export platform that provides complete solutions for global business expansion, including professional websites, SEO optimization, targeted marketing, and buyer management.",
+    [
+      "AI-powered website development and optimization",
+      "AEO/SEO/GEO optimization for global visibility",
+      "Targeted marketing campaigns for international markets",
+      "Comprehensive buyer relationship management",
+      "Multi-language and multi-country support"
+    ]
+  );
 
   return (
     <>
       <JsonLd data={serviceData} />
       <JsonLd data={faqData} />
+      <JsonLd data={answerFirstData} />
       
       {/* Logo Intro Animation */}
       <LogoIntro />

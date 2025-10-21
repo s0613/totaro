@@ -15,11 +15,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://koreanacorn.com'),
-  title: "Korean Acorn - Premium Korean Products",
-  description: "Discover premium Korean products and services. Quality guaranteed.",
-  keywords: ["Korean products", "premium", "quality", "Korea"],
-  authors: [{ name: "Korean Acorn" }],
+  metadataBase: new URL('https://totaro.com'),
+  title: "TOTARO - Complete B2B Export Solutions",
+  description: "AI-powered B2B export platform: websites, AEO/SEO/GEO, targeted marketing, and buyer management. Transform your global business.",
+  keywords: ["B2B export", "AI export platform", "global marketing", "buyer management", "AEO", "SEO", "GEO"],
+  authors: [{ name: "TOTARO" }],
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
@@ -27,24 +27,24 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "ko_KR",
-    url: "https://koreanacorn.com",
-    siteName: "Korean Acorn",
-    title: "Korean Acorn - Premium Korean Products",
-    description: "Discover premium Korean products and services. Quality guaranteed.",
+    locale: "en_US",
+    url: "https://totaro.com",
+    siteName: "TOTARO",
+    title: "TOTARO - Complete B2B Export Solutions",
+    description: "AI-powered B2B export platform: websites, AEO/SEO/GEO, targeted marketing, and buyer management. Transform your global business.",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Korean Acorn",
+        alt: "TOTARO - Complete B2B Export Solutions",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Korean Acorn - Premium Korean Products",
-    description: "Discover premium Korean products and services. Quality guaranteed.",
+    title: "TOTARO - Complete B2B Export Solutions",
+    description: "AI-powered B2B export platform: websites, AEO/SEO/GEO, targeted marketing, and buyer management. Transform your global business.",
     images: ["/og-image.jpg"],
   },
   robots: {
@@ -62,19 +62,19 @@ export const metadata: Metadata = {
 
 // Global JSON-LD data
 const organizationData = organizationJsonLd({
-  name: "Korean Acorn",
-  url: "https://koreanacorn.com",
-  logo: "https://koreanacorn.com/logo.png",
+  name: "TOTARO",
+  url: "https://totaro.com",
+  logo: "https://totaro.com/logo.png",
   sameAs: [
-    "https://www.facebook.com/koreanacorn",
-    "https://www.instagram.com/koreanacorn",
-    "https://twitter.com/koreanacorn",
+    "https://www.linkedin.com/company/totaro",
+    "https://twitter.com/totaro_ai",
+    "https://github.com/totaro-ai",
   ],
 });
 
 const websiteData = websiteJsonLd({
-  url: "https://koreanacorn.com",
-  searchUrl: "https://koreanacorn.com/search",
+  url: "https://totaro.com",
+  searchUrl: "https://totaro.com/search",
 });
 
 export default function RootLayout({
@@ -83,7 +83,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={inter.variable} suppressHydrationWarning>
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>
         {/* Google Tag Manager */}
         <script

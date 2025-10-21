@@ -16,6 +16,7 @@ export interface ServiceData {
   areaServed: string[];
   inLanguage: string[];
   description: string;
+  answerFirst?: string; // AI Overviews용 간결한 요약
 }
 
 export interface FAQItem {
@@ -32,6 +33,10 @@ export function organizationJsonLd(data: OrganizationData) {
     url: data.url,
     logo: data.logo,
     sameAs: data.sameAs || [],
+    description: 'AI-powered B2B export platform providing complete solutions for global businesses',
+    foundingDate: '2024',
+    industry: 'Technology',
+    numberOfEmployees: '50-200',
   };
 }
 
@@ -41,11 +46,11 @@ export function websiteJsonLd(data: WebsiteData) {
     '@type': 'WebSite',
     '@id': `${data.url}#website`,
     url: data.url,
-    name: 'Korean Acorn',
+    name: 'TOTARO',
     publisher: {
       '@id': `${data.url}#organization`,
     },
-    inLanguage: ['ko-KR', 'en-US', 'en-CA'],
+    inLanguage: ['en-US', 'ko-KR', 'ja-JP'],
     potentialAction: {
       '@type': 'SearchAction',
       target: {
@@ -72,6 +77,13 @@ export function serviceJsonLd(data: ServiceData) {
     provider: {
       '@id': `${data.url}#organization`,
     },
+    serviceType: 'B2B Export Solutions',
+    category: 'Business Services',
+    offers: {
+      '@type': 'Offer',
+      availability: 'https://schema.org/InStock',
+      priceCurrency: 'USD',
+    },
   };
 }
 
@@ -86,6 +98,18 @@ export function faqJsonLd(faqs: FAQItem[]) {
         '@type': 'Answer',
         text: faq.a,
       },
+    })),
+  };
+}
+
+// AI Overviews용 Answer-first 블록 생성 함수
+export function createAnswerFirstBlock(summary: string, keyPoints: string[]) {
+  return {
+    '@type': 'AnswerFirst',
+    summary,
+    keyPoints: keyPoints.map(point => ({
+      '@type': 'ListItem',
+      text: point,
     })),
   };
 }

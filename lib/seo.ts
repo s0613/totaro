@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-export type Locale = 'default' | 'us' | 'ca';
+export type Locale = 'en' | 'ko' | 'jp';
 
 export interface SEOConfig {
   basePath: string;
@@ -15,30 +15,30 @@ export function buildSEO(
   locale: Locale,
   options?: Partial<SEOConfig>
 ): Metadata {
-  const metadataBase = new URL('https://koreanacorn.com');
+  const metadataBase = new URL('https://totaro.com');
   
   // Locale-specific configurations
   const localeConfig = {
-    default: {
-      title: 'Korean Acorn - Premium Korean Products',
-      description: 'Discover premium Korean products and services. Quality guaranteed.',
-      keywords: ['Korean products', 'premium', 'quality', 'Korea'],
-      hreflang: 'ko-KR',
+    en: {
+      title: 'TOTARO - Complete B2B Export Solutions',
+      description: 'AI-powered B2B export platform: websites, AEO/SEO/GEO, targeted marketing, and buyer management. Transform your global business.',
+      keywords: ['B2B export', 'AI export platform', 'global marketing', 'buyer management', 'AEO', 'SEO', 'GEO'],
+      hreflang: 'en-US',
       path: '/',
     },
-    us: {
-      title: 'Korean Acorn - Premium Korean Products USA',
-      description: 'Premium Korean products delivered to the USA. Fast shipping, quality guaranteed.',
-      keywords: ['Korean products USA', 'Korean goods', 'USA shipping', 'Korean culture'],
-      hreflang: 'en-US',
-      path: '/us',
+    ko: {
+      title: 'TOTARO - 완전한 B2B 수출 솔루션',
+      description: 'AI 기반 B2B 수출 플랫폼: 웹사이트, AEO/SEO/GEO, 타겟 마케팅, 바이어 관리. 글로벌 비즈니스를 혁신하세요.',
+      keywords: ['B2B 수출', 'AI 수출 플랫폼', '글로벌 마케팅', '바이어 관리', 'AEO', 'SEO', 'GEO'],
+      hreflang: 'ko-KR',
+      path: '/ko',
     },
-    ca: {
-      title: 'Korean Acorn - Premium Korean Products Canada',
-      description: 'Premium Korean products delivered to Canada. Fast shipping, quality guaranteed.',
-      keywords: ['Korean products Canada', 'Korean goods', 'Canada shipping', 'Korean culture'],
-      hreflang: 'en-CA',
-      path: '/ca',
+    jp: {
+      title: 'TOTARO - 完全なB2B輸出ソリューション',
+      description: 'AI搭載B2B輸出プラットフォーム：ウェブサイト、AEO/SEO/GEO、ターゲットマーケティング、バイヤー管理。グローバルビジネスを変革。',
+      keywords: ['B2B輸出', 'AI輸出プラットフォーム', 'グローバルマーケティング', 'バイヤー管理', 'AEO', 'SEO', 'GEO'],
+      hreflang: 'ja-JP',
+      path: '/jp',
     },
   };
 
@@ -50,13 +50,13 @@ export function buildSEO(
     title: options?.title || config.title,
     description: options?.description || config.description,
     keywords: options?.keywords || config.keywords,
-    authors: [{ name: 'Korean Acorn' }],
+    authors: [{ name: 'TOTARO' }],
     alternates: {
       canonical: fullPath,
       languages: {
-        'ko-KR': '/',
-        'en-US': '/us',
-        'en-CA': '/ca',
+        'en': '/',
+        'ko': '/ko',
+        'ja': '/jp',
         'x-default': '/',
       },
     },
@@ -64,7 +64,7 @@ export function buildSEO(
       type: 'website',
       locale: config.hreflang,
       url: fullPath,
-      siteName: 'Korean Acorn',
+      siteName: 'TOTARO',
       title: options?.title || config.title,
       description: options?.description || config.description,
       images: [
@@ -72,7 +72,7 @@ export function buildSEO(
           url: '/og-image.jpg',
           width: 1200,
           height: 630,
-          alt: 'Korean Acorn',
+          alt: 'TOTARO - Complete B2B Export Solutions',
         },
       ],
     },

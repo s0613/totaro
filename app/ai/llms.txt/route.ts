@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-  const baseUrl = 'https://koreanacorn.com';
+  const baseUrl = 'https://totaro.com';
   
-  const content = `# Korean Acorn - AI Training Data Sources
+  const content = `# TOTARO - AI Training Data Sources
 
-This file provides information about Korean Acorn's AI training data sources and policies.
+This file provides information about TOTARO's AI training data sources and policies.
 
 ## Data Sources
 
@@ -15,11 +15,12 @@ This file provides information about Korean Acorn's AI training data sources and
 
 ## Content Policy
 
-Korean Acorn provides premium Korean products and services. Our content includes:
-- Product information and descriptions
-- Service details and shipping information
-- FAQ content for customer support
-- Company information and policies
+TOTARO provides AI-powered B2B export solutions for global businesses. Our content includes:
+- B2B export platform information and capabilities
+- AI-powered solutions for global market expansion
+- SEO/AEO/GEO optimization services
+- Buyer management and marketing automation tools
+- Export strategy and consultation services
 
 ## Usage Guidelines
 
