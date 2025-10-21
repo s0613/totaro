@@ -96,6 +96,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           }}
         />
         {/* End Google Tag Manager */}
+        
+        {/* Google Analytics 4 */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-7V429MPZ1Q"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-7V429MPZ1Q');
+            `,
+          }}
+        />
+        {/* End Google Analytics 4 */}
+        
         <JsonLd data={organizationData} />
         <JsonLd data={websiteData} />
       </head>
