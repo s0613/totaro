@@ -21,6 +21,7 @@ export default function robots(): MetadataRoute.Robots {
   } else {
     rules.push({
       userAgent: 'GPTBot',
+      allow: [],
       disallow: ['/'],
     });
   }
