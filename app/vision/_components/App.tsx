@@ -616,7 +616,7 @@ const VisionApp: React.FC = () => {
             {videos.map((video) => (
               <div key={video.id} className="relative group">
                 <div className="relative glass rounded-3xl overflow-hidden shadow-xl shadow-black/40 border-white/10">
-                  <div className="relative h-72 bg-gradient-to-br from-gray-900 to-black cursor-pointer overflow-hidden" onClick={() => video.status === "completed" && setSelectedVideo(video)}>
+                  <div className="relative h-72 bg-gradient-to-br from-gray-900 to-black overflow-hidden">
                     {video.thumbnail_url ? (
                       <img src={video.thumbnail_url} alt={video.title} className="w-full h-full object-cover" />
                     ) : (
@@ -634,57 +634,14 @@ const VisionApp: React.FC = () => {
                         </div>
                       </div>
                     )}
-                    {video.status === "completed" && (
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
-                        <div className="transform scale-75 group-hover:scale-100 transition-transform duration-500">
-                          <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
-                            <svg className="w-10 h-10 text-white ml-1" fill="currentColor" viewBox="0 0 20 20">
-                              <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                            </svg>
-                          </div>
-                        </div>
-                      </div>
-                    )}
                     <div className="absolute top-4 right-4">{getStatusBadge(video.status)}</div>
                   </div>
                   <div className="p-7">
                     <h4 className="text-xl font-bold mb-3 line-clamp-2 group-hover:text-gradient transition-all">{video.title}</h4>
                     <p className="text-sm text-gray-400 mb-5 line-clamp-2 leading-relaxed">{video.prompt}</p>
-                    <div className="flex items-center justify-between text-xs text-gray-500 mb-5 font-semibold">
+                    <div className="flex items-center justify-between text-xs text-gray-500 font-semibold">
                       <span>{new Date(video.created_at).toLocaleDateString("ko-KR", { month: "short", day: "numeric", timeZone: "UTC" })}</span>
                       {video.duration && <span className="px-2 py-1 bg-white/5 rounded-lg">{video.duration}초</span>}
-                    </div>
-                    <div className="flex gap-3">
-                      {video.status === "completed" && (
-                        <>
-                          <button onClick={() => setSelectedVideo(video)} className="group/btn flex-1 px-4 py-3 bg-gradient-apple rounded-xl text-sm font-bold hover:scale-105 transition-all shadow-lg ripple">
-                            <span className="flex items-center justify-center gap-1.5">
-                              <svg className="w-4 h-4 group-hover/btn:scale-110 transition-transform" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                              </svg>
-                              재생
-                            </span>
-                          </button>
-                          {video.video_url && (
-                            <a href={video.video_url} download className="group/btn flex-1 px-4 py-3 bg-white/10 hover:bg-white/20 rounded-xl transition-all text-sm font-bold text-center ripple">
-                              <span className="flex items-center justify-center gap-1.5">
-                                <svg className="w-4 h-4 group-hover/btn:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                                </svg>
-                                다운로드
-                              </span>
-                            </a>
-                          )}
-                        </>
-                      )}
-                      <button onClick={() => handleDelete(video.id)} className="group/btn px-4 py-3 bg-red-500/20 hover:bg-red-500/30 rounded-xl transition-all text-sm font-bold ripple">
-                        <span className="flex items-center justify-center gap-1.5">
-                          <svg className="w-4 h-4 group-hover/btn:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-                          삭제
-                        </span>
-                      </button>
                     </div>
                   </div>
                 </div>
