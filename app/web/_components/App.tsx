@@ -286,7 +286,7 @@ const WebApp: React.FC = () => {
             {[...Array(5)].map((_, i) => (
               <div
                 key={i}
-                className="absolute rounded-full bg-web-gradient-apple blur-3xl animate-web-float opacity-10"
+                className="absolute rounded-full bg-web-gradient-apple blur-3xl web-animate-float opacity-10"
                 style={{
                   width: `${300 + i * 150}px`,
                   height: `${300 + i * 150}px`,

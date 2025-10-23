@@ -337,48 +337,23 @@ const VisionApp: React.FC = () => {
       {/* in-vision header removed as requested */}
 
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-mesh-gradient">
-          <div className="absolute inset-0">
-            {[...Array(5)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute rounded-full bg-gradient-apple blur-3xl animate-float opacity-10"
-                style={{
-                  width: `${300 + i * 150}px`,
-                  height: `${300 + i * 150}px`,
-                  left: `${10 + i * 20}%`,
-                  top: `${5 + i * 15}%`,
-                  animationDelay: `${i * 1.5}s`,
-                  animationDuration: `${8 + i * 2}s`,
-                }}
-              />
-            ))}
-          </div>
-          <div
-            className="absolute inset-0 opacity-5"
-            style={{
-              backgroundImage:
-                "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
-              backgroundSize: "50px 50px",
-            }}
-          />
+        <div className="absolute inset-0 bg-black">
         </div>
 
         <div className="relative z-10 text-center px-6 max-w-6xl mx-auto">
-          <div className="animate-fade-in">
+          <div className="web-animate-fade-in">
             <div className="mb-12 flex justify-center">
-              <img src="/logo.png" alt="Vision Create" className="h-32 w-32 md:h-40 md:w-40 logo-glow animate-float opacity-90" style={{ animationDuration: "10s" }} />
+              <img src="/logo.png" alt="Vision Create" className="h-32 w-32 md:h-40 md:w-40 web-logo-glow web-animate-float opacity-90" style={{ animationDuration: "10s" }} />
             </div>
             <div className="inline-block px-5 py-2.5 mb-10 bg-white/5 backdrop-blur-md rounded-full border border-white/10 shadow-lg shadow-black/20">
-              <span className="text-sm font-bold text-gradient-silver tracking-wide">✦ 사내 전용 AI 영상 생성(In‑house)</span>
+              <span className="text-sm font-bold text-gray-200 tracking-wide">✦ 사내 전용 AI 영상 생성(In‑house)</span>
             </div>
             <h2 className="text-4xl md:text-6xl lg:text-7xl font-black mb-10 leading-[0.9] tracking-tighter">
               <span className="text-gray-400 font-medium text-3xl md:text-5xl lg:text-6xl block mb-3">영상은 누구나 만들지만,</span>
               <span className="inline-block">
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-100 to-gray-300">결과는</span>
-                <span className="inline-block cursor-default relative animate-pulse-scale ml-2">
-                  <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-100 to-gray-300">우리만 만듭니다.</span>
-                  <span className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 blur-2xl opacity-30 animate-pulse -z-10"></span>
+                <span className="text-white">결과는</span>
+                <span className="inline-block cursor-default relative web-animate-pulse-scale ml-2">
+                  <span className="relative z-10 text-white">우리만 만듭니다.</span>
                 </span>
               </span>
             </h2>
@@ -400,7 +375,7 @@ const VisionApp: React.FC = () => {
               return (
                 <div
                   key={i}
-                  className="absolute w-1 h-1 bg-white rounded-full animate-float opacity-20"
+                  className="absolute w-1 h-1 bg-white rounded-full web-animate-float opacity-20"
                   style={{ left, top, animationDelay, animationDuration }}
                 />
               );
@@ -413,24 +388,24 @@ const VisionApp: React.FC = () => {
 
       <section ref={createSectionRef} id="create" className="py-40 px-6 relative">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-20 animate-slide-up">
+          <div className="text-center mb-20 web-animate-slide-up">
             <div className="inline-block px-5 py-2.5 mb-8 bg-white/5 backdrop-blur-md rounded-full border border-white/10 shadow-lg shadow-black/20">
-              <span className="text-sm font-bold text-gradient-silver tracking-wide">🎬 In‑house Video Creation</span>
+              <span className="text-sm font-bold text-gray-200 tracking-wide">🎬 In‑house Video Creation</span>
             </div>
             <h3 className="text-6xl md:text-7xl font-black mb-8 tracking-tighter leading-tight">
-              <span className="text-gradient-blue block mb-2">AI가 만드는</span>
+              <span className="text-blue-400 block mb-2">AI가 만드는</span>
               <span className="inline-block hover:scale-105 transition-transform text-gray-100">당신만의 영상</span>
             </h3>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
               프롬프트를 입력하고 몇 초만 기다리면<br />
-              <span className="text-gradient-silver font-semibold">프리미엄 퀄리티</span>의 비디오가 완성됩니다
+              <span className="text-gray-200 font-semibold">프리미엄 퀄리티</span>의 비디오가 완성됩니다
             </p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-silver rounded-3xl blur-xl opacity-10 group-hover:opacity-25 transition duration-1000"></div>
-              <div className="relative glass-strong rounded-3xl p-10 animate-slide-up hover-lift shadow-2xl shadow-black/40 border-white/20">
+              <div className="absolute -inset-1 bg-gray-500 rounded-3xl blur-xl opacity-10 group-hover:opacity-25 transition duration-1000"></div>
+              <div className="relative web-glass-strong rounded-3xl p-10 web-animate-slide-up web-hover-lift shadow-2xl shadow-black/40 border-white/20">
                 {showForm ? (
                   <form onSubmit={handleSubmit} className="space-y-7">
                     {!loading && (
@@ -461,11 +436,10 @@ const VisionApp: React.FC = () => {
                         <div className="space-y-3">
                           <div className="flex justify-between text-sm font-bold text-gray-300">
                             <span>진행률</span>
-                            <span className="text-gradient">{progress}%</span>
+                            <span className="text-blue-400">{progress}%</span>
                           </div>
                           <div className="relative w-full h-4 bg-white/10 rounded-full overflow-hidden">
-                            <div className="absolute inset-0 bg-gradient-apple transition-all duration-500 ease-out" style={{ width: `${progress}%` }} />
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" style={{ animationDuration: "1.5s", animationIterationCount: "infinite" }} />
+                            <div className="absolute inset-0 bg-web-gradient-apple transition-all duration-500 ease-out" style={{ width: `${progress}%` }} />
                           </div>
                         </div>
 
@@ -491,13 +465,12 @@ const VisionApp: React.FC = () => {
                         {/* 미리보기 스켈레톤 */}
                         <div className="mt-4">
                           <div className="aspect-video rounded-xl overflow-hidden bg-white/5 border border-white/10 relative">
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" style={{ animationDuration: "2s" }} />
                           </div>
                         </div>
                       </div>
                     )}
                     {!loading && (
-                      <button type="button" onClick={() => { window.location.href = '/inquiry'; }} className="group relative w-full py-6 bg-gradient-apple rounded-2xl text-white font-bold text-lg hover:scale-[1.02] transition-all shadow-2xl shadow-purple-500/40 hover:shadow-purple-500/60 overflow-hidden btn-shimmer ripple">
+                      <button type="button" onClick={() => { window.location.href = '/inquiry'; }} className="group relative w-full py-6 bg-web-gradient-apple rounded-2xl text-white font-bold text-lg hover:scale-[1.02] transition-all shadow-2xl shadow-purple-500/40 hover:shadow-purple-500/60 overflow-hidden web-btn-shimmer web-ripple">
                         <span className="relative z-10 flex items-center justify-center gap-2">
                           <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -507,18 +480,17 @@ const VisionApp: React.FC = () => {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                           </svg>
                         </span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       </button>
                     )}
                   </form>
                 ) : showGeneratedVideo && generatedVideo ? (
                   <div className="space-y-6">
                     <div className="text-center">
-                      <h4 className="text-2xl font-bold text-gradient-silver mb-4">생성 완료!</h4>
+                      <h4 className="text-2xl font-bold text-gray-200 mb-4">생성 완료!</h4>
                       <p className="text-gray-400">AI가 당신의 영상을 완성했습니다</p>
                     </div>
                     <div className="relative">
-                      <div className="aspect-video bg-gradient-to-br from-gray-900 to-black rounded-2xl overflow-hidden">
+                      <div className="aspect-video bg-gray-900 rounded-2xl overflow-hidden">
                         <video 
                           className="w-full h-full object-cover" 
                           controls 
@@ -533,7 +505,7 @@ const VisionApp: React.FC = () => {
                         <div className="text-center">
                           <button 
                             onClick={() => { window.location.href = '/inquiry'; }} 
-                            className="group relative px-8 py-4 bg-gradient-apple rounded-xl text-white font-bold text-lg hover:scale-105 transition-all shadow-xl shadow-purple-500/40 hover:shadow-purple-500/60 overflow-hidden btn-shimmer ripple"
+                            className="group relative px-8 py-4 bg-web-gradient-apple rounded-xl text-white font-bold text-lg hover:scale-105 transition-all shadow-xl shadow-purple-500/40 hover:shadow-purple-500/60 overflow-hidden web-btn-shimmer web-ripple"
                           >
                             <span className="relative z-10 flex items-center justify-center gap-3">
                               <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -544,7 +516,6 @@ const VisionApp: React.FC = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                               </svg>
                             </span>
-                            <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                           </button>
                           <p className="text-xs text-gray-500 mt-3">
                             이 영상처럼 AI가 만드는 맞춤형 비디오를 원하신다면 문의해주세요
@@ -557,9 +528,9 @@ const VisionApp: React.FC = () => {
               </div>
             </div>
 
-            <div className="space-y-6 animate-slide-up" style={{ animationDelay: "0.2s" }}>
-              <div className="glass rounded-3xl p-10 hover-lift shadow-xl shadow-black/30 border-white/10">
-                <h4 className="text-3xl font-black mb-8 text-gradient-silver">AI 비디오 생성 프로세스</h4>
+            <div className="space-y-6 web-animate-slide-up" style={{ animationDelay: "0.2s" }}>
+              <div className="web-glass rounded-3xl p-10 web-hover-lift shadow-xl shadow-black/30 border-white/10">
+                <h4 className="text-3xl font-black mb-8 text-gray-200">AI 비디오 생성 프로세스</h4>
                 <div className="space-y-7">
                   {[
                     { icon: "✨", title: "프롬프트 분석", desc: "AI가 당신의 설명을 정확히 이해하고 분석합니다", color: "from-slate-400 to-slate-600" },
@@ -578,7 +549,7 @@ const VisionApp: React.FC = () => {
                 </div>
               </div>
 
-              <div className="glass rounded-3xl p-8 hover-lift shadow-xl shadow-black/30 border-white/10">
+              <div className="web-glass rounded-3xl p-8 web-hover-lift shadow-xl shadow-black/30 border-white/10">
                 <div className="flex items-center gap-3 mb-5">
                   <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-slate-300 to-slate-500 flex items-center justify-center text-xl shadow-lg shadow-black/40">💡</div>
                   <h5 className="text-lg font-bold text-gray-100">프로 팁</h5>
@@ -594,7 +565,7 @@ const VisionApp: React.FC = () => {
         </div>
       </section>
 
-      <section id="gallery" className="py-40 px-6 bg-gradient-to-b from-black via-gray-900/10 to-black relative">
+      <section id="gallery" className="py-40 px-6 bg-black relative">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-20 left-10 w-96 h-96 bg-slate-600 rounded-full blur-3xl opacity-15 animate-pulse" style={{ animationDuration: "8s" }} />
           <div className="absolute bottom-20 right-10 w-[32rem] h-[32rem] bg-gray-700 rounded-full blur-3xl opacity-15 animate-pulse" style={{ animationDelay: "2s", animationDuration: "10s" }} />
@@ -602,10 +573,10 @@ const VisionApp: React.FC = () => {
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-20">
             <div className="inline-block px-5 py-2.5 mb-8 bg-white/5 backdrop-blur-md rounded-full border border-white/10 shadow-lg shadow-black/20">
-              <span className="text-sm font-bold text-gradient-silver tracking-wide">🎥 GALLERY</span>
+              <span className="text-sm font-bold text-gray-200 tracking-wide">🎥 GALLERY</span>
             </div>
             <h3 className="text-6xl md:text-7xl font-black mb-8 tracking-tighter leading-tight">
-              <span className="text-gradient-silver">영상 Preview</span>
+              <span className="text-gray-200">영상 Preview</span>
             </h3>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
               AI가 만들어낸 놀라운 비디오들을 확인해보세요<br />
@@ -615,7 +586,7 @@ const VisionApp: React.FC = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {videos.map((video) => (
               <div key={video.id} className="relative group">
-                <div className="relative glass rounded-3xl overflow-hidden shadow-xl shadow-black/40 border-white/10">
+                <div className="relative web-glass rounded-3xl overflow-hidden shadow-xl shadow-black/40 border-white/10">
                   <div className="relative h-72 bg-gradient-to-br from-gray-900 to-black overflow-hidden">
                     {video.thumbnail_url ? (
                       <img src={video.thumbnail_url} alt={video.title} className="w-full h-full object-cover" />
@@ -637,8 +608,8 @@ const VisionApp: React.FC = () => {
                     <div className="absolute top-4 right-4">{getStatusBadge(video.status)}</div>
                   </div>
                   <div className="p-7">
-                    <h4 className="text-xl font-bold mb-3 line-clamp-2 group-hover:text-gradient transition-all">{video.title}</h4>
-                    <p className="text-sm text-gray-400 mb-5 line-clamp-2 leading-relaxed">{video.prompt}</p>
+                    <h4 className="text-xl font-bold mb-3 web-line-clamp-2 group-hover:text-blue-400 transition-all">{video.title}</h4>
+                    <p className="text-sm text-gray-400 mb-5 web-line-clamp-2 leading-relaxed">{video.prompt}</p>
                     <div className="flex items-center justify-between text-xs text-gray-500 font-semibold">
                       <span>{new Date(video.created_at).toLocaleDateString("ko-KR", { month: "short", day: "numeric", timeZone: "UTC" })}</span>
                       {video.duration && <span className="px-2 py-1 bg-white/5 rounded-lg">{video.duration}초</span>}
@@ -653,13 +624,13 @@ const VisionApp: React.FC = () => {
 
       <AboutSection />
 
-      <footer className="relative py-20 px-6 border-t border-white/5 bg-gradient-to-b from-black to-gray-950">
+      <footer className="relative py-20 px-6 border-t border-white/5 bg-black">
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
             <div className="flex justify-center mb-6">
-              <img src="/logo.png" alt="Vision Create" className="h-16 w-16 logo-glow opacity-80" />
+              <img src="/logo.png" alt="Vision Create" className="h-16 w-16 web-logo-glow opacity-80" />
             </div>
-            <h2 className="text-3xl font-black text-gradient-silver mb-4 tracking-tight">VISIONCREATE</h2>
+            <h2 className="text-3xl font-black text-gray-200 mb-4 tracking-tight">VISIONCREATE</h2>
             <p className="text-gray-500 text-base mb-10 font-medium">© 2025 VISIONCREATE. Powered by Advanced AI Technology.</p>
           </div>
         </div>
