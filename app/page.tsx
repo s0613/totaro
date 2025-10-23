@@ -2,7 +2,6 @@ import LogoIntro from "./components/LogoIntro";
 import Hero from "./components/Hero";
 import SignatureFeature from "./components/SignatureFeature";
 import ServiceDetails from "./components/ServiceDetails";
-import HowItWorks from "./components/HowItWorks";
 import UseCases from "./components/UseCases";
 import Outcomes from "./components/Outcomes";
 import SocialProof from "./components/SocialProof";
@@ -75,9 +74,6 @@ export default function Home() {
 
       {/* Service Details - 각 서비스별 상세 설명 */}
       <ServiceDetails content={content.serviceDetails} />
-
-      {/* How It Works Section */}
-      <HowItWorks title={content.howItWorks.title} steps={content.howItWorks.steps} />
 
       {/* Use Cases Section */}
       <UseCases title={content.useCases.title} cases={content.useCases.cases} />

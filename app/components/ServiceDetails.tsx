@@ -41,7 +41,7 @@ export default function ServiceDetails({ content }: ServiceDetailsProps) {
           </p>
         </div>
 
-        <div className="space-y-16 md:space-y-24">
+        <div className="space-y-8 md:space-y-12">
           {services.map((service, index) => (
             <div
               key={service.id}
@@ -49,9 +49,8 @@ export default function ServiceDetails({ content }: ServiceDetailsProps) {
                 index % 2 === 1 ? "lg:flex-row-reverse" : ""
               }`}
             >
-              {/* Icon & Title */}
-              <div className="flex-1 text-center lg:text-left min-h-[400px] md:min-h-[500px] flex flex-col justify-center">
-                <div className="inline-block text-6xl md:text-8xl mb-6">{service.icon}</div>
+              {/* Title */}
+              <div className="flex-1 text-center lg:text-left min-h-[300px] md:min-h-[350px] flex flex-col justify-center">
                 <h3 className="text-3xl md:text-4xl font-bold text-textPrimary mb-4">
                   {service.title}
                 </h3>
@@ -89,7 +88,7 @@ export default function ServiceDetails({ content }: ServiceDetailsProps) {
               </div>
 
               {/* Features */}
-              <div className="flex-1 min-h-[400px] md:min-h-[500px] flex flex-col justify-center">
+              <div className="flex-1 min-h-[300px] md:min-h-[350px] flex flex-col justify-center">
                 <div className="bg-bg rounded-2xl p-6 md:p-8 border border-line h-full flex flex-col">
                   <h4 className="text-lg md:text-xl font-bold text-textPrimary mb-4 md:mb-6">
                     주요 기능

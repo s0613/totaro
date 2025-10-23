@@ -78,28 +78,39 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </a>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={toggleMenu}
-            className="md:hidden flex flex-col items-center justify-center w-8 h-8 space-y-1"
-            aria-label="메뉴 열기/닫기"
-          >
-            <span
-              className={`block w-6 h-0.5 bg-textPrimary transition-all duration-300 ${
-                isMenuOpen ? "rotate-45 translate-y-1.5" : ""
-              }`}
-            />
-            <span
-              className={`block w-6 h-0.5 bg-textPrimary transition-all duration-300 ${
-                isMenuOpen ? "opacity-0" : ""
-              }`}
-            />
-            <span
-              className={`block w-6 h-0.5 bg-textPrimary transition-all duration-300 ${
-                isMenuOpen ? "-rotate-45 -translate-y-1.5" : ""
-              }`}
-            />
-          </button>
+          {/* Mobile Navigation */}
+          <div className="md:hidden flex items-center gap-3">
+            {/* Contact Button */}
+            <a
+              href="/inquiry"
+              className="text-xs font-semibold text-bg bg-accent hover:bg-accent/90 transition-colors duration-200 px-3 py-1.5 rounded-md"
+            >
+              Contact
+            </a>
+            
+            {/* Mobile Menu Button */}
+            <button
+              onClick={toggleMenu}
+              className="flex flex-col items-center justify-center w-8 h-8 space-y-1"
+              aria-label="메뉴 열기/닫기"
+            >
+              <span
+                className={`block w-6 h-0.5 bg-textPrimary transition-all duration-300 ${
+                  isMenuOpen ? "rotate-45 translate-y-1.5" : ""
+                }`}
+              />
+              <span
+                className={`block w-6 h-0.5 bg-textPrimary transition-all duration-300 ${
+                  isMenuOpen ? "opacity-0" : ""
+                }`}
+              />
+              <span
+                className={`block w-6 h-0.5 bg-textPrimary transition-all duration-300 ${
+                  isMenuOpen ? "-rotate-45 -translate-y-1.5" : ""
+                }`}
+              />
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu Overlay */}
