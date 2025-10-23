@@ -542,17 +542,6 @@ const WebApp: React.FC = () => {
                 </div>
               </div>
 
-              <div className="web-glass rounded-3xl p-8 web-hover-lift shadow-xl shadow-black/30 border-white/10">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-slate-300 to-slate-500 flex items-center justify-center text-xl shadow-lg shadow-black/40">💡</div>
-                  <h5 className="text-lg font-bold text-gray-100">프로 팁</h5>
-                </div>
-                <ul className="space-y-3.5 text-sm text-gray-400">
-                  <li className="flex items-start gap-3 group/tip hover:text-gray-300 transition-colors"><span className="text-slate-400 mt-0.5 group-hover/tip:text-slate-300 transition-colors">▸</span><span>구체적인 설명일수록 더 정확한 결과를 얻을 수 있습니다</span></li>
-                  <li className="flex items-start gap-3 group/tip hover:text-gray-300 transition-colors"><span className="text-slate-400 mt-0.5 group-hover/tip:text-slate-300 transition-colors">▸</span><span>색상, 레이아웃, 기능 등을 명시하세요</span></li>
-                  <li className="flex items-start gap-3 group/tip hover:text-gray-300 transition-colors"><span className="text-slate-400 mt-0.5 group-hover/tip:text-slate-300 transition-colors">▸</span><span>SEO·GEO·AEO 최적화가 자동으로 적용됩니다</span></li>
-                </ul>
-              </div>
             </div>
           </div>
         </div>
