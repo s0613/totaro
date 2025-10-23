@@ -316,14 +316,14 @@ const WebApp: React.FC = () => {
             <div className="inline-block px-5 py-2.5 mb-10 bg-white/5 backdrop-blur-md rounded-full border border-white/10 shadow-lg shadow-black/20">
               <span className="text-sm font-bold web-text-gradient-silver tracking-wide">✦ AI POWERED WEB DEVELOPMENT</span>
             </div>
-            <h2 className="text-6xl md:text-8xl lg:text-9xl font-black mb-10 leading-[0.9] tracking-tighter">
-              <span className="text-gray-400 font-medium text-5xl md:text-7xl lg:text-8xl block mb-3">웹사이트는 누구나 만들지만,</span>
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-black mb-10 leading-[0.9] tracking-tighter">
+              <span className="text-gray-400 font-medium text-3xl md:text-5xl lg:text-6xl block mb-3">웹사이트는 누구나 만들지만,</span>
               <span className="inline-block">
-                <span className="inline-block cursor-default relative web-animate-pulse-scale">
-                  <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-100 to-gray-300">결과</span>
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-100 to-gray-300">결과는</span>
+                <span className="inline-block cursor-default relative web-animate-pulse-scale ml-2">
+                  <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-100 to-gray-300">우리만 만듭니다.</span>
                   <span className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 blur-2xl opacity-30 animate-pulse -z-10"></span>
                 </span>
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-100 to-gray-300">는 우리만 만듭니다.</span>
               </span>
             </h2>
             <p className="text-xl md:text-3xl text-gray-400 mb-14 max-w-3xl mx-auto leading-relaxed font-light">
@@ -450,7 +450,7 @@ const WebApp: React.FC = () => {
                         </div>
                       </div>
                     )}
-                    <button type="button" onClick={() => { window.location.href = 'http://localhost:3001/#contact'; }} disabled={loading || autoAnimationStarted} className="group relative w-full py-6 bg-web-gradient-apple rounded-2xl text-white font-bold text-lg hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 transition-all shadow-2xl shadow-purple-500/40 hover:shadow-purple-500/60 overflow-hidden web-btn-shimmer web-ripple">
+                    <button type="button" onClick={() => { window.location.href = '/inquiry'; }} disabled={loading || autoAnimationStarted} className="group relative w-full py-6 bg-web-gradient-apple rounded-2xl text-white font-bold text-lg hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 transition-all shadow-2xl shadow-purple-500/40 hover:shadow-purple-500/60 overflow-hidden web-btn-shimmer web-ripple">
                       <span className="relative z-10 flex items-center justify-center gap-2">
                         {loading ? (
                           <>
@@ -496,7 +496,7 @@ const WebApp: React.FC = () => {
                         <p className="text-sm text-gray-400 mb-6">{generatedWebsite.description}</p>
                         <div className="text-center">
                           <button 
-                            onClick={() => { window.location.href = 'http://localhost:3001/#contact'; }} 
+                            onClick={() => { window.location.href = '/inquiry'; }} 
                             className="group relative px-8 py-4 bg-web-gradient-apple rounded-xl text-white font-bold text-lg hover:scale-105 transition-all shadow-xl shadow-purple-500/40 hover:shadow-purple-500/60 overflow-hidden web-btn-shimmer web-ripple"
                           >
                             <span className="relative z-10 flex items-center justify-center gap-3">

@@ -1,7 +1,5 @@
 "use client";
 
-import ThemeToggle from "./ThemeToggle";
-import LanguageSwitcher from "./LanguageSwitcher";
 import Link from "next/link";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
@@ -30,7 +28,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               Web
             </a>
             <a
-              href="#contact"
+              href="/inquiry"
               className="text-sm font-semibold text-bg bg-accent hover:bg-accent/90 transition-colors duration-200 px-5 py-2.5 rounded-lg"
             >
               Contact
@@ -39,8 +37,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         </div>
       </nav>
       
-      <LanguageSwitcher />
-      <ThemeToggle />
       {children}
     </>
   );
