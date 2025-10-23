@@ -91,7 +91,7 @@ export default function PrivacyPolicy() {
                 <strong className="text-textPrimary">이름:</strong> 개인정보 보호책임자
               </p>
               <p className="text-textSecondary mb-2">
-                <strong className="text-textPrimary">이메일:</strong> privacy@totaro.com
+                <strong className="text-textPrimary">이메일:</strong> totalointernational@gmail.com
               </p>
               <p className="text-textSecondary">
                 개인정보 관련 문의사항이 있으시면 위 연락처로 문의해 주시기 바랍니다.

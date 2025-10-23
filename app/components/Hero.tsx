@@ -24,7 +24,6 @@ interface HeroProps {
 export default function Hero({ content }: HeroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
-  const headlineRef = useRef<HTMLHeadingElement>(null);
   const subcopyRef = useRef<HTMLParagraphElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const prefersReducedMotion = useReducedMotion();
@@ -56,11 +55,6 @@ export default function Hero({ content }: HeroProps) {
         { scale: 1.0, opacity: 1, duration: 0.5, ease: "power2.out" }
       );
       gsap.fromTo(
-        headlineRef.current,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out", delay: 0.05 }
-      );
-      gsap.fromTo(
         subcopyRef.current,
         { opacity: 0, y: 16 },
         { 
@@ -79,15 +73,6 @@ export default function Hero({ content }: HeroProps) {
       );
 
       // 이후 스크롤 패럴럭스만 연결
-      gsap.to(headlineRef.current, {
-        y: -80,
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1,
-        },
-      });
       gsap.to(subcopyRef.current, {
         y: -40,
         scrollTrigger: {
@@ -121,15 +106,6 @@ export default function Hero({ content }: HeroProps) {
           },
         }
       );
-      gsap.to(headlineRef.current, {
-        y: -80,
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1,
-        },
-      });
       gsap.to(subcopyRef.current, {
         y: -40,
         scrollTrigger: {
@@ -273,7 +249,6 @@ export default function Hero({ content }: HeroProps) {
         {/* Explanation within hero for single-screen view */}
         <div className="mt-8 text-center">
           <h2
-            ref={headlineRef}
             className="text-textPrimary text-xl md:text-2xl font-bold mb-4 text-pretty break-keep leading-snug"
             dangerouslySetInnerHTML={{ __html: content.headline }}
           />

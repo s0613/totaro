@@ -146,7 +146,7 @@ export default function TermsOfService() {
               본 약관에 대한 문의사항이 있으시면 아래로 연락 주시기 바랍니다.
             </p>
             <p className="text-textSecondary">
-              <strong className="text-textPrimary">이메일:</strong> support@totaro.com
+              <strong className="text-textPrimary">이메일:</strong> totalointernational@gmail.com
             </p>
           </div>
 

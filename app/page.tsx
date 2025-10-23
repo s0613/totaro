@@ -8,6 +8,7 @@ import Outcomes from "./components/Outcomes";
 import SocialProof from "./components/SocialProof";
 import CTAForm from "./components/CTAForm";
 import OrderSection from "./components/OrderSection";
+import FAQ from "./components/FAQ";
 import Footer from "./components/Footer";
 import { getContent, type Lang } from "@/lib/i18n";
 import { buildSEO } from "@/lib/seo";
@@ -92,6 +93,9 @@ export default function Home() {
 
       {/* CTA Form Section */}
       <CTAForm content={content.cta} />
+
+      {/* FAQ Section */}
+      <FAQ title={content.faq.title} items={content.faq.items} />
 
       {/* Footer */}
       <Footer content={content.footer} />

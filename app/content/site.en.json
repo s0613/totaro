@@ -181,5 +181,42 @@
     "testimonials": {
       "title": "Customer Success Stories"
     }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "items": [
+      {
+        "question": "What services does TOTARO provide?",
+        "answer": "TOTARO provides AI-powered complete B2B export solutions including professional website development, AEO/SEO/GEO optimization, targeted marketing campaigns, and comprehensive buyer management tools to streamline your entire export process."
+      },
+      {
+        "question": "How long does website development take?",
+        "answer": "Website development is 90% faster than traditional methods. Our AI automatically generates product catalogs and multilingual landing pages, so you can complete your site quickly without needing professional designers."
+      },
+      {
+        "question": "What is AEO/SEO/GEO optimization?",
+        "answer": "AEO optimizes for AI search engines like ChatGPT, Perplexity, and Gemini. SEO optimizes for traditional search engines like Google and Bing. GEO focuses on regional/local targeting. Together, they ensure visibility across AI searches and targeted local markets."
+      },
+      {
+        "question": "Which countries and languages do you support?",
+        "answer": "We support 20+ languages and major countries worldwide. We provide customized content and marketing strategies tailored to each region's buyer characteristics and cultural preferences."
+      },
+      {
+        "question": "How does the buyer management system work?",
+        "answer": "Our CRM automates buyer communication through lead scoring, automated follow-up sequences, and pipeline management. This eliminates missed follow-ups and improves response time by 85%."
+      },
+      {
+        "question": "Can I use TOTARO if I already have a website?",
+        "answer": "Yes, you can either improve your existing website or create a new export-focused website. We also support integration with your existing systems."
+      },
+      {
+        "question": "How is pricing determined?",
+        "answer": "We provide customized pricing based on project scope and requirements. You can use individual services (website, optimization, marketing, CRM) or choose our comprehensive package."
+      },
+      {
+        "question": "How do you measure results?",
+        "answer": "We measure concrete metrics including inquiry conversion rates, lead response speed, and RFQ request increases. You can monitor progress through our real-time dashboard."
+      }
+    ]
   }
 }

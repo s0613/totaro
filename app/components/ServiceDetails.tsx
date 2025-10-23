@@ -30,32 +30,32 @@ export default function ServiceDetails({ content }: ServiceDetailsProps) {
   
 
   return (
-    <section id="solution" className="relative bg-surface py-32 px-8">
+    <section id="solution" className="relative bg-surface py-16 md:py-32 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-20">
-          <h2 className="text-5xl font-bold text-textPrimary mb-6">
+        <div className="text-center mb-12 md:mb-20">
+          <h2 className="text-3xl md:text-5xl font-bold text-textPrimary mb-4 md:mb-6">
             토타로가 제공하는 솔루션
           </h2>
-          <p className="text-xl text-textSecondary max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-textSecondary max-w-3xl mx-auto">
             각 단계별 최적화된 도구로 수출 성공률을 높입니다
           </p>
         </div>
 
-        <div className="space-y-24">
+        <div className="space-y-16 md:space-y-24">
           {services.map((service, index) => (
             <div
               key={service.id}
-              className={`flex flex-col lg:flex-row gap-12 items-center ${
+              className={`flex flex-col lg:flex-row gap-8 md:gap-12 items-center ${
                 index % 2 === 1 ? "lg:flex-row-reverse" : ""
               }`}
             >
               {/* Icon & Title */}
-              <div className="flex-1 text-center lg:text-left">
-                <div className="inline-block text-8xl mb-6">{service.icon}</div>
-                <h3 className="text-4xl font-bold text-textPrimary mb-4">
+              <div className="flex-1 text-center lg:text-left min-h-[400px] md:min-h-[500px] flex flex-col justify-center">
+                <div className="inline-block text-6xl md:text-8xl mb-6">{service.icon}</div>
+                <h3 className="text-3xl md:text-4xl font-bold text-textPrimary mb-4">
                   {service.title}
                 </h3>
-                <p className="text-lg text-textSecondary mb-8">
+                <p className="text-base md:text-lg text-textSecondary mb-8">
                   {service.description}
                 </p>
 
@@ -80,7 +80,7 @@ export default function ServiceDetails({ content }: ServiceDetailsProps) {
                           />
                         </svg>
                       </div>
-                      <span className="text-textPrimary font-semibold">
+                      <span className="text-textPrimary font-semibold text-sm md:text-base">
                         {benefit}
                       </span>
                     </div>
@@ -89,16 +89,16 @@ export default function ServiceDetails({ content }: ServiceDetailsProps) {
               </div>
 
               {/* Features */}
-              <div className="flex-1">
-                <div className="bg-bg rounded-2xl p-8 border border-line">
-                  <h4 className="text-xl font-bold text-textPrimary mb-6">
+              <div className="flex-1 min-h-[400px] md:min-h-[500px] flex flex-col justify-center">
+                <div className="bg-bg rounded-2xl p-6 md:p-8 border border-line h-full flex flex-col">
+                  <h4 className="text-lg md:text-xl font-bold text-textPrimary mb-4 md:mb-6">
                     주요 기능
                   </h4>
-                  <ul className="space-y-4">
+                  <ul className="space-y-3 md:space-y-4 flex-1">
                     {service.features.map((feature, i) => (
                       <li
                         key={i}
-                        className="flex items-start gap-3 text-textSecondary"
+                        className="flex items-start gap-3 text-textSecondary text-sm md:text-base"
                       >
                         <span className="text-accent mt-1">▪</span>
                         <span>{feature}</span>
