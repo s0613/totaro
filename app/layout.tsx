@@ -15,10 +15,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://totaro.com'),
-  title: "TOTARO - Complete B2B Export Solutions",
-  description: "AI-powered B2B export platform: websites, AEO/SEO/GEO, targeted marketing, and buyer management. Transform your global business.",
-  keywords: ["B2B export", "AI export platform", "global marketing", "buyer management", "AEO", "SEO", "GEO"],
+  metadataBase: new URL('https://www.totaro.co.kr'),
+  title: "TOTARO - 완전한 B2B 수출 솔루션",
+  description: "AI 기반 B2B 수출 플랫폼: 웹사이트, AEO/SEO/GEO, 타겟 마케팅, 바이어 관리. 글로벌 비즈니스를 혁신하세요.",
+  keywords: ["B2B 수출", "AI 수출 플랫폼", "글로벌 마케팅", "바이어 관리", "AEO", "SEO", "GEO"],
   authors: [{ name: "TOTARO" }],
   icons: {
     icon: "/favicon.ico",
@@ -27,24 +27,24 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "en_US",
-    url: "https://totaro.com",
+    locale: "ko_KR",
+    url: "https://www.totaro.co.kr",
     siteName: "TOTARO",
-    title: "TOTARO - Complete B2B Export Solutions",
-    description: "AI-powered B2B export platform: websites, AEO/SEO/GEO, targeted marketing, and buyer management. Transform your global business.",
+    title: "TOTARO - 완전한 B2B 수출 솔루션",
+    description: "AI 기반 B2B 수출 플랫폼: 웹사이트, AEO/SEO/GEO, 타겟 마케팅, 바이어 관리. 글로벌 비즈니스를 혁신하세요.",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "TOTARO - Complete B2B Export Solutions",
+        alt: "TOTARO - 완전한 B2B 수출 솔루션",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "TOTARO - Complete B2B Export Solutions",
-    description: "AI-powered B2B export platform: websites, AEO/SEO/GEO, targeted marketing, and buyer management. Transform your global business.",
+    title: "TOTARO - 완전한 B2B 수출 솔루션",
+    description: "AI 기반 B2B 수출 플랫폼: 웹사이트, AEO/SEO/GEO, 타겟 마케팅, 바이어 관리. 글로벌 비즈니스를 혁신하세요.",
     images: ["/og-image.jpg"],
   },
   robots: {
@@ -63,8 +63,8 @@ export const metadata: Metadata = {
 // Global JSON-LD data
 const organizationData = organizationJsonLd({
   name: "TOTARO",
-  url: "https://totaro.com",
-  logo: "https://totaro.com/logo.png",
+  url: "https://www.totaro.co.kr",
+  logo: "https://www.totaro.co.kr/logo.png",
   sameAs: [
     "https://www.linkedin.com/company/totaro",
     "https://twitter.com/totaro_ai",
@@ -73,8 +73,8 @@ const organizationData = organizationJsonLd({
 });
 
 const websiteData = websiteJsonLd({
-  url: "https://totaro.com",
-  searchUrl: "https://totaro.com/search",
+  url: "https://www.totaro.co.kr",
+  searchUrl: "https://www.totaro.co.kr/search",
 });
 
 export default function RootLayout({
@@ -83,7 +83,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable} suppressHydrationWarning>
+    <html lang="ko" className={inter.variable} suppressHydrationWarning>
       <head>
         {/* Google Tag Manager */}
         <script

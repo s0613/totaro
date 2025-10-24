@@ -24,14 +24,14 @@ export function buildSEO(
       description: 'AI-powered B2B export platform: websites, AEO/SEO/GEO, targeted marketing, and buyer management. Transform your global business.',
       keywords: ['B2B export', 'AI export platform', 'global marketing', 'buyer management', 'AEO', 'SEO', 'GEO'],
       hreflang: 'en-US',
-      path: '/',
+      path: '/en',
     },
     ko: {
       title: 'TOTARO - 완전한 B2B 수출 솔루션',
       description: 'AI 기반 B2B 수출 플랫폼: 웹사이트, AEO/SEO/GEO, 타겟 마케팅, 바이어 관리. 글로벌 비즈니스를 혁신하세요.',
       keywords: ['B2B 수출', 'AI 수출 플랫폼', '글로벌 마케팅', '바이어 관리', 'AEO', 'SEO', 'GEO'],
       hreflang: 'ko-KR',
-      path: '/ko',
+      path: '/',
     },
     jp: {
       title: 'TOTARO - 完全なB2B輸出ソリューション',
@@ -54,8 +54,8 @@ export function buildSEO(
     alternates: {
       canonical: fullPath,
       languages: {
-        'en': '/',
-        'ko': '/ko',
+        'en': '/en',
+        'ko': '/',
         'ja': '/jp',
         'x-default': '/',
       },
@@ -72,7 +72,7 @@ export function buildSEO(
           url: '/og-image.jpg',
           width: 1200,
           height: 630,
-          alt: 'TOTARO - Complete B2B Export Solutions',
+          alt: 'TOTARO - 완전한 B2B 수출 솔루션',
         },
       ],
     },
