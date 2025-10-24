@@ -22,12 +22,39 @@ export async function sendMail({ to, subject, html }: { to: string[]; subject: s
   if (!smtpUser || !smtpPass) {
     throw new Error("SMTP credentials are not configured");
   }
-  await transporter.sendMail({
-    from: smtpFrom,
+  
+  console.log("[Mailer] Attempting to send email", {
     to: to.join(","),
     subject,
-    html,
+    smtpHost,
+    smtpPort,
+    smtpUser,
+    smtpFrom,
   });
+  
+  try {
+    const result = await transporter.sendMail({
+      from: smtpFrom,
+      to: to.join(","),
+      subject,
+      html,
+    });
+    
+    console.log("[Mailer] Email sent successfully", {
+      messageId: result.messageId,
+      accepted: result.accepted,
+      rejected: result.rejected,
+    });
+    
+    return result;
+  } catch (error) {
+    console.error("[Mailer] Email sending failed", {
+      error: error,
+      errorMessage: error instanceof Error ? error.message : String(error),
+      errorCode: (error as any)?.code,
+    });
+    throw error;
+  }
 }
 
 

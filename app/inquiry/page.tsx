@@ -26,18 +26,41 @@ export default function InquiryPage() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate interest selection
+    if (form.interest.length === 0) {
+      setResult({ ok: false, msg: "관심 분야를 최소 1개 이상 선택해주세요." });
+      return;
+    }
+    
     setSubmitting(true);
     setResult(null);
+    
+    // Debug logging
+    console.log("[Inquiry Form] Submitting data:", JSON.stringify(form, null, 2));
+    
     try {
+      // Clean up form data before sending
+      const formData = {
+        ...form,
+        country: form.country.trim() || undefined, // Convert empty string to undefined
+      };
+      
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(formData),
       });
       const data = await res.json();
       if (res.ok && data.success) {
-        setResult({ ok: true, msg: data.message || "문의가 접수되었습니다." });
-        setForm({ name: "", email: "", company: "", country: "", interest: [], message: "" });
+        const isEmailSent = data.emailSent !== false; // 기본값을 true로 설정
+        setResult({ 
+          ok: isEmailSent, 
+          msg: data.message || (isEmailSent ? "문의가 접수되었습니다." : "문의가 접수되었지만 이메일 전송에 문제가 있습니다.")
+        });
+        if (isEmailSent) {
+          setForm({ name: "", email: "", company: "", country: "", interest: [], message: "" });
+        }
       } else {
         setResult({ ok: false, msg: data.message || "제출에 실패했습니다." });
       }
@@ -159,10 +182,14 @@ export default function InquiryPage() {
                 value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
                 required
+                maxLength={2000}
                 rows={6}
                 className="w-full px-4 py-3 bg-surface border border-line rounded-lg text-textPrimary placeholder-textSecondary focus:outline-none focus:ring-2 focus:ring-accent resize-none"
-                placeholder="메시지"
+                placeholder="메시지 (최대 2000자)"
               />
+              <div className="text-right text-sm text-textSecondary mt-1">
+                {form.message.length}/2000
+              </div>
             </div>
 
             {/* Submit Button */}

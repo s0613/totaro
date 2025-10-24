@@ -8,18 +8,22 @@ const contactSchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
   company: z.string().min(2),
-  country: z.string().optional(),
+  country: z.string().optional().or(z.literal("")),
   interest: z.array(z.string()).min(1),
-  message: z.string().min(10),
+  message: z.string().max(2000, "메시지는 2000자 이하로 입력해주세요"),
 });
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    
+    // Debug logging
+    console.log("[Contact API] Received data:", JSON.stringify(body, null, 2));
 
     // Validate
     const result = contactSchema.safeParse(body);
     if (!result.success) {
+      console.log("[Contact API] Validation failed:", result.error.flatten().fieldErrors);
       return NextResponse.json(
         { success: false, errors: result.error.flatten().fieldErrors },
         { status: 400 }
@@ -47,6 +51,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Send email directly from API route
+    let emailSent = false;
     try {
       const subject = `[TOTARO] 새 문의 접수: ${data.name} (${data.company})`;
       const html = `
@@ -66,14 +71,26 @@ export async function POST(request: NextRequest) {
         subject,
         html,
       });
+      emailSent = true;
+      console.log("[Contact Email] Successfully sent");
     } catch (mailErr) {
       console.error("[Contact Email Error]", mailErr);
-      // continue without failing the request
+      // Log detailed error information
+      console.error("[Contact Email Error Details]", {
+        error: mailErr,
+        smtpUser: process.env.SMTP_USER ? "Set" : "Not set",
+        smtpPass: process.env.SMTP_PASS ? "Set" : "Not set",
+        smtpHost: process.env.SMTP_HOST,
+        smtpPort: process.env.SMTP_PORT,
+      });
     }
 
     return NextResponse.json({
       success: true,
-      message: "문의 접수 완료. 빠르게 회신드리겠습니다.",
+      message: emailSent 
+        ? "문의 접수 완료. 빠르게 회신드리겠습니다." 
+        : "문의가 접수되었지만 이메일 전송에 문제가 있습니다. 관리자에게 문의해주세요.",
+      emailSent,
     });
   } catch (error) {
     console.error("[Contact Form Error]", error);

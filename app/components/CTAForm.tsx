@@ -12,7 +12,7 @@ const contactSchema = z.object({
   company: z.string().min(2, "회사명을 입력해주세요 (최소 2자)"),
   country: z.string().optional(),
   interest: z.array(z.string()).min(1, "관심 항목을 선택해주세요"),
-  message: z.string().min(10, "메시지를 입력해주세요 (최소 10자)"),
+  message: z.string().max(2000, "메시지는 2000자 이하로 입력해주세요"),
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
@@ -48,6 +48,7 @@ export default function CTAForm({ content }: CTAFormProps) {
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
   });
@@ -234,10 +235,14 @@ export default function CTAForm({ content }: CTAFormProps) {
             <textarea
               id="message"
               rows={6}
+              maxLength={2000}
               {...register("message")}
               className="w-full px-5 py-4 bg-surface border border-line rounded-lg text-textPrimary placeholder:text-textSecondary/40 focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all resize-none"
-              placeholder={content.form.message}
+              placeholder={`${content.form.message} (최대 2000자)`}
             />
+            <div className="text-right text-sm text-textSecondary mt-1">
+              {watch("message")?.length || 0}/2000
+            </div>
             {errors.message && (
               <p className="text-warning text-sm mt-2">{errors.message.message}</p>
             )}
