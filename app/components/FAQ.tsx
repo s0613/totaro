@@ -1,14 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
-
-// Register GSAP plugins
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import { useState } from 'react';
 
 interface FAQItem {
   question: string;
@@ -35,9 +27,6 @@ const ChevronUpIcon = ({ className }: { className?: string }) => (
 
 export default function FAQ({ title, items }: FAQProps) {
   const [openItems, setOpenItems] = useState<number[]>([]);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const faqRefs = useRef<HTMLDivElement[]>([]);
-  const prefersReducedMotion = useReducedMotion();
 
   const toggleItem = (index: number) => {
     setOpenItems(prev => 
@@ -47,43 +36,8 @@ export default function FAQ({ title, items }: FAQProps) {
     );
   };
 
-  useEffect(() => {
-    if (prefersReducedMotion || !containerRef.current) {
-      // Reduced motion: just fade in
-      faqRefs.current.forEach((el) => {
-        if (el) {
-          gsap.to(el, { opacity: 1, duration: 0.6 });
-        }
-      });
-      return;
-    }
-
-    // Stagger animation for FAQ items
-    faqRefs.current.forEach((el, i) => {
-      if (el) {
-        gsap.fromTo(
-          el,
-          { opacity: 0, y: 20 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: el,
-              start: "top 85%",
-              end: "bottom 15%",
-              toggleActions: "play none none reverse",
-            },
-            delay: i * 0.1,
-          }
-        );
-      }
-    });
-  }, [prefersReducedMotion]);
-
   return (
-    <section ref={containerRef} className="relative bg-surface py-16 md:py-32 px-4 md:px-8">
+    <section className="relative bg-surface py-16 md:py-32 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12 md:mb-20">
@@ -100,20 +54,16 @@ export default function FAQ({ title, items }: FAQProps) {
           {items.map((item, index) => (
             <div
               key={index}
-              ref={(el) => {
-                if (el) faqRefs.current[index] = el;
-              }}
-              className="bg-bg rounded-lg border border-line overflow-hidden transition-all duration-300 hover:border-accent/30 hover:shadow-lg"
-              style={{ willChange: "transform, box-shadow, border-color" }}
+              className="bg-bg rounded-lg border border-line overflow-hidden"
             >
               <button
-                className="w-full px-6 md:px-8 py-4 md:py-6 text-left flex justify-between items-center hover:bg-surface/50 transition-colors duration-200 group"
+                className="w-full px-6 md:px-8 py-4 md:py-6 text-left flex justify-between items-center hover:bg-surface/50 group"
                 onClick={() => toggleItem(index)}
               >
-                <span className="text-lg md:text-xl font-semibold text-textPrimary pr-4 group-hover:text-accent transition-colors duration-200">
+                <span className="text-lg md:text-xl font-semibold text-textPrimary pr-4 group-hover:text-accent">
                   {item.question}
                 </span>
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center group-hover:bg-accent/20 transition-colors duration-200">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center group-hover:bg-accent/20">
                   {openItems.includes(index) ? (
                     <ChevronUpIcon className="h-5 w-5 text-accent" />
                   ) : (
@@ -124,7 +74,7 @@ export default function FAQ({ title, items }: FAQProps) {
               
               {openItems.includes(index) && (
                 <div className="px-6 md:px-8 pb-4 md:pb-6 border-t border-line/50">
-                  <div className="pt-4 md:pt-6 text-textSecondary leading-relaxed text-base md:text-lg">
+                  <div className="pt-4 md:pt-6 text-textSecondary leading-relaxed text-base md:text-lg whitespace-pre-line">
                     {item.answer}
                   </div>
                 </div>
@@ -144,7 +94,7 @@ export default function FAQ({ title, items }: FAQProps) {
             </p>
             <a
               href="#contact"
-              className="btn-primary text-base md:text-lg px-8 md:px-10 py-3 md:py-4 shadow-soft hover:shadow-lg transition-shadow inline-block"
+              className="btn-primary text-base md:text-lg px-8 md:px-10 py-3 md:py-4 shadow-soft hover:shadow-lg inline-block"
             >
               문의하기
             </a>

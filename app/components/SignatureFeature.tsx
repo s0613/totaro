@@ -42,7 +42,7 @@ export default function SignatureFeature({ content }: SignatureFeatureProps) {
 
       <div className="relative z-10 max-w-6xl w-full mx-auto">
         <div className="text-center mb-16 lg:mb-20">
-          <h2 className="text-4xl md:text-5xl font-bold text-textPrimary mb-6">
+          <h2 className="text-3xl md:text-5xl font-bold text-textPrimary mb-6">
             {content.title}
           </h2>
           <p className="text-lg md:text-xl text-textSecondary max-w-3xl mx-auto">

@@ -1,4 +1,3 @@
-import LogoIntro from "./components/LogoIntro";
 import Hero from "./components/Hero";
 import SignatureFeature from "./components/SignatureFeature";
 import ServiceDetails from "./components/ServiceDetails";
@@ -63,9 +62,6 @@ export default function Home() {
       <JsonLd data={faqData} />
       <JsonLd data={answerFirstData} />
       
-      {/* Logo Intro Animation */}
-      <LogoIntro />
-
       {/* Hero Section */}
       <Hero content={content.hero} lang={lang} />
 

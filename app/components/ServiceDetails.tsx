@@ -45,12 +45,14 @@ export default function ServiceDetails({ content }: ServiceDetailsProps) {
           {services.map((service, index) => (
             <div
               key={service.id}
-              className={`flex flex-col lg:flex-row gap-8 md:gap-12 items-center ${
-                index % 2 === 1 ? "lg:flex-row-reverse" : ""
+              className={`grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-stretch ${
+                index % 2 === 1 ? "lg:grid-flow-col-dense" : ""
               }`}
             >
               {/* Title */}
-              <div className="flex-1 text-center lg:text-left min-h-[300px] md:min-h-[350px] flex flex-col justify-center">
+              <div className={`text-center lg:text-left flex flex-col justify-center ${
+                index % 2 === 1 ? "lg:col-start-2" : ""
+              }`}>
                 <h3 className="text-3xl md:text-4xl font-bold text-textPrimary mb-4">
                   {service.title}
                 </h3>
@@ -88,7 +90,7 @@ export default function ServiceDetails({ content }: ServiceDetailsProps) {
               </div>
 
               {/* Features */}
-              <div className="flex-1 min-h-[300px] md:min-h-[350px] flex flex-col justify-center">
+              <div className={`${index % 2 === 1 ? "lg:col-start-1" : ""}`}>
                 <div className="bg-bg rounded-2xl p-6 md:p-8 border border-line h-full flex flex-col">
                   <h4 className="text-lg md:text-xl font-bold text-textPrimary mb-4 md:mb-6">
                     주요 기능
@@ -99,7 +101,7 @@ export default function ServiceDetails({ content }: ServiceDetailsProps) {
                         key={i}
                         className="flex items-start gap-3 text-textSecondary text-sm md:text-base"
                       >
-                        <span className="text-accent mt-1">▪</span>
+                        <span className="text-accent mt-1 flex-shrink-0">▪</span>
                         <span>{feature}</span>
                       </li>
                     ))}

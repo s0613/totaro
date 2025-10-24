@@ -111,7 +111,7 @@ export default function CTAForm({ content }: CTAFormProps) {
     <section id="contact" className="min-h-screen flex items-center justify-center bg-bg py-24 px-8">
       <div className="max-w-3xl w-full">
         <div className="text-center mb-12">
-          <h2 className="text-5xl font-bold text-textPrimary mb-4">
+          <h2 className="text-3xl md:text-5xl font-bold text-textPrimary mb-4">
             {content.title}
           </h2>
           <p className="text-lg text-textSecondary">{content.subtitle}</p>

@@ -134,7 +134,7 @@ export default function UseCases({ title, cases }: UseCasesProps) {
       className="relative min-h-screen flex items-center justify-center bg-bg py-24 px-8"
     >
       <div className="max-w-7xl w-full">
-        <h2 className="text-5xl font-bold text-textPrimary text-center mb-20">
+        <h2 className="text-3xl md:text-5xl font-bold text-textPrimary text-center mb-20">
           {title}
         </h2>
 
@@ -145,14 +145,14 @@ export default function UseCases({ title, cases }: UseCasesProps) {
               ref={(el) => {
                 if (el) cardRefs.current[i] = el;
               }}
-              className="bg-surface rounded-lg p-8 border border-line hover:border-accent/40 transition-all group"
+              className="bg-surface rounded-lg p-6 md:p-8 border border-line hover:border-accent/40 transition-all group min-h-[280px] md:min-h-[320px] flex flex-col"
               style={{ opacity: 0, willChange: "opacity, transform" }}
             >
               <h3 className="text-2xl font-bold text-textPrimary mb-6 group-hover:text-accent transition-colors">
                 {useCase.title}
               </h3>
 
-              <div className="space-y-4">
+              <div className="space-y-4 flex-1 flex flex-col justify-center">
                 {/* Before */}
                 <div className="relative pl-6">
                   <div className="absolute left-0 top-1 w-4 h-4 rounded-full bg-textSecondary/30" />

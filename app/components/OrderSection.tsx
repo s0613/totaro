@@ -29,7 +29,7 @@ export default function OrderSection({ lang }: OrderSectionProps) {
     <section className="relative bg-surface py-24 px-8 border-t border-line">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-5xl font-bold text-textPrimary mb-4">
+          <h2 className="text-3xl md:text-5xl font-bold text-textPrimary mb-4">
             {isEn ? "Website Purchase Order" : "웹사이트 구매 주문하기"}
           </h2>
           <p className="text-lg text-textSecondary text-pretty break-keep">

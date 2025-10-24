@@ -132,7 +132,7 @@ export default function Outcomes({ title, metrics }: OutcomesProps) {
       className="relative min-h-screen flex items-center justify-center bg-surface py-24 px-8"
     >
       <div className="max-w-6xl w-full">
-        <h2 className="text-5xl font-bold text-textPrimary text-center mb-20">
+        <h2 className="text-3xl md:text-5xl font-bold text-textPrimary text-center mb-20">
           {title}
         </h2>
 
@@ -143,7 +143,7 @@ export default function Outcomes({ title, metrics }: OutcomesProps) {
               ref={(el) => {
                 if (el) metricRefs.current[i] = el;
               }}
-              className="text-center"
+              className="text-center min-h-[200px] md:min-h-[240px] flex flex-col justify-center"
               style={{ opacity: 0, willChange: "opacity, transform" }}
             >
               <div className="mb-4">

@@ -96,11 +96,11 @@ const AboutSection: React.FC = () => {
         <div className={`mt-20 text-center animate-slide-up ${isVisible ? "animate-fade-in" : ""}`} style={{ animationDelay: "0.6s" }}>
           <div className="glass rounded-3xl p-12 hover-lift shadow-xl shadow-black/30 border-white/10 max-w-4xl mx-auto">
             <div className="text-6xl mb-6 opacity-20">"</div>
-            <blockquote className="text-2xl md:text-3xl font-light text-gray-300 leading-relaxed mb-6">
-              기술은 도구일 뿐입니다. 진정한 가치는<br />
-              <span className="text-gradient-silver font-semibold">사람을 위한 솔루션</span>을 만드는 데 있습니다.
+            <div className="text-sm text-gray-500 mb-4">- 스티브 잡스</div>
+            <blockquote className="text-lg md:text-2xl lg:text-3xl font-light text-gray-300 leading-relaxed mb-6">
+              혁신은 리더와 팔로워를 구분하는<br />
+              <span className="text-gradient-silver font-semibold">유일한 기준</span>입니다.
             </blockquote>
-            <div className="text-lg text-gray-500 font-medium">- 송승주, 풀스택 개발자</div>
           </div>
         </div>
       </div>

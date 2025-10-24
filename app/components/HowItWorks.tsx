@@ -87,7 +87,7 @@ export default function HowItWorks({ title, steps }: HowItWorksProps) {
       className="relative min-h-screen flex items-center justify-center bg-surface py-24 px-8"
     >
       <div className="max-w-7xl w-full">
-        <h2 className="text-5xl font-bold text-textPrimary text-center mb-20">
+        <h2 className="text-3xl md:text-5xl font-bold text-textPrimary text-center mb-20">
           {title}
         </h2>
 
@@ -98,7 +98,7 @@ export default function HowItWorks({ title, steps }: HowItWorksProps) {
               ref={(el) => {
                 if (el) stepRefs.current[i] = el;
               }}
-              className="bg-bg rounded-lg p-8 border border-line transition-all"
+              className="bg-bg rounded-lg p-6 md:p-8 border border-line transition-all min-h-[200px] md:min-h-[240px] flex flex-col"
               style={{ willChange: "transform, box-shadow, border-color" }}
             >
               <div className="flex items-center gap-3 mb-4">
@@ -107,7 +107,7 @@ export default function HowItWorks({ title, steps }: HowItWorksProps) {
                 </div>
                 <h3 className="text-xl font-bold text-textPrimary">{step.label}</h3>
               </div>
-              <p className="text-textSecondary text-sm leading-relaxed">{step.desc}</p>
+              <p className="text-textSecondary text-sm leading-relaxed flex-1 flex items-center">{step.desc}</p>
             </div>
           ))}
         </div>

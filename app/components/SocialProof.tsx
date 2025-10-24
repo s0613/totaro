@@ -83,7 +83,7 @@ export default function SocialProof({ content, lang }: SocialProofProps) {
 
         {/* Testimonials */}
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-5xl font-bold text-textPrimary text-center mb-16">
+          <h2 className="text-3xl md:text-5xl font-bold text-textPrimary text-center mb-16">
             {content.testimonials.title}
           </h2>
 
