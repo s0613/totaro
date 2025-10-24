@@ -379,12 +379,12 @@ export default function Hero({ content }: HeroProps) {
       </div>
 
       {/* Center brand only */}
-      <div className="relative z-20 text-center px-8 max-w-6xl select-none">
-        <h1 className="text-textPrimary font-extrabold tracking-[0.25em] text-5xl sm:text-6xl md:text-7xl">TOTARO</h1>
+      <div className="relative z-20 text-center px-4 sm:px-8 max-w-6xl select-none">
+        <h1 className="text-textPrimary font-extrabold tracking-[0.15em] sm:tracking-[0.25em] text-3xl sm:text-5xl md:text-6xl lg:text-7xl">TOTARO</h1>
         {/* Explanation within hero for single-screen view */}
         <div className="mt-8 text-center">
           <h2
-            className="text-textPrimary text-xl md:text-2xl font-bold mb-4 text-pretty break-keep leading-snug"
+            className="text-textPrimary text-lg sm:text-xl md:text-2xl font-bold mb-4 text-pretty break-keep leading-snug px-2"
             dangerouslySetInnerHTML={{ __html: content.headline }}
           />
           {content.subcopy && (
@@ -392,18 +392,18 @@ export default function Hero({ content }: HeroProps) {
               {content.subcopy}
             </p>
           )}
-          <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center px-2">
             <a
               href="#contact"
               onClick={() => trackCTAClick("Get Started", "hero_inline")}
-              className="btn-primary text-base md:text-lg px-8 md:px-10 py-4 md:py-5 shadow-soft hover:shadow-lg transition-shadow inline-block"
+              className="btn-primary text-sm sm:text-base md:text-lg px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 shadow-soft hover:shadow-lg transition-shadow inline-block"
             >
               {content.primaryCta}
             </a>
             <a
               href="/web"
               onClick={() => trackCTAClick("Web Builder", "hero_inline")}
-              className="btn-secondary text-base md:text-lg px-8 md:px-10 py-4 md:py-5 shadow-soft hover:shadow-lg transition-shadow inline-block"
+              className="btn-secondary text-sm sm:text-base md:text-lg px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 shadow-soft hover:shadow-lg transition-shadow inline-block"
             >
               웹빌더 솔루션 보기
             </a>

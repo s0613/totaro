@@ -44,6 +44,20 @@ body {
   padding: 0;
 }
 
+/* 모든 요소에 대해 가로 오버플로우 방지 */
+* {
+  max-width: 100%;
+}
+
+/* 컨테이너 요소들에 대해 추가 오버플로우 방지 */
+.container,
+.max-w-6xl,
+.max-w-4xl,
+.max-w-3xl,
+.max-w-2xl {
+  overflow-x: hidden;
+}
+
 body {
   position: relative;
 }
@@ -54,15 +68,19 @@ body {
   }
 
   .copy-hero {
-    font-size: clamp(32px, 6vw, 72px);
+    font-size: clamp(24px, 5vw, 72px);
     font-weight: 700;
     line-height: 1.1;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
 
   .copy-sub {
     max-width: 60ch;
     font-weight: 300;
     color: var(--text-secondary);
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
 
   .btn-primary {

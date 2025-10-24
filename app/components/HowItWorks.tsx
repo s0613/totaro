@@ -84,30 +84,30 @@ export default function HowItWorks({ title, steps }: HowItWorksProps) {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center bg-surface py-24 px-8"
+      className="relative min-h-screen flex items-center justify-center bg-surface py-16 sm:py-24 px-4 sm:px-8"
     >
       <div className="max-w-7xl w-full">
-        <h2 className="text-3xl md:text-5xl font-bold text-textPrimary text-center mb-20">
+        <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-textPrimary text-center mb-12 sm:mb-20 px-2">
           {title}
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
           {steps.map((step, i) => (
             <div
               key={i}
               ref={(el) => {
                 if (el) stepRefs.current[i] = el;
               }}
-              className="bg-bg rounded-lg p-6 md:p-8 border border-line transition-all min-h-[200px] md:min-h-[240px] flex flex-col"
+              className="bg-bg rounded-lg p-4 sm:p-6 md:p-8 border border-line transition-all min-h-[180px] sm:min-h-[200px] md:min-h-[240px] flex flex-col"
               style={{ willChange: "transform, box-shadow, border-color" }}
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
-                  <span className="text-accent text-lg font-bold">{step.step}</span>
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-accent/20 flex items-center justify-center">
+                  <span className="text-accent text-sm sm:text-lg font-bold">{step.step}</span>
                 </div>
-                <h3 className="text-xl font-bold text-textPrimary">{step.label}</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-textPrimary">{step.label}</h3>
               </div>
-              <p className="text-textSecondary text-sm leading-relaxed flex-1 flex items-center">{step.desc}</p>
+              <p className="text-textSecondary text-xs sm:text-sm leading-relaxed flex-1 flex items-center">{step.desc}</p>
             </div>
           ))}
         </div>
